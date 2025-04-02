@@ -4,2661 +4,2108 @@ Trace
 ===================================================================
 ;
 
-LIB CONNECT TO 'adventure_works__odata';
-
 Trace
 -------------------------------------------------------------------
-    Extracting Addresses
+    Extracting raw__adventure_works__addresses
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__addresses]:
 LOAD
-    Text([addressId]) AS [address_id], 
-    Text([addressLine1]) AS [address_line1], 
-    Text([addressLine2]) AS [address_line2], 
-    Text([city]) AS [city], 
-    Text([state]) AS [state], 
-    Text([country]) AS [country], 
-    Text([postalCode]) AS [postal_code], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([address_id]) AS [address_id],
+    Text([state_province_id]) AS [state_province_id],
+    Text([address_line1]) AS [address_line1],
+    Text([address_line2]) AS [address_line2],
+    Text([city]) AS [city],
+    Text([postal_code]) AS [postal_code],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__addresses.parquet] (parquet)
 ;
 
-SELECT
-    addressId,
-    addressLine1,
-    addressLine2,
-    city,
-    state,
-    country,
-    postalCode,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__addresses] WITH 'Street address information for customers, employees, and vendors.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [address_id] WITH 'Primary key for Address records.';
+COMMENT FIELD [state_province_id] WITH 'Unique identification number for the state or province. Foreign key to StateProvince table.';
+COMMENT FIELD [address_line1] WITH 'First street address line.';
+COMMENT FIELD [address_line2] WITH 'Second street address line.';
+COMMENT FIELD [city] WITH 'Name of the city.';
+COMMENT FIELD [postal_code] WITH 'Postal code for the street address.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Addresses',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__addresses = '$(val__qvd_path__das)/raw__adventure_works__addresses.qvd';
-TRACE Stored [raw__adventure_works__addresses] into [$(val__qvd_path__addresses)];
-STORE [raw__adventure_works__addresses] INTO [$(val__qvd_path__addresses)] (qvd);
+STORE [raw__adventure_works__addresses] INTO [$(val__qvd_path__das)/raw__adventure_works__addresses.qvd] (qvd);
 DROP TABLE [raw__adventure_works__addresses];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Address Types
+    Extracting raw__adventure_works__address_types
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__address_types]:
 LOAD
-    Text([addressTypeId]) AS [address_type_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([address_type_id]) AS [address_type_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__address_types.parquet] (parquet)
 ;
 
-SELECT
-    addressTypeId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__address_types] WITH 'Types of addresses stored in the Address table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [address_type_id] WITH 'Primary key for AddressType records.';
+COMMENT FIELD [name] WITH 'Address type description. For example, Billing, Home, or Shipping.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='AddressTypes',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__address_types = '$(val__qvd_path__das)/raw__adventure_works__address_types.qvd';
-TRACE Stored [raw__adventure_works__address_types] into [$(val__qvd_path__address_types)];
-STORE [raw__adventure_works__address_types] INTO [$(val__qvd_path__address_types)] (qvd);
+STORE [raw__adventure_works__address_types] INTO [$(val__qvd_path__das)/raw__adventure_works__address_types.qvd] (qvd);
 DROP TABLE [raw__adventure_works__address_types];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Bill Of Materials
+    Extracting raw__adventure_works__bill_of_materials
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__bill_of_materials]:
 LOAD
-    Text([billOfMaterialsId]) AS [bill_of_materials_id], 
-    Text([productAssemblyId]) AS [product_assembly_id], 
-    Text([componentId]) AS [component_id], 
-    Text([startDate]) AS [start_date], 
-    Text([endDate]) AS [end_date], 
-    Text([measurementUnit]) AS [measurement_unit], 
-    Text([bomlevel]) AS [bomlevel], 
-    Text([perAssemblyQuantity]) AS [per_assembly_quantity], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([bill_of_materials_id]) AS [bill_of_materials_id],
+    Text([component_id]) AS [component_id],
+    Text([product_assembly_id]) AS [product_assembly_id],
+    Text([bomlevel]) AS [bomlevel],
+    Text([end_date]) AS [end_date],
+    Text([per_assembly_qty]) AS [per_assembly_qty],
+    Text([start_date]) AS [start_date],
+    Text([unit_measure_code]) AS [unit_measure_code],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__bill_of_materials.parquet] (parquet)
 ;
 
-SELECT
-    billOfMaterialsId,
-    productAssemblyId,
-    componentId,
-    startDate,
-    endDate,
-    measurementUnit,
-    bomlevel,
-    perAssemblyQuantity,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__bill_of_materials] WITH 'Items required to make bicycles and bicycle subassemblies. It identifies the hierarchical relationship between a parent product and its components.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [bill_of_materials_id] WITH 'Primary key for BillOfMaterials records.';
+COMMENT FIELD [component_id] WITH 'Component identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [product_assembly_id] WITH 'Parent product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [bomlevel] WITH 'Indicates the depth the component is from its parent (AssemblyID).';
+COMMENT FIELD [end_date] WITH 'Date the component stopped being used in the assembly item.';
+COMMENT FIELD [per_assembly_qty] WITH 'Quantity of the component needed to create the assembly.';
+COMMENT FIELD [start_date] WITH 'Date the component started being used in the assembly item.';
+COMMENT FIELD [unit_measure_code] WITH 'Standard code identifying the unit of measure for the quantity.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='BillOfMaterials',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__bill_of_materials = '$(val__qvd_path__das)/raw__adventure_works__bill_of_materials.qvd';
-TRACE Stored [raw__adventure_works__bill_of_materials] into [$(val__qvd_path__bill_of_materials)];
-STORE [raw__adventure_works__bill_of_materials] INTO [$(val__qvd_path__bill_of_materials)] (qvd);
+STORE [raw__adventure_works__bill_of_materials] INTO [$(val__qvd_path__das)/raw__adventure_works__bill_of_materials.qvd] (qvd);
 DROP TABLE [raw__adventure_works__bill_of_materials];
 
-
 Trace
 -------------------------------------------------------------------
-    Extracting Business Entities
+    Extracting raw__adventure_works__business_entity_addresses
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
-
-[raw__adventure_works__business_entities]:
-LOAD
-    Text([businessEntityId]) AS [business_entity_id], 
-    Text([address]) AS [address], 
-    Text([addressType]) AS [address_type], 
-    Text([modifiedDate]) AS [modified_date]
-;
-
-SELECT
-    businessEntityId,
-    address,
-    addressType,
-    modifiedDate
-
-FROM
-    JsonV4GetData
-
-WITH PROPERTIES (
-    oDataResourcePath='BusinessEntities',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__business_entities = '$(val__qvd_path__das)/raw__adventure_works__business_entities.qvd';
-TRACE Stored [raw__adventure_works__business_entities] into [$(val__qvd_path__business_entities)];
-STORE [raw__adventure_works__business_entities] INTO [$(val__qvd_path__business_entities)] (qvd);
-DROP TABLE [raw__adventure_works__business_entities];
-
-
-Trace
--------------------------------------------------------------------
-    Extracting Business Entity Addresses
--------------------------------------------------------------------
-;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__business_entity_addresses]:
 LOAD
-    Text([businessEntityId]) AS [business_entity_id], 
-    Text([address]) AS [address], 
-    Text([addressType]) AS [address_type], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([address_id]) AS [address_id],
+    Text([address_type_id]) AS [address_type_id],
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__business_entity_addresses.parquet] (parquet)
 ;
 
-SELECT
-    businessEntityId,
-    address,
-    addressType,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__business_entity_addresses] WITH 'Cross-reference table mapping customers, vendors, and employees to their addresses.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [address_id] WITH 'Primary key. Foreign key to Address.AddressID.';
+COMMENT FIELD [address_type_id] WITH 'Primary key. Foreign key to AddressType.AddressTypeID.';
+COMMENT FIELD [business_entity_id] WITH 'Primary key. Foreign key to BusinessEntity.BusinessEntityID.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='BusinessEntityAddresses',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__business_entity_addresses = '$(val__qvd_path__das)/raw__adventure_works__business_entity_addresses.qvd';
-TRACE Stored [raw__adventure_works__business_entity_addresses] into [$(val__qvd_path__business_entity_addresses)];
-STORE [raw__adventure_works__business_entity_addresses] INTO [$(val__qvd_path__business_entity_addresses)] (qvd);
+STORE [raw__adventure_works__business_entity_addresses] INTO [$(val__qvd_path__das)/raw__adventure_works__business_entity_addresses.qvd] (qvd);
 DROP TABLE [raw__adventure_works__business_entity_addresses];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Business Entity Contacts
+    Extracting raw__adventure_works__business_entity_contacts
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__business_entity_contacts]:
 LOAD
-    Text([businessEntityId]) AS [business_entity_id], 
-    Text([personId]) AS [person_id], 
-    Text([contactType]) AS [contact_type], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([contact_type_id]) AS [contact_type_id],
+    Text([person_id]) AS [person_id],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__business_entity_contacts.parquet] (parquet)
 ;
 
-SELECT
-    businessEntityId,
-    personId,
-    contactType,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__business_entity_contacts] WITH 'Cross-reference table mapping stores, vendors, and employees to people.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key. Foreign key to BusinessEntity.BusinessEntityID.';
+COMMENT FIELD [contact_type_id] WITH 'Primary key. Foreign key to ContactType.ContactTypeID.';
+COMMENT FIELD [person_id] WITH 'Primary key. Foreign key to Person.BusinessEntityID.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='BusinessEntityContacts',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__business_entity_contacts = '$(val__qvd_path__das)/raw__adventure_works__business_entity_contacts.qvd';
-TRACE Stored [raw__adventure_works__business_entity_contacts] into [$(val__qvd_path__business_entity_contacts)];
-STORE [raw__adventure_works__business_entity_contacts] INTO [$(val__qvd_path__business_entity_contacts)] (qvd);
+STORE [raw__adventure_works__business_entity_contacts] INTO [$(val__qvd_path__das)/raw__adventure_works__business_entity_contacts.qvd] (qvd);
 DROP TABLE [raw__adventure_works__business_entity_contacts];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Contact Types
+    Extracting raw__adventure_works__contact_types
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__contact_types]:
 LOAD
-    Text([contactTypeId]) AS [contact_type_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([contact_type_id]) AS [contact_type_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__contact_types.parquet] (parquet)
 ;
 
-SELECT
-    contactTypeId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__contact_types] WITH 'Lookup table containing the types of business entity contacts.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [contact_type_id] WITH 'Primary key for ContactType records.';
+COMMENT FIELD [name] WITH 'Contact type description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ContactTypes',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__contact_types = '$(val__qvd_path__das)/raw__adventure_works__contact_types.qvd';
-TRACE Stored [raw__adventure_works__contact_types] into [$(val__qvd_path__contact_types)];
-STORE [raw__adventure_works__contact_types] INTO [$(val__qvd_path__contact_types)] (qvd);
+STORE [raw__adventure_works__contact_types] INTO [$(val__qvd_path__das)/raw__adventure_works__contact_types.qvd] (qvd);
 DROP TABLE [raw__adventure_works__contact_types];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Country Regions
+    Extracting raw__adventure_works__country_regions
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__country_regions]:
 LOAD
-    Text([countryRegionCode]) AS [country_region_code], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([country_region_code]) AS [country_region_code],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__country_regions.parquet] (parquet)
 ;
 
-SELECT
-    countryRegionCode,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__country_regions] WITH 'Lookup table containing the ISO standard codes for countries and regions.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [country_region_code] WITH 'ISO standard code for countries and regions.';
+COMMENT FIELD [name] WITH 'Country or region name.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='CountryRegions',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__country_regions = '$(val__qvd_path__das)/raw__adventure_works__country_regions.qvd';
-TRACE Stored [raw__adventure_works__country_regions] into [$(val__qvd_path__country_regions)];
-STORE [raw__adventure_works__country_regions] INTO [$(val__qvd_path__country_regions)] (qvd);
+STORE [raw__adventure_works__country_regions] INTO [$(val__qvd_path__das)/raw__adventure_works__country_regions.qvd] (qvd);
 DROP TABLE [raw__adventure_works__country_regions];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Credit Cards
+    Extracting raw__adventure_works__credit_cards
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__credit_cards]:
 LOAD
-    Text([creditCardId]) AS [credit_card_id], 
-    Text([cardType]) AS [card_type], 
-    Text([cardNumber]) AS [card_number], 
-    Text([expiryMonth]) AS [expiry_month], 
-    Text([expiryYear]) AS [expiry_year], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([credit_card_id]) AS [credit_card_id],
+    Text([card_number]) AS [card_number],
+    Text([card_type]) AS [card_type],
+    Text([exp_month]) AS [exp_month],
+    Text([exp_year]) AS [exp_year],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__credit_cards.parquet] (parquet)
 ;
 
-SELECT
-    creditCardId,
-    cardType,
-    cardNumber,
-    expiryMonth,
-    expiryYear,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__credit_cards] WITH 'Customer credit card information.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [credit_card_id] WITH 'Primary key for CreditCard records.';
+COMMENT FIELD [card_number] WITH 'Credit card number.';
+COMMENT FIELD [card_type] WITH 'Credit card name.';
+COMMENT FIELD [exp_month] WITH 'Credit card expiration month.';
+COMMENT FIELD [exp_year] WITH 'Credit card expiration year.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='CreditCards',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__credit_cards = '$(val__qvd_path__das)/raw__adventure_works__credit_cards.qvd';
-TRACE Stored [raw__adventure_works__credit_cards] into [$(val__qvd_path__credit_cards)];
-STORE [raw__adventure_works__credit_cards] INTO [$(val__qvd_path__credit_cards)] (qvd);
+STORE [raw__adventure_works__credit_cards] INTO [$(val__qvd_path__das)/raw__adventure_works__credit_cards.qvd] (qvd);
 DROP TABLE [raw__adventure_works__credit_cards];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Cultures
+    Extracting raw__adventure_works__cultures
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__cultures]:
 LOAD
-    Text([cultureId]) AS [culture_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([culture_id]) AS [culture_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__cultures.parquet] (parquet)
 ;
 
-SELECT
-    cultureId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__cultures] WITH 'Lookup table containing the languages in which some AdventureWorks data is stored.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [culture_id] WITH 'Primary key for Culture records.';
+COMMENT FIELD [name] WITH 'Culture description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Cultures',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__cultures = '$(val__qvd_path__das)/raw__adventure_works__cultures.qvd';
-TRACE Stored [raw__adventure_works__cultures] into [$(val__qvd_path__cultures)];
-STORE [raw__adventure_works__cultures] INTO [$(val__qvd_path__cultures)] (qvd);
+STORE [raw__adventure_works__cultures] INTO [$(val__qvd_path__das)/raw__adventure_works__cultures.qvd] (qvd);
 DROP TABLE [raw__adventure_works__cultures];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Currencies
+    Extracting raw__adventure_works__currencies
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__currencies]:
 LOAD
-    Text([currencyCode]) AS [currency_code], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([currency_code]) AS [currency_code],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__currencies.parquet] (parquet)
 ;
 
-SELECT
-    currencyCode,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__currencies] WITH 'Lookup table containing standard ISO currencies.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [currency_code] WITH 'The ISO code for the Currency.';
+COMMENT FIELD [name] WITH 'Currency name.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Currencies',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__currencies = '$(val__qvd_path__das)/raw__adventure_works__currencies.qvd';
-TRACE Stored [raw__adventure_works__currencies] into [$(val__qvd_path__currencies)];
-STORE [raw__adventure_works__currencies] INTO [$(val__qvd_path__currencies)] (qvd);
+STORE [raw__adventure_works__currencies] INTO [$(val__qvd_path__das)/raw__adventure_works__currencies.qvd] (qvd);
 DROP TABLE [raw__adventure_works__currencies];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Currency Rates
+    Extracting raw__adventure_works__currency_rates
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__currency_rates]:
 LOAD
-    Text([currencyRateId]) AS [currency_rate_id], 
-    Text([currencyRateDate]) AS [currency_rate_date], 
-    Text([fromCurrencyCode]) AS [from_currency_code], 
-    Text([toCurrencyCode]) AS [to_currency_code], 
-    Text([averageRate]) AS [average_rate], 
-    Text([endOfDayRate]) AS [end_of_day_rate], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([currency_rate_id]) AS [currency_rate_id],
+    Text([average_rate]) AS [average_rate],
+    Text([currency_rate_date]) AS [currency_rate_date],
+    Text([end_of_day_rate]) AS [end_of_day_rate],
+    Text([from_currency_code]) AS [from_currency_code],
+    Text([to_currency_code]) AS [to_currency_code],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__currency_rates.parquet] (parquet)
 ;
 
-SELECT
-    currencyRateId,
-    currencyRateDate,
-    fromCurrencyCode,
-    toCurrencyCode,
-    averageRate,
-    endOfDayRate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__currency_rates] WITH 'Currency exchange rates.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [currency_rate_id] WITH 'Primary key for CurrencyRate records.';
+COMMENT FIELD [average_rate] WITH 'Average exchange rate for the day.';
+COMMENT FIELD [currency_rate_date] WITH 'Date and time the exchange rate was obtained.';
+COMMENT FIELD [end_of_day_rate] WITH 'Final exchange rate for the day.';
+COMMENT FIELD [from_currency_code] WITH 'Exchange rate was converted from this currency code.';
+COMMENT FIELD [to_currency_code] WITH 'Exchange rate was converted to this currency code.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='CurrencyRates',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__currency_rates = '$(val__qvd_path__das)/raw__adventure_works__currency_rates.qvd';
-TRACE Stored [raw__adventure_works__currency_rates] into [$(val__qvd_path__currency_rates)];
-STORE [raw__adventure_works__currency_rates] INTO [$(val__qvd_path__currency_rates)] (qvd);
+STORE [raw__adventure_works__currency_rates] INTO [$(val__qvd_path__das)/raw__adventure_works__currency_rates.qvd] (qvd);
 DROP TABLE [raw__adventure_works__currency_rates];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Customers
+    Extracting raw__adventure_works__customers
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__customers]:
 LOAD
-    Text([customerId]) AS [customer_id], 
-    Text([personId]) AS [person_id], 
-    Text([storeId]) AS [store_id], 
-    Text([territory]) AS [territory], 
-    Text([accountNumber]) AS [account_number], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([customer_id]) AS [customer_id],
+    Text([person_id]) AS [person_id],
+    Text([store_id]) AS [store_id],
+    Text([territory_id]) AS [territory_id],
+    Text([account_number]) AS [account_number],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__customers.parquet] (parquet)
 ;
 
-SELECT
-    customerId,
-    personId,
-    storeId,
-    territory,
-    accountNumber,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__customers] WITH 'Current customer information. Also see the Person and Store tables.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [customer_id] WITH 'Primary key.';
+COMMENT FIELD [person_id] WITH 'Foreign key to Person.BusinessEntityID.';
+COMMENT FIELD [store_id] WITH 'Foreign key to Store.BusinessEntityID.';
+COMMENT FIELD [territory_id] WITH 'ID of the territory in which the customer is located. Foreign key to SalesTerritory.SalesTerritoryID.';
+COMMENT FIELD [account_number] WITH 'Unique number identifying the customer assigned by the accounting system.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Customers',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__customers = '$(val__qvd_path__das)/raw__adventure_works__customers.qvd';
-TRACE Stored [raw__adventure_works__customers] into [$(val__qvd_path__customers)];
-STORE [raw__adventure_works__customers] INTO [$(val__qvd_path__customers)] (qvd);
+STORE [raw__adventure_works__customers] INTO [$(val__qvd_path__das)/raw__adventure_works__customers.qvd] (qvd);
 DROP TABLE [raw__adventure_works__customers];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Departments
+    Extracting raw__adventure_works__departments
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__departments]:
 LOAD
-    Text([departmentId]) AS [department_id], 
-    Text([name]) AS [name], 
-    Text([groupName]) AS [group_name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([department_id]) AS [department_id],
+    Text([group_name]) AS [group_name],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__departments.parquet] (parquet)
 ;
 
-SELECT
-    departmentId,
-    name,
-    groupName,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__departments] WITH 'Lookup table containing the departments within the Adventure Works Cycles company.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [department_id] WITH 'Primary key for Department records.';
+COMMENT FIELD [group_name] WITH 'Name of the group to which the department belongs.';
+COMMENT FIELD [name] WITH 'Name of the department.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Departments',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__departments = '$(val__qvd_path__das)/raw__adventure_works__departments.qvd';
-TRACE Stored [raw__adventure_works__departments] into [$(val__qvd_path__departments)];
-STORE [raw__adventure_works__departments] INTO [$(val__qvd_path__departments)] (qvd);
+STORE [raw__adventure_works__departments] INTO [$(val__qvd_path__das)/raw__adventure_works__departments.qvd] (qvd);
 DROP TABLE [raw__adventure_works__departments];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Email Addresses
+    Extracting raw__adventure_works__email_addresses
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__email_addresses]:
 LOAD
-    Text([personId]) AS [person_id], 
-    Text([emailAddressId]) AS [email_address_id], 
-    Text([emailAddress]) AS [email_address], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([email_address_id]) AS [email_address_id],
+    Text([email]) AS [email],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__email_addresses.parquet] (parquet)
 ;
 
-SELECT
-    personId,
-    emailAddressId,
-    emailAddress,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__email_addresses] WITH 'Where to send a person email.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key. Person associated with this email address. Foreign key to Person.BusinessEntityID.';
+COMMENT FIELD [email_address_id] WITH 'Primary key. ID of this email address.';
+COMMENT FIELD [email] WITH 'E-mail address for the person.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='EmailAddresses',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__email_addresses = '$(val__qvd_path__das)/raw__adventure_works__email_addresses.qvd';
-TRACE Stored [raw__adventure_works__email_addresses] into [$(val__qvd_path__email_addresses)];
-STORE [raw__adventure_works__email_addresses] INTO [$(val__qvd_path__email_addresses)] (qvd);
+STORE [raw__adventure_works__email_addresses] INTO [$(val__qvd_path__das)/raw__adventure_works__email_addresses.qvd] (qvd);
 DROP TABLE [raw__adventure_works__email_addresses];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Employees
+    Extracting raw__adventure_works__employee_department_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
+
+[raw__adventure_works__employee_department_histories]:
+LOAD
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([department_id]) AS [department_id],
+    Text([shift_id]) AS [shift_id],
+    Text([end_date]) AS [end_date],
+    Text([start_date]) AS [start_date],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__employee_department_histories.parquet] (parquet)
+;
+
+COMMENT TABLE [raw__adventure_works__employee_department_histories] WITH 'Employee department transfers.';
+
+COMMENT FIELD [business_entity_id] WITH 'Employee identification number. Foreign key to Employee.BusinessEntityID.';
+COMMENT FIELD [department_id] WITH 'Department in which the employee worked including currently. Foreign key to Department.DepartmentID.';
+COMMENT FIELD [shift_id] WITH 'Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID.';
+COMMENT FIELD [end_date] WITH 'Date the employee left the department. NULL = Current department.';
+COMMENT FIELD [start_date] WITH 'Date the employee started work in the department.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
+
+STORE [raw__adventure_works__employee_department_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__employee_department_histories.qvd] (qvd);
+DROP TABLE [raw__adventure_works__employee_department_histories];
+
+Trace
+-------------------------------------------------------------------
+    Extracting raw__adventure_works__employee_pay_histories
+-------------------------------------------------------------------
+;
+
+[raw__adventure_works__employee_pay_histories]:
+LOAD
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([pay_frequency]) AS [pay_frequency],
+    Text([rate]) AS [rate],
+    Text([rate_change_date]) AS [rate_change_date],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__employee_pay_histories.parquet] (parquet)
+;
+
+COMMENT TABLE [raw__adventure_works__employee_pay_histories] WITH 'Employee pay history.';
+
+COMMENT FIELD [business_entity_id] WITH 'Employee identification number. Foreign key to Employee.BusinessEntityID.';
+COMMENT FIELD [pay_frequency] WITH '1 = Salary received monthly, 2 = Salary received biweekly.';
+COMMENT FIELD [rate] WITH 'Salary hourly rate.';
+COMMENT FIELD [rate_change_date] WITH 'Date the change in pay is effective.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
+
+STORE [raw__adventure_works__employee_pay_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__employee_pay_histories.qvd] (qvd);
+DROP TABLE [raw__adventure_works__employee_pay_histories];
+
+Trace
+-------------------------------------------------------------------
+    Extracting raw__adventure_works__employees
+-------------------------------------------------------------------
+;
 
 [raw__adventure_works__employees]:
 LOAD
-    Text([employeeId]) AS [employee_id], 
-    Text([nationalIdnumber]) AS [national_idnumber], 
-    Text([loginId]) AS [login_id], 
-    Text([organizationLevel]) AS [organization_level], 
-    Text([jobTitle]) AS [job_title], 
-    Text([birthDate]) AS [birth_date], 
-    Text([maritalStatus]) AS [marital_status], 
-    Text([gender]) AS [gender], 
-    Text([hireDate]) AS [hire_date], 
-    Text([isSalaried]) AS [is_salaried], 
-    Text([vacationHours]) AS [vacation_hours], 
-    Text([sickLeaveHours]) AS [sick_leave_hours], 
-    Text([isActive]) AS [is_active], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([login_id]) AS [login_id],
+    Text([birth_date]) AS [birth_date],
+    Text([current_flag]) AS [current_flag],
+    Text([gender]) AS [gender],
+    Text([hire_date]) AS [hire_date],
+    Text([job_title]) AS [job_title],
+    Text([marital_status]) AS [marital_status],
+    Text([national_idnumber]) AS [national_idnumber],
+    Text([organization_level]) AS [organization_level],
+    Text([salaried_flag]) AS [salaried_flag],
+    Text([sick_leave_hours]) AS [sick_leave_hours],
+    Text([vacation_hours]) AS [vacation_hours],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__employees.parquet] (parquet)
 ;
 
-SELECT
-    employeeId,
-    nationalIdnumber,
-    loginId,
-    organizationLevel,
-    jobTitle,
-    birthDate,
-    maritalStatus,
-    gender,
-    hireDate,
-    isSalaried,
-    vacationHours,
-    sickLeaveHours,
-    isActive,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__employees] WITH 'Employee information.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key for Employee records. Foreign key to BusinessEntity.BusinessEntityID.';
+COMMENT FIELD [login_id] WITH 'Network login.';
+COMMENT FIELD [birth_date] WITH 'Date of birth.';
+COMMENT FIELD [current_flag] WITH '0 = Inactive, 1 = Active.';
+COMMENT FIELD [gender] WITH 'M = Male, F = Female.';
+COMMENT FIELD [hire_date] WITH 'Employee hired on this date.';
+COMMENT FIELD [job_title] WITH 'Work title such as Buyer or Sales Representative.';
+COMMENT FIELD [marital_status] WITH 'M = Married, S = Single.';
+COMMENT FIELD [national_idnumber] WITH 'Unique national identification number such as a social security number.';
+COMMENT FIELD [organization_level] WITH 'The depth of the employee in the corporate hierarchy.';
+COMMENT FIELD [salaried_flag] WITH 'Job classification. 0 = Hourly, not exempt from collective bargaining. 1 = Salaried, exempt from collective bargaining.';
+COMMENT FIELD [sick_leave_hours] WITH 'Number of available sick leave hours.';
+COMMENT FIELD [vacation_hours] WITH 'Number of available vacation hours.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Employees',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__employees = '$(val__qvd_path__das)/raw__adventure_works__employees.qvd';
-TRACE Stored [raw__adventure_works__employees] into [$(val__qvd_path__employees)];
-STORE [raw__adventure_works__employees] INTO [$(val__qvd_path__employees)] (qvd);
+STORE [raw__adventure_works__employees] INTO [$(val__qvd_path__das)/raw__adventure_works__employees.qvd] (qvd);
 DROP TABLE [raw__adventure_works__employees];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Illustrations
+    Extracting raw__adventure_works__illustrations
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__illustrations]:
 LOAD
-    Text([illustrationId]) AS [illustration_id], 
-    Text([diagram]) AS [diagram], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([illustration_id]) AS [illustration_id],
+    Text([diagram]) AS [diagram],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__illustrations.parquet] (parquet)
 ;
 
-SELECT
-    illustrationId,
-    diagram,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__illustrations] WITH 'Bicycle assembly diagrams.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [illustration_id] WITH 'Primary key for Illustration records.';
+COMMENT FIELD [diagram] WITH 'Illustrations used in manufacturing instructions. Stored as XML.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Illustrations',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__illustrations = '$(val__qvd_path__das)/raw__adventure_works__illustrations.qvd';
-TRACE Stored [raw__adventure_works__illustrations] into [$(val__qvd_path__illustrations)];
-STORE [raw__adventure_works__illustrations] INTO [$(val__qvd_path__illustrations)] (qvd);
+STORE [raw__adventure_works__illustrations] INTO [$(val__qvd_path__das)/raw__adventure_works__illustrations.qvd] (qvd);
 DROP TABLE [raw__adventure_works__illustrations];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Job Candidates
+    Extracting raw__adventure_works__job_candidates
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__job_candidates]:
 LOAD
-    Text([jobCandidateId]) AS [job_candidate_id], 
-    Text([employeeId]) AS [employee_id], 
-    Text([resume]) AS [resume], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([job_candidate_id]) AS [job_candidate_id],
+    Text([resume]) AS [resume],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__job_candidates.parquet] (parquet)
 ;
 
-SELECT
-    jobCandidateId,
-    employeeId,
-    resume,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__job_candidates] WITH 'Résumés submitted to Human Resources by job applicants.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Employee identification number if applicant was hired. Foreign key to Employee.BusinessEntityID.';
+COMMENT FIELD [job_candidate_id] WITH 'Primary key for JobCandidate records.';
+COMMENT FIELD [resume] WITH 'Résumé in XML format.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='JobCandidates',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__job_candidates = '$(val__qvd_path__das)/raw__adventure_works__job_candidates.qvd';
-TRACE Stored [raw__adventure_works__job_candidates] into [$(val__qvd_path__job_candidates)];
-STORE [raw__adventure_works__job_candidates] INTO [$(val__qvd_path__job_candidates)] (qvd);
+STORE [raw__adventure_works__job_candidates] INTO [$(val__qvd_path__das)/raw__adventure_works__job_candidates.qvd] (qvd);
 DROP TABLE [raw__adventure_works__job_candidates];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Locations
+    Extracting raw__adventure_works__locations
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__locations]:
 LOAD
-    Text([locationId]) AS [location_id], 
-    Text([name]) AS [name], 
-    Text([costRate]) AS [cost_rate], 
-    Text([availability]) AS [availability], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([location_id]) AS [location_id],
+    Text([availability]) AS [availability],
+    Text([cost_rate]) AS [cost_rate],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__locations.parquet] (parquet)
 ;
 
-SELECT
-    locationId,
-    name,
-    costRate,
-    availability,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__locations] WITH 'Product inventory and manufacturing locations.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [location_id] WITH 'Primary key for Location records.';
+COMMENT FIELD [availability] WITH 'Work capacity (in hours) of the manufacturing location.';
+COMMENT FIELD [cost_rate] WITH 'Standard hourly cost of the manufacturing location.';
+COMMENT FIELD [name] WITH 'Location description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Locations',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__locations = '$(val__qvd_path__das)/raw__adventure_works__locations.qvd';
-TRACE Stored [raw__adventure_works__locations] into [$(val__qvd_path__locations)];
-STORE [raw__adventure_works__locations] INTO [$(val__qvd_path__locations)] (qvd);
+STORE [raw__adventure_works__locations] INTO [$(val__qvd_path__das)/raw__adventure_works__locations.qvd] (qvd);
 DROP TABLE [raw__adventure_works__locations];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Person Phones
+    Extracting raw__adventure_works__person_phones
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__person_phones]:
 LOAD
-    Text([personId]) AS [person_id], 
-    Text([personType]) AS [person_type], 
-    Text([nameStyle]) AS [name_style], 
-    Text([title]) AS [title], 
-    Text([firstName]) AS [first_name], 
-    Text([middleName]) AS [middle_name], 
-    Text([lastName]) AS [last_name], 
-    Text([suffix]) AS [suffix], 
-    Text([emailPromotion]) AS [email_promotion], 
-    Text([additionalContactInfo]) AS [additional_contact_info], 
-    Text([demographics]) AS [demographics], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([phone_number_type_id]) AS [phone_number_type_id],
+    Text([phone_number]) AS [phone_number],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__person_phones.parquet] (parquet)
 ;
 
-SELECT
-    personId,
-    personType,
-    nameStyle,
-    title,
-    firstName,
-    middleName,
-    lastName,
-    suffix,
-    emailPromotion,
-    additionalContactInfo,
-    demographics,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__person_phones] WITH 'Telephone number and type of a person.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Business entity identification number. Foreign key to Person.BusinessEntityID.';
+COMMENT FIELD [phone_number_type_id] WITH 'Kind of phone number. Foreign key to PhoneNumberType.PhoneNumberTypeID.';
+COMMENT FIELD [phone_number] WITH 'Telephone number identification number.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='PersonPhones',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__person_phones = '$(val__qvd_path__das)/raw__adventure_works__person_phones.qvd';
-TRACE Stored [raw__adventure_works__person_phones] into [$(val__qvd_path__person_phones)];
-STORE [raw__adventure_works__person_phones] INTO [$(val__qvd_path__person_phones)] (qvd);
+STORE [raw__adventure_works__person_phones] INTO [$(val__qvd_path__das)/raw__adventure_works__person_phones.qvd] (qvd);
 DROP TABLE [raw__adventure_works__person_phones];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Persons
+    Extracting raw__adventure_works__persons
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__persons]:
 LOAD
-    Text([businessEntityId]) AS [business_entity_id], 
-    Text([personId]) AS [person_id], 
-    Text([contactType]) AS [contact_type], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([additional_contact_info]) AS [additional_contact_info],
+    Text([demographics]) AS [demographics],
+    Text([email_promotion]) AS [email_promotion],
+    Text([first_name]) AS [first_name],
+    Text([last_name]) AS [last_name],
+    Text([middle_name]) AS [middle_name],
+    Text([name_style]) AS [name_style],
+    Text([person_type]) AS [person_type],
+    Text([suffix]) AS [suffix],
+    Text([title]) AS [title],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__persons.parquet] (parquet)
 ;
 
-SELECT
-    businessEntityId,
-    personId,
-    contactType,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__persons] WITH 'Human beings involved with AdventureWorks: employees, customer contacts, and vendor contacts.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key for Person records.';
+COMMENT FIELD [additional_contact_info] WITH 'Additional contact information about the person stored in xml format.';
+COMMENT FIELD [demographics] WITH 'Personal information such as hobbies, and income collected from online shoppers. Used for sales analysis.';
+COMMENT FIELD [email_promotion] WITH '0 = Contact does not wish to receive e-mail promotions, 1 = Contact does wish to receive e-mail promotions from AdventureWorks, 2 = Contact does wish to receive e-mail promotions from AdventureWorks and selected partners.';
+COMMENT FIELD [first_name] WITH 'First name of the person.';
+COMMENT FIELD [last_name] WITH 'Last name of the person.';
+COMMENT FIELD [middle_name] WITH 'Middle name or middle initial of the person.';
+COMMENT FIELD [name_style] WITH '0 = The data in FirstName and LastName are stored in western style (first name, last name) order. 1 = Eastern style (last name, first name) order.';
+COMMENT FIELD [person_type] WITH 'Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact.';
+COMMENT FIELD [suffix] WITH 'Surname suffix. For example, Sr. or Jr.';
+COMMENT FIELD [title] WITH 'A courtesy title. For example, Mr. or Ms.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Persons',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__persons = '$(val__qvd_path__das)/raw__adventure_works__persons.qvd';
-TRACE Stored [raw__adventure_works__persons] into [$(val__qvd_path__persons)];
-STORE [raw__adventure_works__persons] INTO [$(val__qvd_path__persons)] (qvd);
+STORE [raw__adventure_works__persons] INTO [$(val__qvd_path__das)/raw__adventure_works__persons.qvd] (qvd);
 DROP TABLE [raw__adventure_works__persons];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Phone Number Types
+    Extracting raw__adventure_works__phone_number_types
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__phone_number_types]:
 LOAD
-    Text([phoneNumberTypeId]) AS [phone_number_type_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([phone_number_type_id]) AS [phone_number_type_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__phone_number_types.parquet] (parquet)
 ;
 
-SELECT
-    phoneNumberTypeId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__phone_number_types] WITH 'Type of phone number of a person.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [phone_number_type_id] WITH 'Primary key for telephone number type records.';
+COMMENT FIELD [name] WITH 'Name of the telephone number type.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='PhoneNumberTypes',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__phone_number_types = '$(val__qvd_path__das)/raw__adventure_works__phone_number_types.qvd';
-TRACE Stored [raw__adventure_works__phone_number_types] into [$(val__qvd_path__phone_number_types)];
-STORE [raw__adventure_works__phone_number_types] INTO [$(val__qvd_path__phone_number_types)] (qvd);
+STORE [raw__adventure_works__phone_number_types] INTO [$(val__qvd_path__das)/raw__adventure_works__phone_number_types.qvd] (qvd);
 DROP TABLE [raw__adventure_works__phone_number_types];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Categories
+    Extracting raw__adventure_works__product_categories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_categories]:
 LOAD
-    Text([productCategoryId]) AS [product_category_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_category_id]) AS [product_category_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_categories.parquet] (parquet)
 ;
 
-SELECT
-    productCategoryId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_categories] WITH 'High-level product categorization.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_category_id] WITH 'Primary key for ProductCategory records.';
+COMMENT FIELD [name] WITH 'Category description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductCategories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_categories = '$(val__qvd_path__das)/raw__adventure_works__product_categories.qvd';
-TRACE Stored [raw__adventure_works__product_categories] into [$(val__qvd_path__product_categories)];
-STORE [raw__adventure_works__product_categories] INTO [$(val__qvd_path__product_categories)] (qvd);
+STORE [raw__adventure_works__product_categories] INTO [$(val__qvd_path__das)/raw__adventure_works__product_categories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_categories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Cost Histories
+    Extracting raw__adventure_works__product_cost_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_cost_histories]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([startDate]) AS [start_date], 
-    Text([endDate]) AS [end_date], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([end_date]) AS [end_date],
+    Text([standard_cost]) AS [standard_cost],
+    Text([start_date]) AS [start_date],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_cost_histories.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    startDate,
-    endDate,
-    standardCost,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_cost_histories] WITH 'Changes in the cost of a product over time.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [end_date] WITH 'Product cost end date.';
+COMMENT FIELD [standard_cost] WITH 'Standard cost of the product.';
+COMMENT FIELD [start_date] WITH 'Product cost start date.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductCostHistories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_cost_histories = '$(val__qvd_path__das)/raw__adventure_works__product_cost_histories.qvd';
-TRACE Stored [raw__adventure_works__product_cost_histories] into [$(val__qvd_path__product_cost_histories)];
-STORE [raw__adventure_works__product_cost_histories] INTO [$(val__qvd_path__product_cost_histories)] (qvd);
+STORE [raw__adventure_works__product_cost_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__product_cost_histories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_cost_histories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Descriptions
+    Extracting raw__adventure_works__product_descriptions
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_descriptions]:
 LOAD
-    Text([productDescriptionId]) AS [product_description_id], 
-    Text([description]) AS [description], 
-    Text([cultureCode]) AS [culture_code], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_description_id]) AS [product_description_id],
+    Text([description]) AS [description],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_descriptions.parquet] (parquet)
 ;
 
-SELECT
-    productDescriptionId,
-    description,
-    cultureCode,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_descriptions] WITH 'Product descriptions in several languages.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_description_id] WITH 'Primary key for ProductDescription records.';
+COMMENT FIELD [description] WITH 'Description of the product.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductDescriptions',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_descriptions = '$(val__qvd_path__das)/raw__adventure_works__product_descriptions.qvd';
-TRACE Stored [raw__adventure_works__product_descriptions] into [$(val__qvd_path__product_descriptions)];
-STORE [raw__adventure_works__product_descriptions] INTO [$(val__qvd_path__product_descriptions)] (qvd);
+STORE [raw__adventure_works__product_descriptions] INTO [$(val__qvd_path__das)/raw__adventure_works__product_descriptions.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_descriptions];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Inventories
+    Extracting raw__adventure_works__product_inventories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_inventories]:
 LOAD
-    Text([locationId]) AS [location_id], 
-    Text([name]) AS [name], 
-    Text([costRate]) AS [cost_rate], 
-    Text([availability]) AS [availability], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([location_id]) AS [location_id],
+    Text([product_id]) AS [product_id],
+    Text([bin]) AS [bin],
+    Text([quantity]) AS [quantity],
+    Text([shelf]) AS [shelf],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_inventories.parquet] (parquet)
 ;
 
-SELECT
-    locationId,
-    name,
-    costRate,
-    availability,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_inventories] WITH 'Product inventory information.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [location_id] WITH 'Inventory location identification number. Foreign key to Location.LocationID.';
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [bin] WITH 'Storage container on a shelf in an inventory location.';
+COMMENT FIELD [quantity] WITH 'Quantity of products in the inventory location.';
+COMMENT FIELD [shelf] WITH 'Storage compartment within an inventory location.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductInventories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_inventories = '$(val__qvd_path__das)/raw__adventure_works__product_inventories.qvd';
-TRACE Stored [raw__adventure_works__product_inventories] into [$(val__qvd_path__product_inventories)];
-STORE [raw__adventure_works__product_inventories] INTO [$(val__qvd_path__product_inventories)] (qvd);
+STORE [raw__adventure_works__product_inventories] INTO [$(val__qvd_path__das)/raw__adventure_works__product_inventories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_inventories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product List Price Histories
+    Extracting raw__adventure_works__product_list_price_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_list_price_histories]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([end_date]) AS [end_date],
+    Text([list_price]) AS [list_price],
+    Text([start_date]) AS [start_date],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_list_price_histories.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_list_price_histories] WITH 'Changes in the list price of a product over time.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [end_date] WITH 'List price end date.';
+COMMENT FIELD [list_price] WITH 'Product list price.';
+COMMENT FIELD [start_date] WITH 'List price start date.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductListPriceHistories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_list_price_histories = '$(val__qvd_path__das)/raw__adventure_works__product_list_price_histories.qvd';
-TRACE Stored [raw__adventure_works__product_list_price_histories] into [$(val__qvd_path__product_list_price_histories)];
-STORE [raw__adventure_works__product_list_price_histories] INTO [$(val__qvd_path__product_list_price_histories)] (qvd);
+STORE [raw__adventure_works__product_list_price_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__product_list_price_histories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_list_price_histories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Model Illustrations
+    Extracting raw__adventure_works__product_model_illustrations
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_model_illustrations]:
 LOAD
-    Text([illustrationId]) AS [illustration_id], 
-    Text([diagram]) AS [diagram], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([illustration_id]) AS [illustration_id],
+    Text([product_model_id]) AS [product_model_id],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_model_illustrations.parquet] (parquet)
 ;
 
-SELECT
-    illustrationId,
-    diagram,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_model_illustrations] WITH 'Cross-reference table mapping product models and illustrations.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [illustration_id] WITH 'Primary key. Foreign key to Illustration.IllustrationID.';
+COMMENT FIELD [product_model_id] WITH 'Primary key. Foreign key to ProductModel.ProductModelID.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductModelIllustrations',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_model_illustrations = '$(val__qvd_path__das)/raw__adventure_works__product_model_illustrations.qvd';
-TRACE Stored [raw__adventure_works__product_model_illustrations] into [$(val__qvd_path__product_model_illustrations)];
-STORE [raw__adventure_works__product_model_illustrations] INTO [$(val__qvd_path__product_model_illustrations)] (qvd);
+STORE [raw__adventure_works__product_model_illustrations] INTO [$(val__qvd_path__das)/raw__adventure_works__product_model_illustrations.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_model_illustrations];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Models
+    Extracting raw__adventure_works__product_models
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_models]:
 LOAD
-    Text([productModelId]) AS [product_model_id], 
-    Text([name]) AS [name], 
-    Text([catalogDescription]) AS [catalog_description], 
-    Text([instructions]) AS [instructions], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_model_id]) AS [product_model_id],
+    Text([catalog_description]) AS [catalog_description],
+    Text([instructions]) AS [instructions],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_models.parquet] (parquet)
 ;
 
-SELECT
-    productModelId,
-    name,
-    catalogDescription,
-    instructions,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_models] WITH 'Product model classification.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_model_id] WITH 'Primary key for ProductModel records.';
+COMMENT FIELD [catalog_description] WITH 'Detailed product catalog information in xml format.';
+COMMENT FIELD [instructions] WITH 'Manufacturing instructions in xml format.';
+COMMENT FIELD [name] WITH 'Product model description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductModels',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_models = '$(val__qvd_path__das)/raw__adventure_works__product_models.qvd';
-TRACE Stored [raw__adventure_works__product_models] into [$(val__qvd_path__product_models)];
-STORE [raw__adventure_works__product_models] INTO [$(val__qvd_path__product_models)] (qvd);
+STORE [raw__adventure_works__product_models] INTO [$(val__qvd_path__das)/raw__adventure_works__product_models.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_models];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Photos
+    Extracting raw__adventure_works__product_photos
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_photos]:
 LOAD
-    Text([productPhotoId]) AS [product_photo_id], 
-    Text([thumbNailPhoto]) AS [thumb_nail_photo], 
-    Text([thumbnailPhotoFileName]) AS [thumbnail_photo_file_name], 
-    Text([largePhoto]) AS [large_photo], 
-    Text([largePhotoFileName]) AS [large_photo_file_name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_photo_id]) AS [product_photo_id],
+    Text([large_photo]) AS [large_photo],
+    Text([large_photo_file_name]) AS [large_photo_file_name],
+    Text([thumb_nail_photo]) AS [thumb_nail_photo],
+    Text([thumbnail_photo_file_name]) AS [thumbnail_photo_file_name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_photos.parquet] (parquet)
 ;
 
-SELECT
-    productPhotoId,
-    thumbNailPhoto,
-    thumbnailPhotoFileName,
-    largePhoto,
-    largePhotoFileName,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_photos] WITH 'Product images.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_photo_id] WITH 'Primary key for ProductPhoto records.';
+COMMENT FIELD [large_photo] WITH 'Large image of the product.';
+COMMENT FIELD [large_photo_file_name] WITH 'Large image file name.';
+COMMENT FIELD [thumb_nail_photo] WITH 'Small image of the product.';
+COMMENT FIELD [thumbnail_photo_file_name] WITH 'Small image file name.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductPhotos',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_photos = '$(val__qvd_path__das)/raw__adventure_works__product_photos.qvd';
-TRACE Stored [raw__adventure_works__product_photos] into [$(val__qvd_path__product_photos)];
-STORE [raw__adventure_works__product_photos] INTO [$(val__qvd_path__product_photos)] (qvd);
+STORE [raw__adventure_works__product_photos] INTO [$(val__qvd_path__das)/raw__adventure_works__product_photos.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_photos];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Reviews
+    Extracting raw__adventure_works__product_reviews
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_reviews]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([product_review_id]) AS [product_review_id],
+    Text([comments]) AS [comments],
+    Text([email_address]) AS [email_address],
+    Text([rating]) AS [rating],
+    Text([review_date]) AS [review_date],
+    Text([reviewer_name]) AS [reviewer_name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_reviews.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_reviews] WITH 'Customer reviews of products they have purchased.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [product_review_id] WITH 'Primary key for ProductReview records.';
+COMMENT FIELD [comments] WITH 'Reviewer's comments.';
+COMMENT FIELD [email_address] WITH 'Reviewer's e-mail address.';
+COMMENT FIELD [rating] WITH 'Product rating given by the reviewer. Scale is 1 to 5 with 5 as the highest rating.';
+COMMENT FIELD [review_date] WITH 'Date review was submitted.';
+COMMENT FIELD [reviewer_name] WITH 'Name of the reviewer.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductReviews',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_reviews = '$(val__qvd_path__das)/raw__adventure_works__product_reviews.qvd';
-TRACE Stored [raw__adventure_works__product_reviews] into [$(val__qvd_path__product_reviews)];
-STORE [raw__adventure_works__product_reviews] INTO [$(val__qvd_path__product_reviews)] (qvd);
+STORE [raw__adventure_works__product_reviews] INTO [$(val__qvd_path__das)/raw__adventure_works__product_reviews.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_reviews];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Products
+    Extracting raw__adventure_works__products
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__products]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([product_model_id]) AS [product_model_id],
+    Text([product_subcategory_id]) AS [product_subcategory_id],
+    Text([class]) AS [class],
+    Text([color]) AS [color],
+    Text([days_to_manufacture]) AS [days_to_manufacture],
+    Text([finished_goods_flag]) AS [finished_goods_flag],
+    Text([list_price]) AS [list_price],
+    Text([make_flag]) AS [make_flag],
+    Text([name]) AS [name],
+    Text([product_line]) AS [product_line],
+    Text([product_number]) AS [product_number],
+    Text([reorder_point]) AS [reorder_point],
+    Text([safety_stock_level]) AS [safety_stock_level],
+    Text([sell_end_date]) AS [sell_end_date],
+    Text([sell_start_date]) AS [sell_start_date],
+    Text([size]) AS [size],
+    Text([size_unit_measure_code]) AS [size_unit_measure_code],
+    Text([standard_cost]) AS [standard_cost],
+    Text([style]) AS [style],
+    Text([weight]) AS [weight],
+    Text([weight_unit_measure_code]) AS [weight_unit_measure_code],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__products.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__products] WITH 'Products sold or used in the manufacturing of sold products.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Primary key for Product records.';
+COMMENT FIELD [product_model_id] WITH 'Product is a member of this product model. Foreign key to ProductModel.ProductModelID.';
+COMMENT FIELD [product_subcategory_id] WITH 'Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID.';
+COMMENT FIELD [class] WITH 'H = High, M = Medium, L = Low.';
+COMMENT FIELD [color] WITH 'Product color.';
+COMMENT FIELD [days_to_manufacture] WITH 'Number of days required to manufacture the product.';
+COMMENT FIELD [finished_goods_flag] WITH '0 = Product is not a salable item. 1 = Product is salable.';
+COMMENT FIELD [list_price] WITH 'Selling price.';
+COMMENT FIELD [make_flag] WITH '0 = Product is purchased, 1 = Product is manufactured in-house.';
+COMMENT FIELD [name] WITH 'Name of the product.';
+COMMENT FIELD [product_line] WITH 'R = Road, M = Mountain, T = Touring, S = Standard.';
+COMMENT FIELD [product_number] WITH 'Unique product identification number.';
+COMMENT FIELD [reorder_point] WITH 'Inventory level that triggers a purchase order or work order.';
+COMMENT FIELD [safety_stock_level] WITH 'Minimum inventory quantity.';
+COMMENT FIELD [sell_end_date] WITH 'Date the product was no longer available for sale.';
+COMMENT FIELD [sell_start_date] WITH 'Date the product was available for sale.';
+COMMENT FIELD [size] WITH 'Product size.';
+COMMENT FIELD [size_unit_measure_code] WITH 'Unit of measure for Size column.';
+COMMENT FIELD [standard_cost] WITH 'Standard cost of the product.';
+COMMENT FIELD [style] WITH 'W = Womens, M = Mens, U = Universal.';
+COMMENT FIELD [weight] WITH 'Product weight.';
+COMMENT FIELD [weight_unit_measure_code] WITH 'Unit of measure for Weight column.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Products',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__products = '$(val__qvd_path__das)/raw__adventure_works__products.qvd';
-TRACE Stored [raw__adventure_works__products] into [$(val__qvd_path__products)];
-STORE [raw__adventure_works__products] INTO [$(val__qvd_path__products)] (qvd);
+STORE [raw__adventure_works__products] INTO [$(val__qvd_path__das)/raw__adventure_works__products.qvd] (qvd);
 DROP TABLE [raw__adventure_works__products];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Subcategories
+    Extracting raw__adventure_works__product_subcategories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_subcategories]:
 LOAD
-    Text([productCategoryId]) AS [product_category_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_category_id]) AS [product_category_id],
+    Text([product_subcategory_id]) AS [product_subcategory_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_subcategories.parquet] (parquet)
 ;
 
-SELECT
-    productCategoryId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_subcategories] WITH 'Product subcategories. See ProductCategory table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_category_id] WITH 'Product category identification number. Foreign key to ProductCategory.ProductCategoryID.';
+COMMENT FIELD [product_subcategory_id] WITH 'Primary key for ProductSubcategory records.';
+COMMENT FIELD [name] WITH 'Subcategory description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductSubcategories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_subcategories = '$(val__qvd_path__das)/raw__adventure_works__product_subcategories.qvd';
-TRACE Stored [raw__adventure_works__product_subcategories] into [$(val__qvd_path__product_subcategories)];
-STORE [raw__adventure_works__product_subcategories] INTO [$(val__qvd_path__product_subcategories)] (qvd);
+STORE [raw__adventure_works__product_subcategories] INTO [$(val__qvd_path__das)/raw__adventure_works__product_subcategories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_subcategories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Product Vendors
+    Extracting raw__adventure_works__product_vendors
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__product_vendors]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([vendorId]) AS [vendor_id], 
-    Text([averageLeadTime]) AS [average_lead_time], 
-    Text([standardPrice]) AS [standard_price], 
-    Text([lastReceiptCost]) AS [last_receipt_cost], 
-    Text([lastReceiptDate]) AS [last_receipt_date], 
-    Text([minOrderQuantity]) AS [min_order_quantity], 
-    Text([maxOrderQuantity]) AS [max_order_quantity], 
-    Text([onOrderQuantity]) AS [on_order_quantity], 
-    Text([measurementUnit]) AS [measurement_unit], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([product_id]) AS [product_id],
+    Text([average_lead_time]) AS [average_lead_time],
+    Text([last_receipt_cost]) AS [last_receipt_cost],
+    Text([last_receipt_date]) AS [last_receipt_date],
+    Text([max_order_qty]) AS [max_order_qty],
+    Text([min_order_qty]) AS [min_order_qty],
+    Text([on_order_qty]) AS [on_order_qty],
+    Text([standard_price]) AS [standard_price],
+    Text([unit_measure_code]) AS [unit_measure_code],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__product_vendors.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    vendorId,
-    averageLeadTime,
-    standardPrice,
-    lastReceiptCost,
-    lastReceiptDate,
-    minOrderQuantity,
-    maxOrderQuantity,
-    onOrderQuantity,
-    measurementUnit,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__product_vendors] WITH 'Cross-reference table mapping vendors with the products they supply.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key. Foreign key to Vendor.BusinessEntityID.';
+COMMENT FIELD [product_id] WITH 'Primary key. Foreign key to Product.ProductID.';
+COMMENT FIELD [average_lead_time] WITH 'The average span of time (in days) between placing an order with the vendor and receiving the purchased product.';
+COMMENT FIELD [last_receipt_cost] WITH 'The selling price when last purchased.';
+COMMENT FIELD [last_receipt_date] WITH 'Date the product was last received by the vendor.';
+COMMENT FIELD [max_order_qty] WITH 'The maximum quantity that should be ordered.';
+COMMENT FIELD [min_order_qty] WITH 'The minimum quantity that should be ordered.';
+COMMENT FIELD [on_order_qty] WITH 'The quantity currently on order.';
+COMMENT FIELD [standard_price] WITH 'The vendor's usual selling price.';
+COMMENT FIELD [unit_measure_code] WITH 'The product's unit of measure.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ProductVendors',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__product_vendors = '$(val__qvd_path__das)/raw__adventure_works__product_vendors.qvd';
-TRACE Stored [raw__adventure_works__product_vendors] into [$(val__qvd_path__product_vendors)];
-STORE [raw__adventure_works__product_vendors] INTO [$(val__qvd_path__product_vendors)] (qvd);
+STORE [raw__adventure_works__product_vendors] INTO [$(val__qvd_path__das)/raw__adventure_works__product_vendors.qvd] (qvd);
 DROP TABLE [raw__adventure_works__product_vendors];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Purchase Order Details
+    Extracting raw__adventure_works__purchase_order_details
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__purchase_order_details]:
 LOAD
-    Text([purchaseOrderId]) AS [purchase_order_id], 
-    Text([purchaseOrderDetailId]) AS [purchase_order_detail_id], 
-    Text([dueDate]) AS [due_date], 
-    Text([orderQuantity]) AS [order_quantity], 
-    Text([productId]) AS [product_id], 
-    Text([unitPrice]) AS [unit_price], 
-    Text([lineTotal]) AS [line_total], 
-    Text([receivedQuantity]) AS [received_quantity], 
-    Text([rejectedQuantity]) AS [rejected_quantity], 
-    Text([stockedQuantity]) AS [stocked_quantity], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([purchase_order_detail_id]) AS [purchase_order_detail_id],
+    Text([purchase_order_id]) AS [purchase_order_id],
+    Text([due_date]) AS [due_date],
+    Text([line_total]) AS [line_total],
+    Text([order_qty]) AS [order_qty],
+    Text([received_qty]) AS [received_qty],
+    Text([rejected_qty]) AS [rejected_qty],
+    Text([stocked_qty]) AS [stocked_qty],
+    Text([unit_price]) AS [unit_price],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__purchase_order_details.parquet] (parquet)
 ;
 
-SELECT
-    purchaseOrderId,
-    purchaseOrderDetailId,
-    dueDate,
-    orderQuantity,
-    productId,
-    unitPrice,
-    lineTotal,
-    receivedQuantity,
-    rejectedQuantity,
-    stockedQuantity,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__purchase_order_details] WITH 'Individual products associated with a specific purchase order. See PurchaseOrderHeader.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [purchase_order_detail_id] WITH 'Primary key. One line number per purchased product.';
+COMMENT FIELD [purchase_order_id] WITH 'Primary key. Foreign key to PurchaseOrderHeader.PurchaseOrderID.';
+COMMENT FIELD [due_date] WITH 'Date the product is expected to be received.';
+COMMENT FIELD [line_total] WITH 'Per product subtotal. Computed as OrderQty * UnitPrice.';
+COMMENT FIELD [order_qty] WITH 'Quantity ordered.';
+COMMENT FIELD [received_qty] WITH 'Quantity actually received from the vendor.';
+COMMENT FIELD [rejected_qty] WITH 'Quantity rejected during inspection.';
+COMMENT FIELD [stocked_qty] WITH 'Quantity accepted into inventory. Computed as ReceivedQty - RejectedQty.';
+COMMENT FIELD [unit_price] WITH 'Vendor's selling price of a single product.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='PurchaseOrderDetails',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__purchase_order_details = '$(val__qvd_path__das)/raw__adventure_works__purchase_order_details.qvd';
-TRACE Stored [raw__adventure_works__purchase_order_details] into [$(val__qvd_path__purchase_order_details)];
-STORE [raw__adventure_works__purchase_order_details] INTO [$(val__qvd_path__purchase_order_details)] (qvd);
+STORE [raw__adventure_works__purchase_order_details] INTO [$(val__qvd_path__das)/raw__adventure_works__purchase_order_details.qvd] (qvd);
 DROP TABLE [raw__adventure_works__purchase_order_details];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Purchase Order Headers
+    Extracting raw__adventure_works__purchase_order_headers
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__purchase_order_headers]:
 LOAD
-    Text([purchaseOrderId]) AS [purchase_order_id], 
-    Text([revisionNumber]) AS [revision_number], 
-    Text([status]) AS [status], 
-    Text([employeeId]) AS [employee_id], 
-    Text([vendor]) AS [vendor], 
-    Text([shipMethod]) AS [ship_method], 
-    Text([orderDate]) AS [order_date], 
-    Text([shipDate]) AS [ship_date], 
-    Text([subTotal]) AS [sub_total], 
-    Text([taxAmount]) AS [tax_amount], 
-    Text([freight]) AS [freight], 
-    Text([totalDue]) AS [total_due], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([employee_id]) AS [employee_id],
+    Text([purchase_order_id]) AS [purchase_order_id],
+    Text([ship_method_id]) AS [ship_method_id],
+    Text([vendor_id]) AS [vendor_id],
+    Text([freight]) AS [freight],
+    Text([order_date]) AS [order_date],
+    Text([revision_number]) AS [revision_number],
+    Text([ship_date]) AS [ship_date],
+    Text([status]) AS [status],
+    Text([sub_total]) AS [sub_total],
+    Text([tax_amt]) AS [tax_amt],
+    Text([total_due]) AS [total_due],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__purchase_order_headers.parquet] (parquet)
 ;
 
-SELECT
-    purchaseOrderId,
-    revisionNumber,
-    status,
-    employeeId,
-    vendor,
-    shipMethod,
-    orderDate,
-    shipDate,
-    subTotal,
-    taxAmount,
-    freight,
-    totalDue,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__purchase_order_headers] WITH 'General purchase order information. See PurchaseOrderDetail.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [employee_id] WITH 'Employee who created the purchase order. Foreign key to Employee.BusinessEntityID.';
+COMMENT FIELD [purchase_order_id] WITH 'Primary key.';
+COMMENT FIELD [ship_method_id] WITH 'Shipping method. Foreign key to ShipMethod.ShipMethodID.';
+COMMENT FIELD [vendor_id] WITH 'Vendor with whom the purchase order is placed. Foreign key to Vendor.BusinessEntityID.';
+COMMENT FIELD [freight] WITH 'Shipping cost.';
+COMMENT FIELD [order_date] WITH 'Purchase order creation date.';
+COMMENT FIELD [revision_number] WITH 'Incremental number to track changes to the purchase order over time.';
+COMMENT FIELD [ship_date] WITH 'Estimated shipment date from the vendor.';
+COMMENT FIELD [status] WITH 'Order current status. 1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete.';
+COMMENT FIELD [sub_total] WITH 'Purchase order subtotal. Computed as SUM(PurchaseOrderDetail.LineTotal) for the appropriate PurchaseOrderID.';
+COMMENT FIELD [tax_amt] WITH 'Tax amount.';
+COMMENT FIELD [total_due] WITH 'Total due to vendor. Computed as Subtotal + TaxAmt + Freight.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='PurchaseOrderHeaders',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__purchase_order_headers = '$(val__qvd_path__das)/raw__adventure_works__purchase_order_headers.qvd';
-TRACE Stored [raw__adventure_works__purchase_order_headers] into [$(val__qvd_path__purchase_order_headers)];
-STORE [raw__adventure_works__purchase_order_headers] INTO [$(val__qvd_path__purchase_order_headers)] (qvd);
+STORE [raw__adventure_works__purchase_order_headers] INTO [$(val__qvd_path__das)/raw__adventure_works__purchase_order_headers.qvd] (qvd);
 DROP TABLE [raw__adventure_works__purchase_order_headers];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Order Details
+    Extracting raw__adventure_works__sales_order_details
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_order_details]:
 LOAD
-    Text([salesOrderId]) AS [sales_order_id], 
-    Text([salesOrderDetailId]) AS [sales_order_detail_id], 
-    Text([carrierTrackingNumber]) AS [carrier_tracking_number], 
-    Text([orderQuantity]) AS [order_quantity], 
-    Text([productId]) AS [product_id], 
-    Text([productName]) AS [product_name], 
-    Text([specialOfferId]) AS [special_offer_id], 
-    Text([unitPrice]) AS [unit_price], 
-    Text([unitPriceDiscount]) AS [unit_price_discount], 
-    Text([lineTotal]) AS [line_total], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([sales_order_detail_id]) AS [sales_order_detail_id],
+    Text([sales_order_id]) AS [sales_order_id],
+    Text([special_offer_id]) AS [special_offer_id],
+    Text([carrier_tracking_number]) AS [carrier_tracking_number],
+    Text([line_total]) AS [line_total],
+    Text([order_qty]) AS [order_qty],
+    Text([unit_price]) AS [unit_price],
+    Text([unit_price_discount]) AS [unit_price_discount],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_order_details.parquet] (parquet)
 ;
 
-SELECT
-    salesOrderId,
-    salesOrderDetailId,
-    carrierTrackingNumber,
-    orderQuantity,
-    productId,
-    productName,
-    specialOfferId,
-    unitPrice,
-    unitPriceDiscount,
-    lineTotal,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_order_details] WITH 'Individual products associated with a specific sales order. See SalesOrderHeader.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product sold to customer. Foreign key to Product.ProductID.';
+COMMENT FIELD [sales_order_detail_id] WITH 'Primary key. One incremental unique number per product sold.';
+COMMENT FIELD [sales_order_id] WITH 'Primary key. Foreign key to SalesOrderHeader.SalesOrderID.';
+COMMENT FIELD [special_offer_id] WITH 'Promotional code. Foreign key to SpecialOffer.SpecialOfferID.';
+COMMENT FIELD [carrier_tracking_number] WITH 'Shipment tracking number supplied by the shipper.';
+COMMENT FIELD [line_total] WITH 'Per product subtotal. Computed as UnitPrice * (1 - UnitPriceDiscount) * OrderQty.';
+COMMENT FIELD [order_qty] WITH 'Quantity ordered per product.';
+COMMENT FIELD [unit_price] WITH 'Selling price of a single product.';
+COMMENT FIELD [unit_price_discount] WITH 'Discount amount.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesOrderDetails',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_order_details = '$(val__qvd_path__das)/raw__adventure_works__sales_order_details.qvd';
-TRACE Stored [raw__adventure_works__sales_order_details] into [$(val__qvd_path__sales_order_details)];
-STORE [raw__adventure_works__sales_order_details] INTO [$(val__qvd_path__sales_order_details)] (qvd);
+STORE [raw__adventure_works__sales_order_details] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_order_details.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_order_details];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Order Headers
+    Extracting raw__adventure_works__sales_order_headers
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_order_headers]:
 LOAD
-    Text([salesOrderId]) AS [sales_order_id], 
-    Text([revisionNumber]) AS [revision_number], 
-    Text([orderDate]) AS [order_date], 
-    Text([dueDate]) AS [due_date], 
-    Text([shipDate]) AS [ship_date], 
-    Text([status]) AS [status], 
-    Text([isOrderedOnline]) AS [is_ordered_online], 
-    Text([salesOrderNumber]) AS [sales_order_number], 
-    Text([purchaseOrderNumber]) AS [purchase_order_number], 
-    Text([accountNumber]) AS [account_number], 
-    Text([customerId]) AS [customer_id], 
-    Text([salesPersonId]) AS [sales_person_id], 
-    Text([territory]) AS [territory], 
-    Text([billToAddress]) AS [bill_to_address], 
-    Text([shipToAddress]) AS [ship_to_address], 
-    Text([shipMethod]) AS [ship_method], 
-    Text([creditCardId]) AS [credit_card_id], 
-    Text([creditCardApprovalCode]) AS [credit_card_approval_code], 
-    Text([currencyRateId]) AS [currency_rate_id], 
-    Text([subTotal]) AS [sub_total], 
-    Text([taxAmount]) AS [tax_amount], 
-    Text([freight]) AS [freight], 
-    Text([totalDue]) AS [total_due], 
-    Text([comment]) AS [comment], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([bill_to_address_id]) AS [bill_to_address_id],
+    Text([credit_card_id]) AS [credit_card_id],
+    Text([currency_rate_id]) AS [currency_rate_id],
+    Text([customer_id]) AS [customer_id],
+    Text([sales_order_id]) AS [sales_order_id],
+    Text([sales_person_id]) AS [sales_person_id],
+    Text([ship_method_id]) AS [ship_method_id],
+    Text([ship_to_address_id]) AS [ship_to_address_id],
+    Text([territory_id]) AS [territory_id],
+    Text([account_number]) AS [account_number],
+    Text([credit_card_approval_code]) AS [credit_card_approval_code],
+    Text([due_date]) AS [due_date],
+    Text([freight]) AS [freight],
+    Text([online_order_flag]) AS [online_order_flag],
+    Text([order_date]) AS [order_date],
+    Text([purchase_order_number]) AS [purchase_order_number],
+    Text([revision_number]) AS [revision_number],
+    Text([sales_order_number]) AS [sales_order_number],
+    Text([ship_date]) AS [ship_date],
+    Text([status]) AS [status],
+    Text([sub_total]) AS [sub_total],
+    Text([tax_amt]) AS [tax_amt],
+    Text([total_due]) AS [total_due],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_order_headers.parquet] (parquet)
 ;
 
-SELECT
-    salesOrderId,
-    revisionNumber,
-    orderDate,
-    dueDate,
-    shipDate,
-    status,
-    isOrderedOnline,
-    salesOrderNumber,
-    purchaseOrderNumber,
-    accountNumber,
-    customerId,
-    salesPersonId,
-    territory,
-    billToAddress,
-    shipToAddress,
-    shipMethod,
-    creditCardId,
-    creditCardApprovalCode,
-    currencyRateId,
-    subTotal,
-    taxAmount,
-    freight,
-    totalDue,
-    comment,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_order_headers] WITH 'General sales order information.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [bill_to_address_id] WITH 'Customer billing address. Foreign key to Address.AddressID.';
+COMMENT FIELD [credit_card_id] WITH 'Credit card identification number. Foreign key to CreditCard.CreditCardID.';
+COMMENT FIELD [currency_rate_id] WITH 'Currency exchange rate used. Foreign key to CurrencyRate.CurrencyRateID.';
+COMMENT FIELD [customer_id] WITH 'Customer identification number. Foreign key to Customer.BusinessEntityID.';
+COMMENT FIELD [sales_order_id] WITH 'Primary key.';
+COMMENT FIELD [sales_person_id] WITH 'Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.';
+COMMENT FIELD [ship_method_id] WITH 'Shipping method. Foreign key to ShipMethod.ShipMethodID.';
+COMMENT FIELD [ship_to_address_id] WITH 'Customer shipping address. Foreign key to Address.AddressID.';
+COMMENT FIELD [territory_id] WITH 'Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.';
+COMMENT FIELD [account_number] WITH 'Financial accounting number reference.';
+COMMENT FIELD [credit_card_approval_code] WITH 'Approval code provided by the credit card company.';
+COMMENT FIELD [due_date] WITH 'Date the order is due to the customer.';
+COMMENT FIELD [freight] WITH 'Shipping cost.';
+COMMENT FIELD [online_order_flag] WITH '0 = Order placed by sales person. 1 = Order placed online by customer.';
+COMMENT FIELD [order_date] WITH 'Dates the sales order was created.';
+COMMENT FIELD [purchase_order_number] WITH 'Customer purchase order number reference.';
+COMMENT FIELD [revision_number] WITH 'Incremental number to track changes to the sales order over time.';
+COMMENT FIELD [sales_order_number] WITH 'Unique sales order identification number.';
+COMMENT FIELD [ship_date] WITH 'Date the order was shipped to the customer.';
+COMMENT FIELD [status] WITH 'Order current status. 1 = In process; 2 = Approved; 3 = Backordered; 4 = Rejected; 5 = Shipped; 6 = Cancelled.';
+COMMENT FIELD [sub_total] WITH 'Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal) for the appropriate SalesOrderID.';
+COMMENT FIELD [tax_amt] WITH 'Tax amount.';
+COMMENT FIELD [total_due] WITH 'Total due from customer. Computed as Subtotal + TaxAmt + Freight.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesOrderHeaders',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_order_headers = '$(val__qvd_path__das)/raw__adventure_works__sales_order_headers.qvd';
-TRACE Stored [raw__adventure_works__sales_order_headers] into [$(val__qvd_path__sales_order_headers)];
-STORE [raw__adventure_works__sales_order_headers] INTO [$(val__qvd_path__sales_order_headers)] (qvd);
+STORE [raw__adventure_works__sales_order_headers] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_order_headers.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_order_headers];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Person Quota Histories
+    Extracting raw__adventure_works__sales_person_quota_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_person_quota_histories]:
 LOAD
-    Text([salesPersonId]) AS [sales_person_id], 
-    Text([quotaDate]) AS [quota_date], 
-    Text([salesQuota]) AS [sales_quota], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([quota_date]) AS [quota_date],
+    Text([sales_quota]) AS [sales_quota],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_person_quota_histories.parquet] (parquet)
 ;
 
-SELECT
-    salesPersonId,
-    quotaDate,
-    salesQuota,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_person_quota_histories] WITH 'Sales performance tracking.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Sales person identification number. Foreign key to SalesPerson.BusinessEntityID.';
+COMMENT FIELD [quota_date] WITH 'Sales quota date.';
+COMMENT FIELD [sales_quota] WITH 'Sales quota amount.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesPersonQuotaHistories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_person_quota_histories = '$(val__qvd_path__das)/raw__adventure_works__sales_person_quota_histories.qvd';
-TRACE Stored [raw__adventure_works__sales_person_quota_histories] into [$(val__qvd_path__sales_person_quota_histories)];
-STORE [raw__adventure_works__sales_person_quota_histories] INTO [$(val__qvd_path__sales_person_quota_histories)] (qvd);
+STORE [raw__adventure_works__sales_person_quota_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_person_quota_histories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_person_quota_histories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Persons
+    Extracting raw__adventure_works__sales_persons
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_persons]:
 LOAD
-    Text([salesPersonId]) AS [sales_person_id], 
-    Text([territory]) AS [territory], 
-    Text([salesQuota]) AS [sales_quota], 
-    Text([bonus]) AS [bonus], 
-    Text([percentCommision]) AS [percent_commision], 
-    Text([salesYtd]) AS [sales_ytd], 
-    Text([salesLastYear]) AS [sales_last_year], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([territory_id]) AS [territory_id],
+    Text([bonus]) AS [bonus],
+    Text([commission_pct]) AS [commission_pct],
+    Text([sales_last_year]) AS [sales_last_year],
+    Text([sales_quota]) AS [sales_quota],
+    Text([sales_ytd]) AS [sales_ytd],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_persons.parquet] (parquet)
 ;
 
-SELECT
-    salesPersonId,
-    territory,
-    salesQuota,
-    bonus,
-    percentCommision,
-    salesYtd,
-    salesLastYear,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_persons] WITH 'Sales representative current information.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key for SalesPerson records. Foreign key to Employee.BusinessEntityID.';
+COMMENT FIELD [territory_id] WITH 'Territory currently assigned to. Foreign key to SalesTerritory.SalesTerritoryID.';
+COMMENT FIELD [bonus] WITH 'Bonus due if quota is met.';
+COMMENT FIELD [commission_pct] WITH 'Commission percent received per sale.';
+COMMENT FIELD [sales_last_year] WITH 'Sales total of previous year.';
+COMMENT FIELD [sales_quota] WITH 'Projected yearly sales.';
+COMMENT FIELD [sales_ytd] WITH 'Sales total year to date.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesPersons',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_persons = '$(val__qvd_path__das)/raw__adventure_works__sales_persons.qvd';
-TRACE Stored [raw__adventure_works__sales_persons] into [$(val__qvd_path__sales_persons)];
-STORE [raw__adventure_works__sales_persons] INTO [$(val__qvd_path__sales_persons)] (qvd);
+STORE [raw__adventure_works__sales_persons] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_persons.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_persons];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Reasons
+    Extracting raw__adventure_works__sales_reasons
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_reasons]:
 LOAD
-    Text([salesOrderId]) AS [sales_order_id], 
-    Text([revisionNumber]) AS [revision_number], 
-    Text([orderDate]) AS [order_date], 
-    Text([dueDate]) AS [due_date], 
-    Text([shipDate]) AS [ship_date], 
-    Text([status]) AS [status], 
-    Text([isOrderedOnline]) AS [is_ordered_online], 
-    Text([salesOrderNumber]) AS [sales_order_number], 
-    Text([purchaseOrderNumber]) AS [purchase_order_number], 
-    Text([accountNumber]) AS [account_number], 
-    Text([customerId]) AS [customer_id], 
-    Text([salesPersonId]) AS [sales_person_id], 
-    Text([territory]) AS [territory], 
-    Text([billToAddress]) AS [bill_to_address], 
-    Text([shipToAddress]) AS [ship_to_address], 
-    Text([shipMethod]) AS [ship_method], 
-    Text([creditCardId]) AS [credit_card_id], 
-    Text([creditCardApprovalCode]) AS [credit_card_approval_code], 
-    Text([currencyRateId]) AS [currency_rate_id], 
-    Text([subTotal]) AS [sub_total], 
-    Text([taxAmount]) AS [tax_amount], 
-    Text([freight]) AS [freight], 
-    Text([totalDue]) AS [total_due], 
-    Text([comment]) AS [comment], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([sales_reason_id]) AS [sales_reason_id],
+    Text([name]) AS [name],
+    Text([reason_type]) AS [reason_type],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_reasons.parquet] (parquet)
 ;
 
-SELECT
-    salesOrderId,
-    revisionNumber,
-    orderDate,
-    dueDate,
-    shipDate,
-    status,
-    isOrderedOnline,
-    salesOrderNumber,
-    purchaseOrderNumber,
-    accountNumber,
-    customerId,
-    salesPersonId,
-    territory,
-    billToAddress,
-    shipToAddress,
-    shipMethod,
-    creditCardId,
-    creditCardApprovalCode,
-    currencyRateId,
-    subTotal,
-    taxAmount,
-    freight,
-    totalDue,
-    comment,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_reasons] WITH 'Lookup table of customer purchase reasons.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [sales_reason_id] WITH 'Primary key for SalesReason records.';
+COMMENT FIELD [name] WITH 'Sales reason description.';
+COMMENT FIELD [reason_type] WITH 'Category the sales reason belongs to.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesReasons',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_reasons = '$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd';
-TRACE Stored [raw__adventure_works__sales_reasons] into [$(val__qvd_path__sales_reasons)];
-STORE [raw__adventure_works__sales_reasons] INTO [$(val__qvd_path__sales_reasons)] (qvd);
+STORE [raw__adventure_works__sales_reasons] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_reasons];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Tax Rates
+    Extracting raw__adventure_works__sales_tax_rates
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_tax_rates]:
 LOAD
-    Text([salesTaxRateId]) AS [sales_tax_rate_id], 
-    Text([stateProvince]) AS [state_province], 
-    Text([taxType]) AS [tax_type], 
-    Text([taxRate]) AS [tax_rate], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([sales_tax_rate_id]) AS [sales_tax_rate_id],
+    Text([state_province_id]) AS [state_province_id],
+    Text([name]) AS [name],
+    Text([tax_rate]) AS [tax_rate],
+    Text([tax_type]) AS [tax_type],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_tax_rates.parquet] (parquet)
 ;
 
-SELECT
-    salesTaxRateId,
-    stateProvince,
-    taxType,
-    taxRate,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_tax_rates] WITH 'Tax rate lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [sales_tax_rate_id] WITH 'Primary key for SalesTaxRate records.';
+COMMENT FIELD [state_province_id] WITH 'State, province, or country/region the sales tax applies to.';
+COMMENT FIELD [name] WITH 'Tax rate description.';
+COMMENT FIELD [tax_rate] WITH 'Tax rate amount.';
+COMMENT FIELD [tax_type] WITH '1 = Tax applied to retail transactions, 2 = Tax applied to wholesale transactions, 3 = Tax applied to all sales (retail and wholesale) transactions.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesTaxRates',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_tax_rates = '$(val__qvd_path__das)/raw__adventure_works__sales_tax_rates.qvd';
-TRACE Stored [raw__adventure_works__sales_tax_rates] into [$(val__qvd_path__sales_tax_rates)];
-STORE [raw__adventure_works__sales_tax_rates] INTO [$(val__qvd_path__sales_tax_rates)] (qvd);
+STORE [raw__adventure_works__sales_tax_rates] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_tax_rates.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_tax_rates];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Territories
+    Extracting raw__adventure_works__sales_territories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_territories]:
 LOAD
-    Text([countryRegionCode]) AS [country_region_code], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([territory_id]) AS [territory_id],
+    Text([cost_last_year]) AS [cost_last_year],
+    Text([cost_ytd]) AS [cost_ytd],
+    Text([country_region_code]) AS [country_region_code],
+    Text([group]) AS [group],
+    Text([name]) AS [name],
+    Text([sales_last_year]) AS [sales_last_year],
+    Text([sales_ytd]) AS [sales_ytd],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_territories.parquet] (parquet)
 ;
 
-SELECT
-    countryRegionCode,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_territories] WITH 'Sales territory lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [territory_id] WITH 'Primary key for SalesTerritory records.';
+COMMENT FIELD [cost_last_year] WITH 'Business costs in the territory the previous year.';
+COMMENT FIELD [cost_ytd] WITH 'Business costs in the territory year to date.';
+COMMENT FIELD [country_region_code] WITH 'ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.';
+COMMENT FIELD [group] WITH 'Geographic area to which the sales territory belongs.';
+COMMENT FIELD [name] WITH 'Sales territory description.';
+COMMENT FIELD [sales_last_year] WITH 'Sales in the territory the previous year.';
+COMMENT FIELD [sales_ytd] WITH 'Sales in the territory year to date.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesTerritories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_territories = '$(val__qvd_path__das)/raw__adventure_works__sales_territories.qvd';
-TRACE Stored [raw__adventure_works__sales_territories] into [$(val__qvd_path__sales_territories)];
-STORE [raw__adventure_works__sales_territories] INTO [$(val__qvd_path__sales_territories)] (qvd);
+STORE [raw__adventure_works__sales_territories] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_territories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_territories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Sales Territory Histories
+    Extracting raw__adventure_works__sales_territory_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__sales_territory_histories]:
 LOAD
-    Text([salesPersonId]) AS [sales_person_id], 
-    Text([territoryId]) AS [territory_id], 
-    Text([startDate]) AS [start_date], 
-    Text([endDate]) AS [end_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([territory_id]) AS [territory_id],
+    Text([end_date]) AS [end_date],
+    Text([start_date]) AS [start_date],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_territory_histories.parquet] (parquet)
 ;
 
-SELECT
-    salesPersonId,
-    territoryId,
-    startDate,
-    endDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__sales_territory_histories] WITH 'Sales representative transfers to other sales territories.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key. The sales rep. Foreign key to SalesPerson.BusinessEntityID.';
+COMMENT FIELD [territory_id] WITH 'Primary key. Territory identification number. Foreign key to SalesTerritory.SalesTerritoryID.';
+COMMENT FIELD [end_date] WITH 'Date the sales representative left work in the territory.';
+COMMENT FIELD [start_date] WITH 'Primary key. Date the sales representative started work in the territory.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SalesTerritoryHistories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__sales_territory_histories = '$(val__qvd_path__das)/raw__adventure_works__sales_territory_histories.qvd';
-TRACE Stored [raw__adventure_works__sales_territory_histories] into [$(val__qvd_path__sales_territory_histories)];
-STORE [raw__adventure_works__sales_territory_histories] INTO [$(val__qvd_path__sales_territory_histories)] (qvd);
+STORE [raw__adventure_works__sales_territory_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__sales_territory_histories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__sales_territory_histories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Scrap Reasons
+    Extracting raw__adventure_works__scrap_reasons
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__scrap_reasons]:
 LOAD
-    Text([scrapReasonId]) AS [scrap_reason_id], 
-    Text([name]) AS [name], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([scrap_reason_id]) AS [scrap_reason_id],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__scrap_reasons.parquet] (parquet)
 ;
 
-SELECT
-    scrapReasonId,
-    name,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__scrap_reasons] WITH 'Manufacturing failure reasons lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [scrap_reason_id] WITH 'Primary key for ScrapReason records.';
+COMMENT FIELD [name] WITH 'Failure description.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ScrapReasons',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__scrap_reasons = '$(val__qvd_path__das)/raw__adventure_works__scrap_reasons.qvd';
-TRACE Stored [raw__adventure_works__scrap_reasons] into [$(val__qvd_path__scrap_reasons)];
-STORE [raw__adventure_works__scrap_reasons] INTO [$(val__qvd_path__scrap_reasons)] (qvd);
+STORE [raw__adventure_works__scrap_reasons] INTO [$(val__qvd_path__das)/raw__adventure_works__scrap_reasons.qvd] (qvd);
 DROP TABLE [raw__adventure_works__scrap_reasons];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Shifts
+    Extracting raw__adventure_works__shifts
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__shifts]:
 LOAD
-    Text([shiftId]) AS [shift_id], 
-    Text([name]) AS [name], 
-    Text([startTime]) AS [start_time], 
-    Text([endTime]) AS [end_time], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([shift_id]) AS [shift_id],
+    Text([end_time]) AS [end_time],
+    Text([name]) AS [name],
+    Text([start_time]) AS [start_time],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__shifts.parquet] (parquet)
 ;
 
-SELECT
-    shiftId,
-    name,
-    startTime,
-    endTime,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__shifts] WITH 'Work shift lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [shift_id] WITH 'Primary key for Shift records.';
+COMMENT FIELD [end_time] WITH 'Shift end time. ISO duration.';
+COMMENT FIELD [name] WITH 'Shift description.';
+COMMENT FIELD [start_time] WITH 'Shift start time. ISO duration.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Shifts',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__shifts = '$(val__qvd_path__das)/raw__adventure_works__shifts.qvd';
-TRACE Stored [raw__adventure_works__shifts] into [$(val__qvd_path__shifts)];
-STORE [raw__adventure_works__shifts] INTO [$(val__qvd_path__shifts)] (qvd);
+STORE [raw__adventure_works__shifts] INTO [$(val__qvd_path__das)/raw__adventure_works__shifts.qvd] (qvd);
 DROP TABLE [raw__adventure_works__shifts];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Ship Methods
+    Extracting raw__adventure_works__ship_methods
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__ship_methods]:
 LOAD
-    Text([shipMethodId]) AS [ship_method_id], 
-    Text([name]) AS [name], 
-    Text([shipBase]) AS [ship_base], 
-    Text([shipRate]) AS [ship_rate], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([ship_method_id]) AS [ship_method_id],
+    Text([name]) AS [name],
+    Text([ship_base]) AS [ship_base],
+    Text([ship_rate]) AS [ship_rate],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__ship_methods.parquet] (parquet)
 ;
 
-SELECT
-    shipMethodId,
-    name,
-    shipBase,
-    shipRate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__ship_methods] WITH 'Shipping company lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [ship_method_id] WITH 'Primary key for ShipMethod records.';
+COMMENT FIELD [name] WITH 'Shipping company name.';
+COMMENT FIELD [ship_base] WITH 'Minimum shipping charge.';
+COMMENT FIELD [ship_rate] WITH 'Shipping charge per pound.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ShipMethods',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__ship_methods = '$(val__qvd_path__das)/raw__adventure_works__ship_methods.qvd';
-TRACE Stored [raw__adventure_works__ship_methods] into [$(val__qvd_path__ship_methods)];
-STORE [raw__adventure_works__ship_methods] INTO [$(val__qvd_path__ship_methods)] (qvd);
+STORE [raw__adventure_works__ship_methods] INTO [$(val__qvd_path__das)/raw__adventure_works__ship_methods.qvd] (qvd);
 DROP TABLE [raw__adventure_works__ship_methods];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Shopping Cart Items
+    Extracting raw__adventure_works__shopping_cart_items
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__shopping_cart_items]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([shopping_cart_id]) AS [shopping_cart_id],
+    Text([shopping_cart_item_id]) AS [shopping_cart_item_id],
+    Text([date_created]) AS [date_created],
+    Text([quantity]) AS [quantity],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__shopping_cart_items.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__shopping_cart_items] WITH 'Contains online customer orders until the order is submitted or cancelled.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product ordered. Foreign key to Product.ProductID.';
+COMMENT FIELD [shopping_cart_id] WITH 'Shopping cart identification number.';
+COMMENT FIELD [shopping_cart_item_id] WITH 'Primary key for ShoppingCartItem records.';
+COMMENT FIELD [date_created] WITH 'Date the time the record was created.';
+COMMENT FIELD [quantity] WITH 'Product quantity ordered.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='ShoppingCartItems',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__shopping_cart_items = '$(val__qvd_path__das)/raw__adventure_works__shopping_cart_items.qvd';
-TRACE Stored [raw__adventure_works__shopping_cart_items] into [$(val__qvd_path__shopping_cart_items)];
-STORE [raw__adventure_works__shopping_cart_items] INTO [$(val__qvd_path__shopping_cart_items)] (qvd);
+STORE [raw__adventure_works__shopping_cart_items] INTO [$(val__qvd_path__das)/raw__adventure_works__shopping_cart_items.qvd] (qvd);
 DROP TABLE [raw__adventure_works__shopping_cart_items];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Special Offers
+    Extracting raw__adventure_works__special_offers
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__special_offers]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([special_offer_id]) AS [special_offer_id],
+    Text([category]) AS [category],
+    Text([description]) AS [description],
+    Text([discount_percentage]) AS [discount_percentage],
+    Text([end_date]) AS [end_date],
+    Text([maximum_quantity]) AS [maximum_quantity],
+    Text([minimum_quantity]) AS [minimum_quantity],
+    Text([start_date]) AS [start_date],
+    Text([type]) AS [type],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__special_offers.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__special_offers] WITH 'Sale discounts lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [special_offer_id] WITH 'Primary key for SpecialOffer records.';
+COMMENT FIELD [category] WITH 'Group the discount applies to such as Reseller or Customer.';
+COMMENT FIELD [description] WITH 'Discount description.';
+COMMENT FIELD [discount_percentage] WITH 'Discount percentage.';
+COMMENT FIELD [end_date] WITH 'Discount end date.';
+COMMENT FIELD [maximum_quantity] WITH 'Maximum discount percent allowed.';
+COMMENT FIELD [minimum_quantity] WITH 'Minimum discount percent allowed.';
+COMMENT FIELD [start_date] WITH 'Discount start date.';
+COMMENT FIELD [type] WITH 'Discount type category.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='SpecialOffers',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__special_offers = '$(val__qvd_path__das)/raw__adventure_works__special_offers.qvd';
-TRACE Stored [raw__adventure_works__special_offers] into [$(val__qvd_path__special_offers)];
-STORE [raw__adventure_works__special_offers] INTO [$(val__qvd_path__special_offers)] (qvd);
+STORE [raw__adventure_works__special_offers] INTO [$(val__qvd_path__das)/raw__adventure_works__special_offers.qvd] (qvd);
 DROP TABLE [raw__adventure_works__special_offers];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting State Provinces
+    Extracting raw__adventure_works__state_provinces
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__state_provinces]:
 LOAD
-    Text([addressId]) AS [address_id], 
-    Text([addressLine1]) AS [address_line1], 
-    Text([addressLine2]) AS [address_line2], 
-    Text([city]) AS [city], 
-    Text([state]) AS [state], 
-    Text([country]) AS [country], 
-    Text([postalCode]) AS [postal_code], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([state_province_id]) AS [state_province_id],
+    Text([territory_id]) AS [territory_id],
+    Text([country_region_code]) AS [country_region_code],
+    Text([is_only_state_province_flag]) AS [is_only_state_province_flag],
+    Text([name]) AS [name],
+    Text([state_province_code]) AS [state_province_code],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__state_provinces.parquet] (parquet)
 ;
 
-SELECT
-    addressId,
-    addressLine1,
-    addressLine2,
-    city,
-    state,
-    country,
-    postalCode,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__state_provinces] WITH 'State and province lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [state_province_id] WITH 'Primary key for StateProvince records.';
+COMMENT FIELD [territory_id] WITH 'ID of the territory in which the state or province is located. Foreign key to SalesTerritory.SalesTerritoryID.';
+COMMENT FIELD [country_region_code] WITH 'ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.';
+COMMENT FIELD [is_only_state_province_flag] WITH '0 = StateProvinceCode exists. 1 = StateProvinceCode unavailable, using CountryRegionCode.';
+COMMENT FIELD [name] WITH 'State or province description.';
+COMMENT FIELD [state_province_code] WITH 'ISO standard state or province code.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='StateProvinces',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__state_provinces = '$(val__qvd_path__das)/raw__adventure_works__state_provinces.qvd';
-TRACE Stored [raw__adventure_works__state_provinces] into [$(val__qvd_path__state_provinces)];
-STORE [raw__adventure_works__state_provinces] INTO [$(val__qvd_path__state_provinces)] (qvd);
+STORE [raw__adventure_works__state_provinces] INTO [$(val__qvd_path__das)/raw__adventure_works__state_provinces.qvd] (qvd);
 DROP TABLE [raw__adventure_works__state_provinces];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Stores
+    Extracting raw__adventure_works__stores
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__stores]:
 LOAD
-    Text([businessEntityID]) AS [business_entity_id], 
-    Text([addresses]) AS [addresses], 
-    Text([contacts]) AS [contacts]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([sales_person_id]) AS [sales_person_id],
+    Text([demographics]) AS [demographics],
+    Text([name]) AS [name],
+    Text([modified_date]) AS [modified_date],
+    Text([rowguid]) AS [rowguid],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__stores.parquet] (parquet)
 ;
 
-SELECT
-    businessEntityID,
-    addresses,
-    contacts
+COMMENT TABLE [raw__adventure_works__stores] WITH 'Customers (resellers) of Adventure Works products.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key. Foreign key to Customer.BusinessEntityID.';
+COMMENT FIELD [sales_person_id] WITH 'ID of the sales person assigned to the customer. Foreign key to SalesPerson.BusinessEntityID.';
+COMMENT FIELD [demographics] WITH 'Demographic information about the store such as the number of employees, annual sales and store type.';
+COMMENT FIELD [name] WITH 'Name of the store.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [rowguid] WITH 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Stores',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__stores = '$(val__qvd_path__das)/raw__adventure_works__stores.qvd';
-TRACE Stored [raw__adventure_works__stores] into [$(val__qvd_path__stores)];
-STORE [raw__adventure_works__stores] INTO [$(val__qvd_path__stores)] (qvd);
+STORE [raw__adventure_works__stores] INTO [$(val__qvd_path__das)/raw__adventure_works__stores.qvd] (qvd);
 DROP TABLE [raw__adventure_works__stores];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Transaction Histories
+    Extracting raw__adventure_works__transaction_histories
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__transaction_histories]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([reference_order_id]) AS [reference_order_id],
+    Text([reference_order_line_id]) AS [reference_order_line_id],
+    Text([transaction_id]) AS [transaction_id],
+    Text([actual_cost]) AS [actual_cost],
+    Text([quantity]) AS [quantity],
+    Text([transaction_date]) AS [transaction_date],
+    Text([transaction_type]) AS [transaction_type],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__transaction_histories.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__transaction_histories] WITH 'Record of each purchase order, sales order, or work order transaction year to date.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [reference_order_id] WITH 'Purchase order, sales order, or work order identification number.';
+COMMENT FIELD [reference_order_line_id] WITH 'Line number associated with the purchase order, sales order, or work order.';
+COMMENT FIELD [transaction_id] WITH 'Primary key for TransactionHistory records.';
+COMMENT FIELD [actual_cost] WITH 'Product cost.';
+COMMENT FIELD [quantity] WITH 'Product quantity.';
+COMMENT FIELD [transaction_date] WITH 'Date and time of the transaction.';
+COMMENT FIELD [transaction_type] WITH 'W = WorkOrder, S = SalesOrder, P = PurchaseOrder.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='TransactionHistories',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__transaction_histories = '$(val__qvd_path__das)/raw__adventure_works__transaction_histories.qvd';
-TRACE Stored [raw__adventure_works__transaction_histories] into [$(val__qvd_path__transaction_histories)];
-STORE [raw__adventure_works__transaction_histories] INTO [$(val__qvd_path__transaction_histories)] (qvd);
+STORE [raw__adventure_works__transaction_histories] INTO [$(val__qvd_path__das)/raw__adventure_works__transaction_histories.qvd] (qvd);
 DROP TABLE [raw__adventure_works__transaction_histories];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Transaction History Archives
+    Extracting raw__adventure_works__transaction_history_archives
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__transaction_history_archives]:
 LOAD
-    Text([transactionId]) AS [transaction_id], 
-    Text([productId]) AS [product_id], 
-    Text([referenceOrderId]) AS [reference_order_id], 
-    Text([referenceOrderLineId]) AS [reference_order_line_id], 
-    Text([transactionDate]) AS [transaction_date], 
-    Text([transactionType]) AS [transaction_type], 
-    Text([quantity]) AS [quantity], 
-    Text([actualCost]) AS [actual_cost], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([reference_order_id]) AS [reference_order_id],
+    Text([reference_order_line_id]) AS [reference_order_line_id],
+    Text([transaction_id]) AS [transaction_id],
+    Text([actual_cost]) AS [actual_cost],
+    Text([quantity]) AS [quantity],
+    Text([transaction_date]) AS [transaction_date],
+    Text([transaction_type]) AS [transaction_type],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__transaction_history_archives.parquet] (parquet)
 ;
 
-SELECT
-    transactionId,
-    productId,
-    referenceOrderId,
-    referenceOrderLineId,
-    transactionDate,
-    transactionType,
-    quantity,
-    actualCost,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__transaction_history_archives] WITH 'Transactions for previous years.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [reference_order_id] WITH 'Purchase order, sales order, or work order identification number.';
+COMMENT FIELD [reference_order_line_id] WITH 'Line number associated with the purchase order, sales order, or work order.';
+COMMENT FIELD [transaction_id] WITH 'Primary key for TransactionHistoryArchive records.';
+COMMENT FIELD [actual_cost] WITH 'Product cost.';
+COMMENT FIELD [quantity] WITH 'Product quantity.';
+COMMENT FIELD [transaction_date] WITH 'Date and time of the transaction.';
+COMMENT FIELD [transaction_type] WITH 'W = Work Order, S = Sales Order, P = Purchase Order.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='TransactionHistoryArchives',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__transaction_history_archives = '$(val__qvd_path__das)/raw__adventure_works__transaction_history_archives.qvd';
-TRACE Stored [raw__adventure_works__transaction_history_archives] into [$(val__qvd_path__transaction_history_archives)];
-STORE [raw__adventure_works__transaction_history_archives] INTO [$(val__qvd_path__transaction_history_archives)] (qvd);
+STORE [raw__adventure_works__transaction_history_archives] INTO [$(val__qvd_path__das)/raw__adventure_works__transaction_history_archives.qvd] (qvd);
 DROP TABLE [raw__adventure_works__transaction_history_archives];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Unit Measures
+    Extracting raw__adventure_works__unit_measures
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__unit_measures]:
 LOAD
-    Text([billOfMaterialsId]) AS [bill_of_materials_id], 
-    Text([productAssemblyId]) AS [product_assembly_id], 
-    Text([componentId]) AS [component_id], 
-    Text([startDate]) AS [start_date], 
-    Text([endDate]) AS [end_date], 
-    Text([measurementUnit]) AS [measurement_unit], 
-    Text([bomlevel]) AS [bomlevel], 
-    Text([perAssemblyQuantity]) AS [per_assembly_quantity], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([name]) AS [name],
+    Text([unit_measure_code]) AS [unit_measure_code],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__unit_measures.parquet] (parquet)
 ;
 
-SELECT
-    billOfMaterialsId,
-    productAssemblyId,
-    componentId,
-    startDate,
-    endDate,
-    measurementUnit,
-    bomlevel,
-    perAssemblyQuantity,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__unit_measures] WITH 'Unit of measure lookup table.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [name] WITH 'Unit of measure description.';
+COMMENT FIELD [unit_measure_code] WITH 'Primary key.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='UnitMeasures',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__unit_measures = '$(val__qvd_path__das)/raw__adventure_works__unit_measures.qvd';
-TRACE Stored [raw__adventure_works__unit_measures] into [$(val__qvd_path__unit_measures)];
-STORE [raw__adventure_works__unit_measures] INTO [$(val__qvd_path__unit_measures)] (qvd);
+STORE [raw__adventure_works__unit_measures] INTO [$(val__qvd_path__das)/raw__adventure_works__unit_measures.qvd] (qvd);
 DROP TABLE [raw__adventure_works__unit_measures];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Vendors
+    Extracting raw__adventure_works__vendors
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__vendors]:
 LOAD
-    Text([vendorId]) AS [vendor_id], 
-    Text([accountNumber]) AS [account_number], 
-    Text([name]) AS [name], 
-    Text([creditRating]) AS [credit_rating], 
-    Text([isPreferred]) AS [is_preferred], 
-    Text([isActive]) AS [is_active], 
-    Text([purchasingWebServiceUrl]) AS [purchasing_web_service_url], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([business_entity_id]) AS [business_entity_id],
+    Text([account_number]) AS [account_number],
+    Text([active_flag]) AS [active_flag],
+    Text([credit_rating]) AS [credit_rating],
+    Text([name]) AS [name],
+    Text([preferred_vendor_status]) AS [preferred_vendor_status],
+    Text([purchasing_web_service_url]) AS [purchasing_web_service_url],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__vendors.parquet] (parquet)
 ;
 
-SELECT
-    vendorId,
-    accountNumber,
-    name,
-    creditRating,
-    isPreferred,
-    isActive,
-    purchasingWebServiceUrl,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__vendors] WITH 'Companies from whom Adventure Works Cycles purchases parts or other goods.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [business_entity_id] WITH 'Primary key for Vendor records. Foreign key to BusinessEntity.BusinessEntityID.';
+COMMENT FIELD [account_number] WITH 'Vendor account (identification) number.';
+COMMENT FIELD [active_flag] WITH '0 = Vendor no longer used. 1 = Vendor is actively used.';
+COMMENT FIELD [credit_rating] WITH '1 = Superior, 2 = Excellent, 3 = Above average, 4 = Average, 5 = Below average.';
+COMMENT FIELD [name] WITH 'Company name.';
+COMMENT FIELD [preferred_vendor_status] WITH '0 = Do not use if another vendor is available. 1 = Preferred over other vendors supplying the same product.';
+COMMENT FIELD [purchasing_web_service_url] WITH 'Vendor URL.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='Vendors',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__vendors = '$(val__qvd_path__das)/raw__adventure_works__vendors.qvd';
-TRACE Stored [raw__adventure_works__vendors] into [$(val__qvd_path__vendors)];
-STORE [raw__adventure_works__vendors] INTO [$(val__qvd_path__vendors)] (qvd);
+STORE [raw__adventure_works__vendors] INTO [$(val__qvd_path__das)/raw__adventure_works__vendors.qvd] (qvd);
 DROP TABLE [raw__adventure_works__vendors];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Work Order Routings
+    Extracting raw__adventure_works__work_order_routings
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__work_order_routings]:
 LOAD
-    Text([locationId]) AS [location_id], 
-    Text([name]) AS [name], 
-    Text([costRate]) AS [cost_rate], 
-    Text([availability]) AS [availability], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([location_id]) AS [location_id],
+    Text([product_id]) AS [product_id],
+    Text([work_order_id]) AS [work_order_id],
+    Text([actual_cost]) AS [actual_cost],
+    Text([actual_end_date]) AS [actual_end_date],
+    Text([actual_resource_hrs]) AS [actual_resource_hrs],
+    Text([actual_start_date]) AS [actual_start_date],
+    Text([operation_sequence]) AS [operation_sequence],
+    Text([planned_cost]) AS [planned_cost],
+    Text([scheduled_end_date]) AS [scheduled_end_date],
+    Text([scheduled_start_date]) AS [scheduled_start_date],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__work_order_routings.parquet] (parquet)
 ;
 
-SELECT
-    locationId,
-    name,
-    costRate,
-    availability,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__work_order_routings] WITH 'Work order details.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [location_id] WITH 'Manufacturing location where the part is processed. Foreign key to Location.LocationID.';
+COMMENT FIELD [product_id] WITH 'Primary key. Foreign key to Product.ProductID.';
+COMMENT FIELD [work_order_id] WITH 'Primary key. Foreign key to WorkOrder.WorkOrderID.';
+COMMENT FIELD [actual_cost] WITH 'Actual manufacturing cost.';
+COMMENT FIELD [actual_end_date] WITH 'Actual end date.';
+COMMENT FIELD [actual_resource_hrs] WITH 'Number of manufacturing hours used.';
+COMMENT FIELD [actual_start_date] WITH 'Actual start date.';
+COMMENT FIELD [operation_sequence] WITH 'Primary key. Indicates the manufacturing process sequence.';
+COMMENT FIELD [planned_cost] WITH 'Estimated manufacturing cost.';
+COMMENT FIELD [scheduled_end_date] WITH 'Planned manufacturing end date.';
+COMMENT FIELD [scheduled_start_date] WITH 'Planned manufacturing start date.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='WorkOrderRoutings',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__work_order_routings = '$(val__qvd_path__das)/raw__adventure_works__work_order_routings.qvd';
-TRACE Stored [raw__adventure_works__work_order_routings] into [$(val__qvd_path__work_order_routings)];
-STORE [raw__adventure_works__work_order_routings] INTO [$(val__qvd_path__work_order_routings)] (qvd);
+STORE [raw__adventure_works__work_order_routings] INTO [$(val__qvd_path__das)/raw__adventure_works__work_order_routings.qvd] (qvd);
 DROP TABLE [raw__adventure_works__work_order_routings];
-
 
 Trace
 -------------------------------------------------------------------
-    Extracting Work Orders
+    Extracting raw__adventure_works__work_orders
 -------------------------------------------------------------------
 ;
-LIB CONNECT TO 'adventure_works__odata';
 
 [raw__adventure_works__work_orders]:
 LOAD
-    Text([productId]) AS [product_id], 
-    Text([name]) AS [name], 
-    Text([productNumber]) AS [product_number], 
-    Text([isManufactured]) AS [is_manufactured], 
-    Text([isSaleable]) AS [is_saleable], 
-    Text([color]) AS [color], 
-    Text([safetyStockLevel]) AS [safety_stock_level], 
-    Text([reorderPoint]) AS [reorder_point], 
-    Text([standardCost]) AS [standard_cost], 
-    Text([listPrice]) AS [list_price], 
-    Text([size]) AS [size], 
-    Text([sizeUnit]) AS [size_unit], 
-    Text([weightUnit]) AS [weight_unit], 
-    Text([weight]) AS [weight], 
-    Text([daysToManufacture]) AS [days_to_manufacture], 
-    Text([productLine]) AS [product_line], 
-    Text([class]) AS [class], 
-    Text([style]) AS [style], 
-    Text([subcategory]) AS [subcategory], 
-    Text([category]) AS [category], 
-    Text([model]) AS [model], 
-    Text([sellStartDate]) AS [sell_start_date], 
-    Text([sellEndDate]) AS [sell_end_date], 
-    Text([discontinuedDate]) AS [discontinued_date], 
-    Text([modifiedDate]) AS [modified_date]
+    Text([product_id]) AS [product_id],
+    Text([scrap_reason_id]) AS [scrap_reason_id],
+    Text([work_order_id]) AS [work_order_id],
+    Text([due_date]) AS [due_date],
+    Text([end_date]) AS [end_date],
+    Text([order_qty]) AS [order_qty],
+    Text([scrapped_qty]) AS [scrapped_qty],
+    Text([start_date]) AS [start_date],
+    Text([stocked_qty]) AS [stocked_qty],
+    Text([modified_date]) AS [modified_date],
+    Text([_dlt_id]) AS [_dlt_id],
+    Text([_dlt_load_id]) AS [_dlt_load_id]
+FROM
+    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__work_orders.parquet] (parquet)
 ;
 
-SELECT
-    productId,
-    name,
-    productNumber,
-    isManufactured,
-    isSaleable,
-    color,
-    safetyStockLevel,
-    reorderPoint,
-    standardCost,
-    listPrice,
-    size,
-    sizeUnit,
-    weightUnit,
-    weight,
-    daysToManufacture,
-    productLine,
-    class,
-    style,
-    subcategory,
-    category,
-    model,
-    sellStartDate,
-    sellEndDate,
-    discontinuedDate,
-    modifiedDate
+COMMENT TABLE [raw__adventure_works__work_orders] WITH 'Manufacturing work orders.';
 
-FROM
-    JsonV4GetData
+COMMENT FIELD [product_id] WITH 'Product identification number. Foreign key to Product.ProductID.';
+COMMENT FIELD [scrap_reason_id] WITH 'Reason for inspection failure.';
+COMMENT FIELD [work_order_id] WITH 'Primary key for WorkOrder records.';
+COMMENT FIELD [due_date] WITH 'Work order due date.';
+COMMENT FIELD [end_date] WITH 'Work order end date.';
+COMMENT FIELD [order_qty] WITH 'Product quantity to build.';
+COMMENT FIELD [scrapped_qty] WITH 'Quantity that failed inspection.';
+COMMENT FIELD [start_date] WITH 'Work order start date.';
+COMMENT FIELD [stocked_qty] WITH 'Quantity built and put in inventory.';
+COMMENT FIELD [modified_date] WITH 'Date and time the record was last updated.';
+COMMENT FIELD [_dlt_id] WITH 'Internal unique identifier.';
+COMMENT FIELD [_dlt_load_id] WITH 'Internal data loading identifier.';
 
-WITH PROPERTIES (
-    oDataResourcePath='WorkOrders',
-    oDataQueryOptions='',
-    maxDepth='',
-    maxResults=''
-);
-
-LET val__qvd_path__work_orders = '$(val__qvd_path__das)/raw__adventure_works__work_orders.qvd';
-TRACE Stored [raw__adventure_works__work_orders] into [$(val__qvd_path__work_orders)];
-STORE [raw__adventure_works__work_orders] INTO [$(val__qvd_path__work_orders)] (qvd);
+STORE [raw__adventure_works__work_orders] INTO [$(val__qvd_path__das)/raw__adventure_works__work_orders.qvd] (qvd);
 DROP TABLE [raw__adventure_works__work_orders];
-
