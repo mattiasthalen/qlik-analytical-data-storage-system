@@ -2,13 +2,9 @@ import yaml
 import os
 from pathlib import Path
 
-BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-SCHEMA_PATH = BASE_DIR / "schemas" / "raw_schema.yaml"
-SCRIPT_PATH = BASE_DIR / "scripts"
-
 def generate_das_qvs(
-    script_path: Path = SCRIPT_PATH,
-    schema_path: Path = SCHEMA_PATH
+    script_path: Path,
+    schema_path: Path
 ) -> None:
     """
     Generates Qlik Sense QVS scripts based on a YAML schema file.
@@ -268,4 +264,12 @@ def generate_das_qvs(
     print(f"Generated QVS file at: {output_path}")
 
 if __name__ == "__main__":
-    generate_das_qvs()
+    BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+
+    schema_path = BASE_DIR / "schemas" / "raw_schema.yaml"
+    script_path = BASE_DIR / "scripts"
+
+    generate_das_qvs(
+        script_path=script_path,
+        schema_path=schema_path
+    )
