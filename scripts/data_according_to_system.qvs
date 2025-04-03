@@ -9,7 +9,6 @@ Trace
     Extracting raw__adventure_works__addresses
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__addresses.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -146,7 +145,6 @@ Trace
     Extracting raw__adventure_works__address_types
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__address_types.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -271,7 +269,6 @@ Trace
     Extracting raw__adventure_works__bill_of_materials
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__bill_of_materials.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -411,7 +408,6 @@ Trace
     Extracting raw__adventure_works__business_entity_addresses
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__business_entity_addresses.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -539,7 +535,6 @@ Trace
     Extracting raw__adventure_works__business_entity_contacts
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__business_entity_contacts.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -667,7 +662,6 @@ Trace
     Extracting raw__adventure_works__contact_types
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__contact_types.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -789,7 +783,6 @@ Trace
     Extracting raw__adventure_works__country_regions
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__country_regions.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -911,7 +904,6 @@ Trace
     Extracting raw__adventure_works__credit_cards
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__credit_cards.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1042,7 +1034,6 @@ Trace
     Extracting raw__adventure_works__cultures
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__cultures.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1164,7 +1155,6 @@ Trace
     Extracting raw__adventure_works__currencies
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__currencies.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1286,7 +1276,6 @@ Trace
     Extracting raw__adventure_works__currency_rates
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__currency_rates.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1420,7 +1409,6 @@ Trace
     Extracting raw__adventure_works__customers
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__customers.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1554,7 +1542,6 @@ Trace
     Extracting raw__adventure_works__departments
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__departments.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1679,7 +1666,6 @@ Trace
     Extracting raw__adventure_works__email_addresses
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__email_addresses.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1807,7 +1793,6 @@ Trace
     Extracting raw__adventure_works__employee_department_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__employee_department_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -1938,7 +1923,6 @@ Trace
     Extracting raw__adventure_works__employee_pay_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__employee_pay_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2066,7 +2050,6 @@ Trace
     Extracting raw__adventure_works__employees
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__employees.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2224,7 +2207,6 @@ Trace
     Extracting raw__adventure_works__illustrations
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__illustrations.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2346,7 +2328,6 @@ Trace
     Extracting raw__adventure_works__job_candidates
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__job_candidates.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2471,7 +2452,6 @@ Trace
     Extracting raw__adventure_works__locations
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__locations.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2599,7 +2579,6 @@ Trace
     Extracting raw__adventure_works__person_phones
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__person_phones.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2724,7 +2703,6 @@ Trace
     Extracting raw__adventure_works__persons
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__persons.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2876,7 +2854,6 @@ Trace
     Extracting raw__adventure_works__phone_number_types
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__phone_number_types.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -2998,7 +2975,6 @@ Trace
     Extracting raw__adventure_works__product_categories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_categories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3123,7 +3099,6 @@ Trace
     Extracting raw__adventure_works__product_cost_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_cost_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3251,7 +3226,6 @@ Trace
     Extracting raw__adventure_works__product_descriptions
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_descriptions.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3376,7 +3350,6 @@ Trace
     Extracting raw__adventure_works__product_inventories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_inventories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3510,7 +3483,6 @@ Trace
     Extracting raw__adventure_works__product_list_price_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_list_price_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3638,7 +3610,6 @@ Trace
     Extracting raw__adventure_works__product_model_illustrations
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_model_illustrations.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3760,7 +3731,6 @@ Trace
     Extracting raw__adventure_works__product_models
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_models.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -3891,7 +3861,6 @@ Trace
     Extracting raw__adventure_works__product_photos
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_photos.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4022,7 +3991,6 @@ Trace
     Extracting raw__adventure_works__product_reviews
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_reviews.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4129,8 +4097,8 @@ If $(val__no_of_new_records) > 0 Then
     Trace Commenting fields...;
     Comment Field [product_id] With 'Product identification number. Foreign key to Product.ProductID.';
     Comment Field [product_review_id] With 'Primary key for ProductReview records.';
-    Comment Field [comments] With 'Reviewer' & Chr(39) & 's comments.';
-    Comment Field [email_address] With 'Reviewer' & Chr(39) & 's e-mail address.';
+    Comment Field [comments] With 'Reviewer$(=Chr39())s comments.';
+    Comment Field [email_address] With 'Reviewer$(=Chr39())s e-mail address.';
     Comment Field [rating] With 'Product rating given by the reviewer. Scale is 1 to 5 with 5 as the highest rating.';
     Comment Field [review_date] With 'Date review was submitted.';
     Comment Field [reviewer_name] With 'Name of the reviewer.';
@@ -4159,7 +4127,6 @@ Trace
     Extracting raw__adventure_works__products
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__products.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4344,7 +4311,6 @@ Trace
     Extracting raw__adventure_works__product_subcategories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_subcategories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4472,7 +4438,6 @@ Trace
     Extracting raw__adventure_works__product_vendors
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__product_vendors.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4591,8 +4556,8 @@ If $(val__no_of_new_records) > 0 Then
     Comment Field [max_order_qty] With 'The maximum quantity that should be ordered.';
     Comment Field [min_order_qty] With 'The minimum quantity that should be ordered.';
     Comment Field [on_order_qty] With 'The quantity currently on order.';
-    Comment Field [standard_price] With 'The vendor' & Chr(39) & 's usual selling price.';
-    Comment Field [unit_measure_code] With 'The product' & Chr(39) & 's unit of measure.';
+    Comment Field [standard_price] With 'The vendor$(=Chr39())s usual selling price.';
+    Comment Field [unit_measure_code] With 'The product$(=Chr39())s unit of measure.';
     Comment Field [modified_date] With 'Date and time the record was last updated.';
 
     Trace Storing data...;
@@ -4618,7 +4583,6 @@ Trace
     Extracting raw__adventure_works__purchase_order_details
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__purchase_order_details.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4738,7 +4702,7 @@ If $(val__no_of_new_records) > 0 Then
     Comment Field [received_qty] With 'Quantity actually received from the vendor.';
     Comment Field [rejected_qty] With 'Quantity rejected during inspection.';
     Comment Field [stocked_qty] With 'Quantity accepted into inventory. Computed as ReceivedQty - RejectedQty.';
-    Comment Field [unit_price] With 'Vendor' & Chr(39) & 's selling price of a single product.';
+    Comment Field [unit_price] With 'Vendor$(=Chr39())s selling price of a single product.';
     Comment Field [modified_date] With 'Date and time the record was last updated.';
 
     Trace Storing data...;
@@ -4764,7 +4728,6 @@ Trace
     Extracting raw__adventure_works__purchase_order_headers
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__purchase_order_headers.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -4916,7 +4879,6 @@ Trace
     Extracting raw__adventure_works__sales_order_details
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_order_details.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5062,7 +5024,6 @@ Trace
     Extracting raw__adventure_works__sales_order_headers
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_order_headers.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5250,7 +5211,6 @@ Trace
     Extracting raw__adventure_works__sales_person_quota_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_person_quota_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5378,7 +5338,6 @@ Trace
     Extracting raw__adventure_works__sales_persons
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_persons.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5518,7 +5477,6 @@ Trace
     Extracting raw__adventure_works__sales_reasons
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5643,7 +5601,6 @@ Trace
     Extracting raw__adventure_works__sales_tax_rates
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_tax_rates.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5777,7 +5734,6 @@ Trace
     Extracting raw__adventure_works__sales_territories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_territories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -5920,7 +5876,6 @@ Trace
     Extracting raw__adventure_works__sales_territory_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__sales_territory_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6051,7 +6006,6 @@ Trace
     Extracting raw__adventure_works__scrap_reasons
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__scrap_reasons.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6173,7 +6127,6 @@ Trace
     Extracting raw__adventure_works__shifts
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__shifts.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6301,7 +6254,6 @@ Trace
     Extracting raw__adventure_works__ship_methods
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__ship_methods.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6432,7 +6384,6 @@ Trace
     Extracting raw__adventure_works__shopping_cart_items
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__shopping_cart_items.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6563,7 +6514,6 @@ Trace
     Extracting raw__adventure_works__special_offers
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__special_offers.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6709,7 +6659,6 @@ Trace
     Extracting raw__adventure_works__state_provinces
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__state_provinces.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6846,7 +6795,6 @@ Trace
     Extracting raw__adventure_works__stores
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__stores.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -6977,7 +6925,6 @@ Trace
     Extracting raw__adventure_works__transaction_histories
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__transaction_histories.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -7117,7 +7064,6 @@ Trace
     Extracting raw__adventure_works__transaction_history_archives
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__transaction_history_archives.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -7257,7 +7203,6 @@ Trace
     Extracting raw__adventure_works__unit_measures
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__unit_measures.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -7379,7 +7324,6 @@ Trace
     Extracting raw__adventure_works__vendors
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__vendors.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -7516,7 +7460,6 @@ Trace
     Extracting raw__adventure_works__work_order_routings
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__work_order_routings.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));
@@ -7665,7 +7608,6 @@ Trace
     Extracting raw__adventure_works__work_orders
 ---------------------------------------------------------------
 ;
-
 Trace Setting variables...;
 Let val__qvd_target = '$(val__qvd_path__das)/raw__adventure_works__work_orders.qvd';
 Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));

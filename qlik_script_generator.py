@@ -62,7 +62,6 @@ def generate_das_qvs(
             table_lines.append(f"    Extracting {table_name}")
             table_lines.append("---------------------------------------------------------------")
             table_lines.append(";")
-            table_lines.append("")
             
             # Variables setup
             table_lines.append("Trace Setting variables...;")
@@ -163,7 +162,7 @@ def generate_das_qvs(
                     if 'description' in column_info:
                         # Escape single quotes in descriptions by replacing them with Chr(39)
                         desc = column_info['description']
-                        desc = desc.replace("'", "' & Chr(39) & '")
+                        desc = desc.replace("'", "$(=Chr39())")
                         field_comments.append(f"Comment Field [{column_name}] With '{desc}';")
             
             # Load new data with hash calculation
@@ -224,20 +223,20 @@ def generate_das_qvs(
             table_lines.append("")
             
             # Comments
-            table_lines.append("    Trace Commenting table...;")
             if 'description' in table_info:
-                # Escape single quotes in table description
+                table_lines.append("    Trace Commenting table...;")
                 table_desc = table_info['description']
-                table_desc = table_desc.replace("'", "' & Chr(39) & '")
+                table_desc = table_desc.replace("'", "$(=Chr39())")
                 table_lines.append(f"    Comment Table [{table_name}] With '{table_desc}';")
-            else:
-                table_lines.append(f"    Comment Table [{table_name}] With 'Table loaded from data source';")
-            table_lines.append("")
+                table_lines.append("")
             
-            table_lines.append("    Trace Commenting fields...;")
-            for comment in field_comments:
-                table_lines.append(f"    {comment}")
-            table_lines.append("")
+            if field_comments:
+                table_lines.append("    Trace Commenting fields...;")
+
+                for comment in field_comments:
+                    table_lines.append(f"    {comment}")
+                
+                table_lines.append("")
             
             # Storing and cleanup
             table_lines.append("    Trace Storing data...;")
