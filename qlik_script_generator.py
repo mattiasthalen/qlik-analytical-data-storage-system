@@ -2,9 +2,9 @@ import yaml
 import os
 from pathlib import Path
 
-BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__))).parent
+BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 SCHEMA_PATH = BASE_DIR / "schemas" / "raw_schema.yaml"
-SCRIPT_PATH = BASE_DIR / "qlik_scripts"
+SCRIPT_PATH = BASE_DIR / "scripts"
 
 def generate_das_qvs(
     script_path: Path = SCRIPT_PATH,
