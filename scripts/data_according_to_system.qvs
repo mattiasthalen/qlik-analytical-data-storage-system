@@ -35,12 +35,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -125,13 +125,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__addresses] Into [$(val__qvd_path__das)/raw__adventure_works__addresses.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__addresses];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__addresses];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -171,12 +171,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -249,13 +249,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__address_types] Into [$(val__qvd_path__das)/raw__adventure_works__address_types.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__address_types];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__address_types];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -295,12 +295,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -388,13 +388,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__bill_of_materials] Into [$(val__qvd_path__das)/raw__adventure_works__bill_of_materials.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__bill_of_materials];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__bill_of_materials];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -434,12 +434,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -515,13 +515,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__business_entity_addresses] Into [$(val__qvd_path__das)/raw__adventure_works__business_entity_addresses.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__business_entity_addresses];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__business_entity_addresses];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -561,12 +561,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -642,13 +642,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__business_entity_contacts] Into [$(val__qvd_path__das)/raw__adventure_works__business_entity_contacts.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__business_entity_contacts];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__business_entity_contacts];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -688,12 +688,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -763,13 +763,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__contact_types] Into [$(val__qvd_path__das)/raw__adventure_works__contact_types.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__contact_types];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__contact_types];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -809,12 +809,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -884,13 +884,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__country_regions] Into [$(val__qvd_path__das)/raw__adventure_works__country_regions.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__country_regions];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__country_regions];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -930,12 +930,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1014,13 +1014,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__credit_cards] Into [$(val__qvd_path__das)/raw__adventure_works__credit_cards.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__credit_cards];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__credit_cards];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1060,12 +1060,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1135,13 +1135,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__cultures] Into [$(val__qvd_path__das)/raw__adventure_works__cultures.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__cultures];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__cultures];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1181,12 +1181,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1256,13 +1256,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__currencies] Into [$(val__qvd_path__das)/raw__adventure_works__currencies.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__currencies];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__currencies];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1302,12 +1302,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1389,13 +1389,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__currency_rates] Into [$(val__qvd_path__das)/raw__adventure_works__currency_rates.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__currency_rates];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__currency_rates];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1435,12 +1435,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1522,13 +1522,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__customers] Into [$(val__qvd_path__das)/raw__adventure_works__customers.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__customers];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__customers];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1568,12 +1568,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1646,13 +1646,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__departments] Into [$(val__qvd_path__das)/raw__adventure_works__departments.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__departments];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__departments];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1692,12 +1692,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1773,13 +1773,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__email_addresses] Into [$(val__qvd_path__das)/raw__adventure_works__email_addresses.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__email_addresses];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__email_addresses];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1819,12 +1819,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -1903,13 +1903,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__employee_department_histories] Into [$(val__qvd_path__das)/raw__adventure_works__employee_department_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__employee_department_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__employee_department_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -1949,12 +1949,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2030,13 +2030,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__employee_pay_histories] Into [$(val__qvd_path__das)/raw__adventure_works__employee_pay_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__employee_pay_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__employee_pay_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2076,12 +2076,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2187,13 +2187,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__employees] Into [$(val__qvd_path__das)/raw__adventure_works__employees.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__employees];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__employees];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2233,12 +2233,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2308,13 +2308,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__illustrations] Into [$(val__qvd_path__das)/raw__adventure_works__illustrations.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__illustrations];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__illustrations];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2354,12 +2354,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2432,13 +2432,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__job_candidates] Into [$(val__qvd_path__das)/raw__adventure_works__job_candidates.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__job_candidates];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__job_candidates];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2478,12 +2478,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2559,13 +2559,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__locations] Into [$(val__qvd_path__das)/raw__adventure_works__locations.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__locations];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__locations];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2605,12 +2605,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2683,13 +2683,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__person_phones] Into [$(val__qvd_path__das)/raw__adventure_works__person_phones.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__person_phones];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__person_phones];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2729,12 +2729,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2834,13 +2834,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__persons] Into [$(val__qvd_path__das)/raw__adventure_works__persons.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__persons];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__persons];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -2880,12 +2880,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -2955,13 +2955,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__phone_number_types] Into [$(val__qvd_path__das)/raw__adventure_works__phone_number_types.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__phone_number_types];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__phone_number_types];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3001,12 +3001,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3079,13 +3079,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_categories] Into [$(val__qvd_path__das)/raw__adventure_works__product_categories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_categories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_categories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3125,12 +3125,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3206,13 +3206,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_cost_histories] Into [$(val__qvd_path__das)/raw__adventure_works__product_cost_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_cost_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_cost_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3252,12 +3252,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3330,13 +3330,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_descriptions] Into [$(val__qvd_path__das)/raw__adventure_works__product_descriptions.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_descriptions];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_descriptions];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3376,12 +3376,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3463,13 +3463,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_inventories] Into [$(val__qvd_path__das)/raw__adventure_works__product_inventories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_inventories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_inventories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3509,12 +3509,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3590,13 +3590,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_list_price_histories] Into [$(val__qvd_path__das)/raw__adventure_works__product_list_price_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_list_price_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_list_price_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3636,12 +3636,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3711,13 +3711,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_model_illustrations] Into [$(val__qvd_path__das)/raw__adventure_works__product_model_illustrations.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_model_illustrations];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_model_illustrations];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3757,12 +3757,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3841,13 +3841,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_models] Into [$(val__qvd_path__das)/raw__adventure_works__product_models.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_models];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_models];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -3887,12 +3887,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -3971,13 +3971,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_photos] Into [$(val__qvd_path__das)/raw__adventure_works__product_photos.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_photos];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_photos];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4017,12 +4017,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4107,13 +4107,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_reviews] Into [$(val__qvd_path__das)/raw__adventure_works__product_reviews.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_reviews];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_reviews];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4153,12 +4153,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4291,13 +4291,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__products] Into [$(val__qvd_path__das)/raw__adventure_works__products.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__products];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__products];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4337,12 +4337,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4418,13 +4418,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_subcategories] Into [$(val__qvd_path__das)/raw__adventure_works__product_subcategories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_subcategories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_subcategories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4464,12 +4464,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4563,13 +4563,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__product_vendors] Into [$(val__qvd_path__das)/raw__adventure_works__product_vendors.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__product_vendors];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__product_vendors];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4609,12 +4609,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4708,13 +4708,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__purchase_order_details] Into [$(val__qvd_path__das)/raw__adventure_works__purchase_order_details.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__purchase_order_details];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__purchase_order_details];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4754,12 +4754,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -4859,13 +4859,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__purchase_order_headers] Into [$(val__qvd_path__das)/raw__adventure_works__purchase_order_headers.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__purchase_order_headers];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__purchase_order_headers];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -4905,12 +4905,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5004,13 +5004,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_order_details] Into [$(val__qvd_path__das)/raw__adventure_works__sales_order_details.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_order_details];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_order_details];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5050,12 +5050,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5191,13 +5191,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_order_headers] Into [$(val__qvd_path__das)/raw__adventure_works__sales_order_headers.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_order_headers];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_order_headers];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5237,12 +5237,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5318,13 +5318,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_person_quota_histories] Into [$(val__qvd_path__das)/raw__adventure_works__sales_person_quota_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_person_quota_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_person_quota_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5364,12 +5364,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5457,13 +5457,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_persons] Into [$(val__qvd_path__das)/raw__adventure_works__sales_persons.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_persons];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_persons];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5503,12 +5503,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5581,13 +5581,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_reasons] Into [$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_reasons];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_reasons];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5627,12 +5627,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5714,13 +5714,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_tax_rates] Into [$(val__qvd_path__das)/raw__adventure_works__sales_tax_rates.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_tax_rates];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_tax_rates];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5760,12 +5760,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5856,13 +5856,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_territories] Into [$(val__qvd_path__das)/raw__adventure_works__sales_territories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_territories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_territories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -5902,12 +5902,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -5986,13 +5986,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__sales_territory_histories] Into [$(val__qvd_path__das)/raw__adventure_works__sales_territory_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__sales_territory_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__sales_territory_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6032,12 +6032,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6107,13 +6107,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__scrap_reasons] Into [$(val__qvd_path__das)/raw__adventure_works__scrap_reasons.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__scrap_reasons];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__scrap_reasons];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6153,12 +6153,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6234,13 +6234,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__shifts] Into [$(val__qvd_path__das)/raw__adventure_works__shifts.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__shifts];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__shifts];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6280,12 +6280,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6364,13 +6364,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__ship_methods] Into [$(val__qvd_path__das)/raw__adventure_works__ship_methods.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__ship_methods];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__ship_methods];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6410,12 +6410,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6494,13 +6494,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__shopping_cart_items] Into [$(val__qvd_path__das)/raw__adventure_works__shopping_cart_items.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__shopping_cart_items];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__shopping_cart_items];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6540,12 +6540,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6639,13 +6639,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__special_offers] Into [$(val__qvd_path__das)/raw__adventure_works__special_offers.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__special_offers];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__special_offers];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6685,12 +6685,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6775,13 +6775,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__state_provinces] Into [$(val__qvd_path__das)/raw__adventure_works__state_provinces.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__state_provinces];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__state_provinces];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6821,12 +6821,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -6905,13 +6905,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__stores] Into [$(val__qvd_path__das)/raw__adventure_works__stores.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__stores];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__stores];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -6951,12 +6951,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7044,13 +7044,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__transaction_histories] Into [$(val__qvd_path__das)/raw__adventure_works__transaction_histories.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__transaction_histories];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__transaction_histories];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -7090,12 +7090,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7183,13 +7183,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__transaction_history_archives] Into [$(val__qvd_path__das)/raw__adventure_works__transaction_history_archives.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__transaction_history_archives];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__transaction_history_archives];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -7229,12 +7229,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7304,13 +7304,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__unit_measures] Into [$(val__qvd_path__das)/raw__adventure_works__unit_measures.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__unit_measures];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__unit_measures];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -7350,12 +7350,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7440,13 +7440,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__vendors] Into [$(val__qvd_path__das)/raw__adventure_works__vendors.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__vendors];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__vendors];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -7486,12 +7486,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7588,13 +7588,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__work_order_routings] Into [$(val__qvd_path__das)/raw__adventure_works__work_order_routings.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__work_order_routings];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__work_order_routings];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
@@ -7634,12 +7634,12 @@ If $(val__target_qvd_exists) Then
 
     [max_incremental_value]:
     Load
-        MAX([modified_date]) As [max_modified_date]
+        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
     From
         [$(val__qvd_target)] (qvd)
     ;
 
-    Let val__incremental_value = Coalesce(Peek('max_modified_date', -1, 'max_incremental_value'), '$(val__incremental_value)');
+    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
     Drop Table [max_incremental_value];
 
 Else
@@ -7730,13 +7730,13 @@ If $(val__no_of_new_records) > 0 Then
     Trace Storing data...;
     Store [raw__adventure_works__work_orders] Into [$(val__qvd_path__das)/raw__adventure_works__work_orders.qvd] (qvd);
 
-    Trace Dropping table...;
-    Drop Table [raw__adventure_works__work_orders];
-
 Else
-    Trace No new records found, skipping append...;
+    Trace No new records loaded...;
 
 End If
+
+Trace Dropping table...;
+Drop Table [raw__adventure_works__work_orders];
 
 Trace Resetting variables...;
 Let val__qvd_target = Null();
