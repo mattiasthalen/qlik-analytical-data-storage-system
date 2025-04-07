@@ -65,7 +65,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -197,7 +197,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -326,7 +326,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -461,7 +461,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -588,7 +588,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -713,7 +713,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -834,7 +834,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -958,7 +958,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1085,7 +1085,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1206,7 +1206,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1331,7 +1331,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1464,7 +1464,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1594,7 +1594,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1719,7 +1719,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1847,7 +1847,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -1976,7 +1976,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2113,7 +2113,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2258,7 +2258,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2380,7 +2380,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2505,7 +2505,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2631,7 +2631,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2764,7 +2764,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -2905,7 +2905,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3027,7 +3027,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3152,7 +3152,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3278,7 +3278,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3405,7 +3405,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3536,7 +3536,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3661,7 +3661,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3785,7 +3785,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -3915,7 +3915,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4047,7 +4047,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4199,7 +4199,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4364,7 +4364,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4497,7 +4497,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4642,7 +4642,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4789,7 +4789,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -4938,7 +4938,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5097,7 +5097,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5264,7 +5264,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5395,7 +5395,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5529,7 +5529,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5656,7 +5656,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5792,7 +5792,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -5930,7 +5930,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6057,7 +6057,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6180,7 +6180,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6308,7 +6308,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6438,7 +6438,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6573,7 +6573,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6715,7 +6715,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6849,7 +6849,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -6982,7 +6982,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -7121,7 +7121,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -7254,7 +7254,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -7380,7 +7380,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -7520,7 +7520,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))
@@ -7666,7 +7666,7 @@ Set var__record_hash = Hash256(
 Load
     *,
     $(var__record_hash) As [record_hash],
-    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.ffffff') As [record_loaded_at]
+    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
 
 Where
     Not Exists ([old_record_hash], $(var__record_hash))

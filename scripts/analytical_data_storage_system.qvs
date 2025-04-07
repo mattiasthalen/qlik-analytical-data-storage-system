@@ -13,5 +13,5 @@ Let val__qvd_path__dar = 'lib://DataFiles/Analytical Data Storage System/QVD/$(v
 Let val__base_script_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/git_branches/$(val__git_branch)/scripts';
 
 $(Must_Include=$(val__base_script_path)/data_according_to_system.qvs);
-$(Include=$(val__base_script_path)/data_according_to_business.qvs);
-$(Include=$(val__base_script_path)/data_according_to_requirements.qvs);
+$(Must_Include=$(val__base_script_path)/data_according_to_business.qvs);
+//$(Must_Include=$(val__base_script_path)/data_according_to_requirements.qvs);
