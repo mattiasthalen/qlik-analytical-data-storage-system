@@ -1,0 +1,136 @@
+Trace
+---------------------------------------------------------------
+    Extracting raw__adventure_works__sales_reasons
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__sales_reasons.parquet';
+Let val__target_path = '$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_exists = If(Len('$(val__target_create_time)') > 0, 1, 0);
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+Let val__incremental_value = '1970-01-01';
+
+If $(val__source_is_newer) = 1 Then
+    Trace Source is newer, loading & transforming data...;
+
+    Trace Define hash table...;
+    [processed_record_hashes]:
+    Load
+        Null() As [old_record_hash]
+    AutoGenerate 0
+    ;
+
+    Trace Checking if target QVD exists...;
+    If $(val__target_exists) = 1 Then
+        Trace Target found, loading hashes and max incremental value...;
+
+        Concatenate([processed_record_hashes])
+        Load
+            [record_hash] As [old_record_hash]
+
+        From
+            [$(val__target_path)] (qvd)
+        ;
+
+        [max_incremental_value]:
+        Load
+            Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
+        From
+            [$(val__target_path)] (qvd)
+        ;
+
+        Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
+        Drop Table [max_incremental_value];
+
+    Else
+        Trace Target not found, starting full load...;
+
+    End If
+
+    Trace Loading new data with incremental value $(val__incremental_value)...;
+    Set var__record_hash = Hash256(
+        [sales_reason_id],
+        [name],
+        [reason_type],
+        [modified_date]
+    )
+    ;
+
+    [raw__adventure_works__sales_reasons]:
+    Load
+        Text([sales_reason_id]) As [sales_reason_id],
+        Text([name]) As [name],
+        Text([reason_type]) As [reason_type],
+        Text([modified_date]) As [modified_date],
+        $(var__record_hash) As [record_hash],
+        Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
+
+    From
+        [$(val__source_path)] (parquet)
+
+    Where
+        1 = 1
+        And Date([modified_date], 'YYYY-MM-DD') >= Date#('$(val__incremental_value)', 'YYYY-MM-DD')
+        And Not Exists ([old_record_hash], $(var__record_hash))
+    ;
+
+    Trace Dropping hash table...;
+    Drop Table [processed_record_hashes];
+
+    Trace Counting new records...;
+    Set val__no_of_new_records = Alt(NoOfRows('raw__adventure_works__sales_reasons'), 0);
+
+    Trace Checking if there are new records...;
+    If $(val__no_of_new_records) > 0 Then
+
+        Trace Checking if target QVD exists...;
+        If $(val__target_exists) = 1 Then
+            Trace Appending previously ingested data...;
+
+            Concatenate([raw__adventure_works__sales_reasons])
+            Load * From [$(val__target_path)] (qvd) Where Not Exists ([record_hash]);
+
+        Else
+            Trace Target not found, skipping append...;
+
+        End If
+
+        Trace Commenting table...;
+        Comment Table [raw__adventure_works__sales_reasons] With 'Lookup table of customer purchase reasons.';
+
+        Trace Commenting fields...;
+        Comment Field [sales_reason_id] With 'Primary key for SalesReason records.';
+        Comment Field [name] With 'Sales reason description.';
+        Comment Field [reason_type] With 'Category the sales reason belongs to.';
+        Comment Field [modified_date] With 'Date and time the record was last updated.';
+        Comment Field [record_hash] With 'Hash of the record, used for deduplication.';
+        Comment Field [record_loaded_at] With 'Timestamp when the record was loaded.';
+
+        Trace Storing data...;
+        Store [raw__adventure_works__sales_reasons] Into [$(val__qvd_path__das)/raw__adventure_works__sales_reasons.qvd] (qvd);
+
+    Else
+        Trace No new records loaded...;
+
+    End If
+
+    Trace Dropping table...;
+    Drop Table [raw__adventure_works__sales_reasons];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let var__source_create_time = Null();
+Let var__target_create_time = Null();
+Let val__target_exists = Null();
+Let val__source_is_newer = Null();
+Let val__incremental_value = Null();
+Let var__record_hash = Null();
+Let val__no_of_new_records = Null();

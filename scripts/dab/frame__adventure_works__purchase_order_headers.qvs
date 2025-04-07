@@ -1,0 +1,140 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__purchase_order_headers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__purchase_order_headers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__order__purchase = 'order__purchase__adventure_works|' & Text([purchase_order_id]);
+Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([employee_id]);
+Set var__hook__vendor = 'vendor__adventure_works|' & Text([vendor_id]);
+Set var__hook__ship_method = 'ship_method__adventure_works|' & Text([ship_method_id]);
+Set var__record_version = Window(RecNo(), [purchase_order_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [purchase_order_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__order__purchase = $(var__hook__order__purchase) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__purchase_order_headers]:
+    Load
+        Text($(var__pit_hook__order__purchase)) As [_pit_hook__order__purchase],
+        Text($(var__hook__order__purchase)) As [_hook__order__purchase],
+        Text($(var__hook__person__employee)) As [_hook__person__employee],
+        Text($(var__hook__vendor)) As [_hook__vendor],
+        Text($(var__hook__ship_method)) As [_hook__ship_method],
+        Num#([purchase_order_id]) As [purchase_order_header__purchase_order_id],
+        Num#([revision_number]) As [purchase_order_header__revision_number],
+        Num#([status]) As [purchase_order_header__status],
+        Num#([employee_id]) As [purchase_order_header__employee_id],
+        Num#([vendor_id]) As [purchase_order_header__vendor_id],
+        Num#([ship_method_id]) As [purchase_order_header__ship_method_id],
+        Date(Num#([order_date]), 'YYYY-MM-DD') As [purchase_order_header__order_date],
+        Date(Num#([ship_date]), 'YYYY-MM-DD') As [purchase_order_header__ship_date],
+        Num#([sub_total]) As [purchase_order_header__sub_total],
+        Num#([tax_amt]) As [purchase_order_header__tax_amt],
+        Num#([freight]) As [purchase_order_header__freight],
+        Num#([total_due]) As [purchase_order_header__total_due],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [purchase_order_header__modified_date],
+        Text([record_hash]) As [purchase_order_header__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [purchase_order_header__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [purchase_order_header__record_updated_at],
+        Num($(var__record_version)) As [purchase_order_header__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [purchase_order_header__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [purchase_order_header__record_valid_to],
+        Num($(var__is_current_record)) As [purchase_order_header__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__purchase_order_headers] With 'General purchase order information. See PurchaseOrderDetail.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__order__purchase] With 'Point in time version of _hook__order__purchase.';
+    Comment Field [_hook__order__purchase] With 'Hook for purchase_order_id using keyset: order__purchase__adventure_works.';
+    Comment Field [_hook__person__employee] With 'Hook for employee_id using keyset: person__employee__adventure_works.';
+    Comment Field [_hook__vendor] With 'Hook for vendor_id using keyset: vendor__adventure_works.';
+    Comment Field [_hook__ship_method] With 'Hook for ship_method_id using keyset: ship_method__adventure_works.';
+    Comment Field [purchase_order_header__purchase_order_id] With 'Primary key.';
+    Comment Field [purchase_order_header__revision_number] With 'Incremental number to track changes to the purchase order over time.';
+    Comment Field [purchase_order_header__status] With 'Order current status. 1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete.';
+    Comment Field [purchase_order_header__employee_id] With 'Employee who created the purchase order. Foreign key to Employee.BusinessEntityID.';
+    Comment Field [purchase_order_header__vendor_id] With 'Vendor with whom the purchase order is placed. Foreign key to Vendor.BusinessEntityID.';
+    Comment Field [purchase_order_header__ship_method_id] With 'Shipping method. Foreign key to ShipMethod.ShipMethodID.';
+    Comment Field [purchase_order_header__order_date] With 'Purchase order creation date.';
+    Comment Field [purchase_order_header__ship_date] With 'Estimated shipment date from the vendor.';
+    Comment Field [purchase_order_header__sub_total] With 'Purchase order subtotal. Computed as SUM(PurchaseOrderDetail.LineTotal) for the appropriate PurchaseOrderID.';
+    Comment Field [purchase_order_header__tax_amt] With 'Tax amount.';
+    Comment Field [purchase_order_header__freight] With 'Shipping cost.';
+    Comment Field [purchase_order_header__total_due] With 'Total due to vendor. Computed as Subtotal + TaxAmt + Freight.';
+    Comment Field [purchase_order_header__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_header__record_hash] With 'Hash of the record.';
+    Comment Field [purchase_order_header__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [purchase_order_header__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_header__record_version] With 'Version of the record.';
+    Comment Field [purchase_order_header__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [purchase_order_header__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [purchase_order_header__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__purchase_order_headers] Into [$(val__qvd_path__dab)/frame__adventure_works__purchase_order_headers.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__purchase_order_headers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__order__purchase = Null();
+Let var__hook__person__employee = Null();
+Let var__hook__vendor = Null();
+Let var__hook__ship_method = Null();
+Let var__pit_hook__order__purchase = Null();

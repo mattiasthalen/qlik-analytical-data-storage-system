@@ -1,0 +1,108 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__illustrations
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__illustrations.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__illustrations.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__reference__illustration = 'reference__illustration__adventure_works|' & Text([illustration_id]);
+Set var__record_version = Window(RecNo(), [illustration_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [illustration_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__reference__illustration = $(var__hook__reference__illustration) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__illustrations]:
+    Load
+        Text($(var__pit_hook__reference__illustration)) As [_pit_hook__reference__illustration],
+        Text($(var__hook__reference__illustration)) As [_hook__reference__illustration],
+        Num#([illustration_id]) As [illustration__illustration_id],
+        Text([diagram]) As [illustration__diagram],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [illustration__modified_date],
+        Text([record_hash]) As [illustration__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [illustration__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [illustration__record_updated_at],
+        Num($(var__record_version)) As [illustration__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [illustration__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [illustration__record_valid_to],
+        Num($(var__is_current_record)) As [illustration__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__illustrations.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__illustrations] With 'Bicycle assembly diagrams.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__illustration] With 'Point in time version of _hook__reference__illustration.';
+    Comment Field [_hook__reference__illustration] With 'Hook for illustration_id using keyset: reference__illustration__adventure_works.';
+    Comment Field [illustration__illustration_id] With 'Primary key for Illustration records.';
+    Comment Field [illustration__diagram] With 'Illustrations used in manufacturing instructions. Stored as XML.';
+    Comment Field [illustration__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [illustration__record_hash] With 'Hash of the record.';
+    Comment Field [illustration__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [illustration__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [illustration__record_version] With 'Version of the record.';
+    Comment Field [illustration__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [illustration__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [illustration__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__illustrations] Into [$(val__qvd_path__dab)/frame__adventure_works__illustrations.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__illustrations];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__reference__illustration = Null();
+Let var__pit_hook__reference__illustration = Null();

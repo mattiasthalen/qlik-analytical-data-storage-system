@@ -20,20 +20,26 @@ def generate_das_qvs(
     1. Reads the YAML schema to extract table and column definitions.
     2. Generates QVS scripts for each table, including variable setup, hash table
        definitions, data loading with incremental values, and storage operations.
-    3. Writes the constructed QVS scripts to an output file.
+    3. Writes individual QVS script files for each table into a 'das' subdirectory.
+    4. Writes a main script file that includes all individual table scripts.
 
     Output:
-        Generates a QVS script file at the defined output path.
+        - Individual QVS script files for each table in script_path/das/
+        - A main QVS script file at the defined output path that includes all individual scripts.
     """
 
     # Paths
     output_path = script_path / "data_according_to_system.qvs"
+    das_dir = script_path / "das"
+    
+    # Create das directory if it doesn't exist
+    os.makedirs(das_dir, exist_ok=True)
     
     # Read the YAML schema file
     with open(schema_path, 'r') as f:
         schema_data = yaml.safe_load(f)
     
-    # Begin constructing the output
+    # Begin constructing the output for the main file
     output = []
     
     # Add header trace
@@ -44,7 +50,7 @@ def generate_das_qvs(
     output.append("===============================================================")
     output.append(";")
     
-    # Process each table in the schema
+    # Process each table in the schema and write individual files
     if 'tables' in schema_data:
         for table_name, table_info in schema_data['tables'].items():
             # Extract entity name from table name for primary key detection
@@ -267,14 +273,23 @@ def generate_das_qvs(
             table_lines.append("Let val__no_of_new_records = Null();")
             table_lines.append("")
             
-            # Add the table script to the output
-            output.extend(table_lines)
+            # Generate individual QVS file path for this table
+            table_file_path = das_dir / f"{table_name}.qvs"
             
-    # Write the output file
+            # Write the individual file
+            with open(table_file_path, 'w') as f:
+                f.write('\n'.join(table_lines))
+            
+            print(f"Generated individual DAS QVS file for {table_name} at: {table_file_path}")
+            
+            # Add include statement to main output
+            output.append(f"$(Must_Include=$(val__base_script_path)/das/{table_name}.qvs);")
+    
+    # Write the main output file with includes
     with open(output_path, 'w') as f:
         f.write('\n'.join(output))
     
-    print(f"Generated DAS QVS file at: {output_path}")
+    print(f"Generated main DAS QVS file at: {output_path}")
 
 def generate_dab_qvs(
     script_path: Path,
@@ -297,14 +312,20 @@ def generate_dab_qvs(
        - Loads and transforms data from the corresponding DAS table.
        - Applies field prefixing and comments.
        - Stores the transformed data in the DAB QVD file.
-    3. Writes the constructed QVS scripts to an output file.
+    3. Writes individual QVS script files for each frame into a 'dab' subdirectory.
+    4. Writes a main script file that includes all individual frame scripts.
 
     Output:
-        Generates a QVS script file at the defined output path.
+        - Individual QVS script files for each frame in script_path/dab/
+        - A main QVS script file at the defined output path that includes all individual scripts.
     """
 
     # Paths
     output_path = script_path / "data_according_to_business.qvs"
+    dab_dir = script_path / "dab"
+    
+    # Create dab directory if it doesn't exist
+    os.makedirs(dab_dir, exist_ok=True)
     
     # Read the YAML schema file
     with open(schema_path, 'r') as f:
@@ -314,7 +335,7 @@ def generate_dab_qvs(
     with open(hooks_path, 'r') as f:
         hooks_data = yaml.safe_load(f)
     
-    # Begin constructing the output
+    # Begin constructing the output for the main file
     output = []
     
     # Add header trace
@@ -679,14 +700,23 @@ def generate_dab_qvs(
                 
             frame_lines.append("")
             
-            # Add the frame script to the output
-            output.extend(frame_lines)
+            # Generate individual QVS file path for this frame
+            frame_file_path = dab_dir / f"{frame_name}.qvs"
+            
+            # Write the individual file
+            with open(frame_file_path, 'w') as f:
+                f.write('\n'.join(frame_lines))
+            
+            print(f"Generated individual DAB QVS file for {frame_name} at: {frame_file_path}")
+            
+            # Add include statement to main output
+            output.append(f"$(Must_Include=$(val__base_script_path)/dab/{frame_name}.qvs);")
     
-    # Write the output file
+    # Write the main output file with includes
     with open(output_path, 'w') as f:
         f.write('\n'.join(output))
     
-    print(f"Generated DAB QVS file at: {output_path}")
+    print(f"Generated main DAB QVS file at: {output_path}")
 
 if __name__ == "__main__":
     BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))

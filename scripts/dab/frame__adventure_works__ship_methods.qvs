@@ -1,0 +1,114 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__ship_methods
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__ship_methods.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__ship_methods.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__ship_method = 'ship_method__adventure_works|' & Text([ship_method_id]);
+Set var__record_version = Window(RecNo(), [ship_method_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [ship_method_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__ship_method = $(var__hook__ship_method) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__ship_methods]:
+    Load
+        Text($(var__pit_hook__ship_method)) As [_pit_hook__ship_method],
+        Text($(var__hook__ship_method)) As [_hook__ship_method],
+        Num#([ship_method_id]) As [ship_method__ship_method_id],
+        Text([name]) As [ship_method__name],
+        Num#([ship_base]) As [ship_method__ship_base],
+        Num#([ship_rate]) As [ship_method__ship_rate],
+        Text([rowguid]) As [ship_method__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [ship_method__modified_date],
+        Text([record_hash]) As [ship_method__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [ship_method__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [ship_method__record_updated_at],
+        Num($(var__record_version)) As [ship_method__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [ship_method__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [ship_method__record_valid_to],
+        Num($(var__is_current_record)) As [ship_method__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__ship_methods.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__ship_methods] With 'Shipping company lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__ship_method] With 'Point in time version of _hook__ship_method.';
+    Comment Field [_hook__ship_method] With 'Hook for ship_method_id using keyset: ship_method__adventure_works.';
+    Comment Field [ship_method__ship_method_id] With 'Primary key for ShipMethod records.';
+    Comment Field [ship_method__name] With 'Shipping company name.';
+    Comment Field [ship_method__ship_base] With 'Minimum shipping charge.';
+    Comment Field [ship_method__ship_rate] With 'Shipping charge per pound.';
+    Comment Field [ship_method__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [ship_method__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [ship_method__record_hash] With 'Hash of the record.';
+    Comment Field [ship_method__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [ship_method__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [ship_method__record_version] With 'Version of the record.';
+    Comment Field [ship_method__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [ship_method__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [ship_method__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__ship_methods] Into [$(val__qvd_path__dab)/frame__adventure_works__ship_methods.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__ship_methods];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__ship_method = Null();
+Let var__pit_hook__ship_method = Null();

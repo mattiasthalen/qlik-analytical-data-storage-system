@@ -1,0 +1,120 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__sales_tax_rates
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_tax_rates.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__reference__sales_tax_rate = 'reference__sales_tax_rate__adventure_works|' & Text([sales_tax_rate_id]);
+Set var__hook__reference__state_province = 'reference__state_province__adventure_works|' & Text([state_province_id]);
+Set var__record_version = Window(RecNo(), [sales_tax_rate_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [sales_tax_rate_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__reference__sales_tax_rate = $(var__hook__reference__sales_tax_rate) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__sales_tax_rates]:
+    Load
+        Text($(var__pit_hook__reference__sales_tax_rate)) As [_pit_hook__reference__sales_tax_rate],
+        Text($(var__hook__reference__sales_tax_rate)) As [_hook__reference__sales_tax_rate],
+        Text($(var__hook__reference__state_province)) As [_hook__reference__state_province],
+        Num#([sales_tax_rate_id]) As [sales_tax_rate__sales_tax_rate_id],
+        Num#([state_province_id]) As [sales_tax_rate__state_province_id],
+        Num#([tax_type]) As [sales_tax_rate__tax_type],
+        Num#([tax_rate]) As [sales_tax_rate__tax_rate],
+        Text([name]) As [sales_tax_rate__name],
+        Text([rowguid]) As [sales_tax_rate__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [sales_tax_rate__modified_date],
+        Text([record_hash]) As [sales_tax_rate__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [sales_tax_rate__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_tax_rate__record_updated_at],
+        Num($(var__record_version)) As [sales_tax_rate__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_tax_rate__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_tax_rate__record_valid_to],
+        Num($(var__is_current_record)) As [sales_tax_rate__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__sales_tax_rates] With 'Tax rate lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__sales_tax_rate] With 'Point in time version of _hook__reference__sales_tax_rate.';
+    Comment Field [_hook__reference__sales_tax_rate] With 'Hook for sales_tax_rate_id using keyset: reference__sales_tax_rate__adventure_works.';
+    Comment Field [_hook__reference__state_province] With 'Hook for state_province_id using keyset: reference__state_province__adventure_works.';
+    Comment Field [sales_tax_rate__sales_tax_rate_id] With 'Primary key for SalesTaxRate records.';
+    Comment Field [sales_tax_rate__state_province_id] With 'State, province, or country/region the sales tax applies to.';
+    Comment Field [sales_tax_rate__tax_type] With '1 = Tax applied to retail transactions, 2 = Tax applied to wholesale transactions, 3 = Tax applied to all sales (retail and wholesale) transactions.';
+    Comment Field [sales_tax_rate__tax_rate] With 'Tax rate amount.';
+    Comment Field [sales_tax_rate__name] With 'Tax rate description.';
+    Comment Field [sales_tax_rate__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [sales_tax_rate__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [sales_tax_rate__record_hash] With 'Hash of the record.';
+    Comment Field [sales_tax_rate__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [sales_tax_rate__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [sales_tax_rate__record_version] With 'Version of the record.';
+    Comment Field [sales_tax_rate__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [sales_tax_rate__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [sales_tax_rate__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__sales_tax_rates] Into [$(val__qvd_path__dab)/frame__adventure_works__sales_tax_rates.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__sales_tax_rates];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__reference__sales_tax_rate = Null();
+Let var__hook__reference__state_province = Null();
+Let var__pit_hook__reference__sales_tax_rate = Null();

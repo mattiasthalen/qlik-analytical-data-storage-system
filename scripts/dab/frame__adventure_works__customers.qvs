@@ -1,0 +1,128 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__customers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__customers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__customers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__customer = 'customer__adventure_works|' & Text([customer_id]);
+Set var__hook__person__customer = 'person__customer__adventure_works|' & Text([person_id]);
+Set var__hook__store = 'store__adventure_works|' & Text([store_id]);
+Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
+Set var__record_version = Window(RecNo(), [customer_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [customer_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__customer = $(var__hook__customer) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__customers]:
+    Load
+        Text($(var__pit_hook__customer)) As [_pit_hook__customer],
+        Text($(var__hook__customer)) As [_hook__customer],
+        Text($(var__hook__person__customer)) As [_hook__person__customer],
+        Text($(var__hook__store)) As [_hook__store],
+        Text($(var__hook__territory__sales)) As [_hook__territory__sales],
+        Num#([customer_id]) As [customer__customer_id],
+        Num#([store_id]) As [customer__store_id],
+        Num#([territory_id]) As [customer__territory_id],
+        Text([account_number]) As [customer__account_number],
+        Text([rowguid]) As [customer__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [customer__modified_date],
+        Num#([person_id]) As [customer__person_id],
+        Text([record_hash]) As [customer__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [customer__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [customer__record_updated_at],
+        Num($(var__record_version)) As [customer__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [customer__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [customer__record_valid_to],
+        Num($(var__is_current_record)) As [customer__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__customers.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__customers] With 'Current customer information. Also see the Person and Store tables.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__customer] With 'Point in time version of _hook__customer.';
+    Comment Field [_hook__customer] With 'Hook for customer_id using keyset: customer__adventure_works.';
+    Comment Field [_hook__person__customer] With 'Hook for person_id using keyset: person__customer__adventure_works.';
+    Comment Field [_hook__store] With 'Hook for store_id using keyset: store__adventure_works.';
+    Comment Field [_hook__territory__sales] With 'Hook for territory_id using keyset: territory__sales__adventure_works.';
+    Comment Field [customer__customer_id] With 'Primary key.';
+    Comment Field [customer__store_id] With 'Foreign key to Store.BusinessEntityID.';
+    Comment Field [customer__territory_id] With 'ID of the territory in which the customer is located. Foreign key to SalesTerritory.SalesTerritoryID.';
+    Comment Field [customer__account_number] With 'Unique number identifying the customer assigned by the accounting system.';
+    Comment Field [customer__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [customer__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [customer__person_id] With 'Foreign key to Person.BusinessEntityID.';
+    Comment Field [customer__record_hash] With 'Hash of the record.';
+    Comment Field [customer__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [customer__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [customer__record_version] With 'Version of the record.';
+    Comment Field [customer__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [customer__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [customer__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__customers] Into [$(val__qvd_path__dab)/frame__adventure_works__customers.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__customers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__customer = Null();
+Let var__hook__person__customer = Null();
+Let var__hook__store = Null();
+Let var__hook__territory__sales = Null();
+Let var__pit_hook__customer = Null();
