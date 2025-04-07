@@ -10,8 +10,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__address_types.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__address_types.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__address_types.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__address_types.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__address_type = 'reference__address_type__adventure_works|' & Text([address_type_id]);
 Set var__record_version = Window(RecNo(), [address_type_id], 'Asc', [record_loaded_at]);
 
@@ -44,7 +48,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__address_type = $(var__hook__reference__address_type) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__address_types]:
@@ -64,7 +68,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [address_type__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__address_types.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__address_types.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -92,11 +96,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__address_types];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -111,8 +121,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__addresses.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__addresses.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__addresses.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__addresses.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__address = 'address__adventure_works|' & Text([address_id]);
 Set var__hook__reference__state_province = 'reference__state_province__adventure_works|' & Text([state_province_id]);
 Set var__record_version = Window(RecNo(), [address_id], 'Asc', [record_loaded_at]);
@@ -146,7 +160,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__address = $(var__hook__address) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__addresses]:
@@ -171,7 +185,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [address__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__addresses.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__addresses.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -204,11 +218,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__addresses];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -224,8 +244,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__bill_of_materials.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__bill_of_materials.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__bill_of_materials.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__bill_of_materials.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__bill_of_materials = 'product__adventure_works|' & Text([bill_of_materials_id]);
 Set var__hook__product__assembly = 'product__adventure_works|' & Text([product_assembly_id]);
 Set var__hook__product__component = 'product__adventure_works|' & Text([component_id]);
@@ -261,7 +285,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__bill_of_materials = $(var__hook__bill_of_materials) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__bill_of_materials]:
@@ -289,7 +313,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [bill_of_material__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__bill_of_materials.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__bill_of_materials.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -325,11 +349,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__bill_of_materials];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -347,8 +377,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__business_entity_addresses.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__business_entity_addresses.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__business_entity_addresses.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__business_entity_addresses.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__address = 'address__adventure_works|' & Text([address_id]);
 Set var__hook__business_entity = 'business_entity__adventure_works|' & Text([business_entity_id]);
 Set var__hook__reference__address_type = 'reference__address_type__adventure_works|' & Text([address_type_id]);
@@ -383,7 +417,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__address = $(var__hook__address) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__business_entity_addresses]:
@@ -406,7 +440,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [business_entity_address__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__business_entity_addresses.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__business_entity_addresses.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -437,11 +471,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__business_entity_addresses];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -458,8 +498,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__business_entity_contacts.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__business_entity_contacts.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__business_entity_contacts.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__business_entity_contacts.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__business_entity = 'business_entity__adventure_works|' & Text([business_entity_id]);
 Set var__hook__person__contact = 'person__individual__adventure_works|' & Text([person_id]);
 Set var__hook__reference__contact_type = 'reference__contact_type__adventure_works|' & Text([contact_type_id]);
@@ -494,7 +538,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__business_entity = $(var__hook__business_entity) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__business_entity_contacts]:
@@ -517,7 +561,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [business_entity_contact__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__business_entity_contacts.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__business_entity_contacts.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -548,11 +592,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__business_entity_contacts];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -569,8 +619,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__contact_types.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__contact_types.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__contact_types.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__contact_types.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__contact_type = 'reference__contact_type__adventure_works|' & Text([contact_type_id]);
 Set var__record_version = Window(RecNo(), [contact_type_id], 'Asc', [record_loaded_at]);
 
@@ -603,7 +657,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__contact_type = $(var__hook__reference__contact_type) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__contact_types]:
@@ -622,7 +676,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [contact_type__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__contact_types.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__contact_types.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -649,11 +703,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__contact_types];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -668,8 +728,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__country_regions.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__country_regions.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__country_regions.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__country_regions.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__country_region = 'reference__country_region__adventure_works|' & Text([country_region_code]);
 Set var__record_version = Window(RecNo(), [country_region_code], 'Asc', [record_loaded_at]);
 
@@ -702,7 +766,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__country_region = $(var__hook__reference__country_region) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__country_regions]:
@@ -721,7 +785,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [country_region__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__country_regions.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__country_regions.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -748,11 +812,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__country_regions];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -767,8 +837,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__credit_cards.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__credit_cards.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__credit_cards.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__credit_cards.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__credit_card = 'credit_card__adventure_works|' & Text([credit_card_id]);
 Set var__record_version = Window(RecNo(), [credit_card_id], 'Asc', [record_loaded_at]);
 
@@ -801,7 +875,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__credit_card = $(var__hook__credit_card) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__credit_cards]:
@@ -823,7 +897,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [credit_card__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__credit_cards.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__credit_cards.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -853,11 +927,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__credit_cards];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -872,8 +952,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__cultures.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__cultures.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__cultures.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__cultures.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__culture = 'reference__culture__adventure_works|' & Text([culture_id]);
 Set var__record_version = Window(RecNo(), [culture_id], 'Asc', [record_loaded_at]);
 
@@ -906,7 +990,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__culture = $(var__hook__reference__culture) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__cultures]:
@@ -925,7 +1009,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [culture__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__cultures.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__cultures.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -952,11 +1036,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__cultures];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -971,8 +1061,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__currencies.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__currencies.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__currencies.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__currencies.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__currency = 'currency__adventure_works|' & Text([currency_code]);
 Set var__record_version = Window(RecNo(), [currency_code], 'Asc', [record_loaded_at]);
 
@@ -1005,7 +1099,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__currency = $(var__hook__currency) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__currencies]:
@@ -1024,7 +1118,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [currency__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__currencies.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__currencies.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1051,11 +1145,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__currencies];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1070,8 +1170,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__currency_rates.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__currency_rates.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__currency_rates.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__currency_rates.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__currency__from = 'currency__adventure_works|' & Text([from_currency_code]);
 Set var__hook__currency__to = 'currency__adventure_works|' & Text([to_currency_code]);
 Set var__hook__currency_rate = 'currency__adventure_works|' & Text([currency_rate_id]);
@@ -1106,7 +1210,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__currency_rate = $(var__hook__currency_rate) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__currency_rates]:
@@ -1131,7 +1235,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [currency_rate__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__currency_rates.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__currency_rates.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1164,11 +1268,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__currency_rates];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1185,8 +1295,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__customers.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__customers.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__customers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__customers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__customer = 'customer__adventure_works|' & Text([customer_id]);
 Set var__hook__person__customer = 'person__customer__adventure_works|' & Text([person_id]);
 Set var__hook__store = 'store__adventure_works|' & Text([store_id]);
@@ -1222,7 +1336,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__customer = $(var__hook__customer) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__customers]:
@@ -1248,7 +1362,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [customer__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__customers.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__customers.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1282,11 +1396,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__customers];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1304,8 +1424,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__departments.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__departments.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__departments.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__departments.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__department = 'department__adventure_works|' & Text([department_id]);
 Set var__record_version = Window(RecNo(), [department_id], 'Asc', [record_loaded_at]);
 
@@ -1338,7 +1462,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__department = $(var__hook__department) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__departments]:
@@ -1358,7 +1482,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [department__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__departments.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__departments.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1386,11 +1510,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__departments];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1405,8 +1535,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__email_addresses.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__email_addresses.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__email_addresses.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__email_addresses.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__individual = 'person__individual__adventure_works|' & Text([business_entity_id]);
 Set var__hook__email_address = 'reference__adventure_works|' & Text([email_address_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
@@ -1440,7 +1574,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__individual = $(var__hook__person__individual) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__email_addresses]:
@@ -1462,7 +1596,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [email_address__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__email_addresses.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__email_addresses.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1492,11 +1626,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__email_addresses];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1512,8 +1652,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employee_department_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__employee_department_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employee_department_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__employee_department_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([business_entity_id]);
 Set var__hook__department = 'department__adventure_works|' & Text([department_id]);
 Set var__hook__reference__shift = 'reference__shift__adventure_works|' & Text([shift_id]);
@@ -1550,7 +1694,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__employee_department_history = $(var__hook__employee_department_history) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__employee_department_histories]:
@@ -1576,7 +1720,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [employee_department_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employee_department_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employee_department_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1610,11 +1754,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__employee_department_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1633,8 +1783,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employee_pay_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__employee_pay_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employee_pay_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__employee_pay_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([business_entity_id]);
 Set var__hook__epoch__rate_change_date = 'epoch__date|' & Text([rate_change_date]);
 Set var__hook__employee_pay_history = $(var__hook__person__employee) & '~' & $(var__hook__epoch__rate_change_date);
@@ -1669,7 +1823,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__employee_pay_history = $(var__hook__employee_pay_history) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__employee_pay_histories]:
@@ -1692,7 +1846,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [employee_pay_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employee_pay_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employee_pay_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1723,11 +1877,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__employee_pay_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1744,8 +1904,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employees.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__employees.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employees.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__employees.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([business_entity_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
 
@@ -1778,7 +1942,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__employee = $(var__hook__person__employee) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__employees]:
@@ -1809,7 +1973,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [employee__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__employees.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__employees.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1848,11 +2012,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__employees];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1867,8 +2037,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__illustrations.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__illustrations.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__illustrations.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__illustrations.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__illustration = 'reference__illustration__adventure_works|' & Text([illustration_id]);
 Set var__record_version = Window(RecNo(), [illustration_id], 'Asc', [record_loaded_at]);
 
@@ -1901,7 +2075,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__illustration = $(var__hook__reference__illustration) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__illustrations]:
@@ -1920,7 +2094,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [illustration__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__illustrations.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__illustrations.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -1947,11 +2121,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__illustrations];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -1966,8 +2146,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__job_candidates.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__job_candidates.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__job_candidates.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__job_candidates.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__job_candidate = 'person__adventure_works|' & Text([job_candidate_id]);
 Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([business_entity_id]);
 Set var__record_version = Window(RecNo(), [job_candidate_id], 'Asc', [record_loaded_at]);
@@ -2001,7 +2185,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__job_candidate = $(var__hook__job_candidate) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__job_candidates]:
@@ -2022,7 +2206,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [job_candidate__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__job_candidates.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__job_candidates.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2051,11 +2235,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__job_candidates];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2071,8 +2261,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__locations.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__locations.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__locations.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__locations.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__location = 'reference__location__adventure_works|' & Text([location_id]);
 Set var__record_version = Window(RecNo(), [location_id], 'Asc', [record_loaded_at]);
 
@@ -2105,7 +2299,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__location = $(var__hook__reference__location) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__locations]:
@@ -2126,7 +2320,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [location__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__locations.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__locations.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2155,11 +2349,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__locations];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2174,8 +2374,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__person_phones.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__person_phones.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__person_phones.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__person_phones.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__individual = 'person__individual__adventure_works|' & Text([business_entity_id]);
 Set var__hook__reference__phone_number_type = 'reference__phone_number_type__adventure_works|' & Text([phone_number_type_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
@@ -2209,7 +2413,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__individual = $(var__hook__person__individual) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__person_phones]:
@@ -2230,7 +2434,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [person_phone__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__person_phones.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__person_phones.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2259,11 +2463,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__person_phones];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2279,8 +2489,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__persons.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__persons.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__persons.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__persons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__individual = 'person__individual__adventure_works|' & Text([business_entity_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
 
@@ -2313,7 +2527,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__individual = $(var__hook__person__individual) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__persons]:
@@ -2342,7 +2556,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [person__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__persons.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__persons.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2379,11 +2593,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__persons];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2398,8 +2618,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__phone_number_types.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__phone_number_types.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__phone_number_types.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__phone_number_types.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__phone_number_type = 'reference__phone_number_type__adventure_works|' & Text([phone_number_type_id]);
 Set var__record_version = Window(RecNo(), [phone_number_type_id], 'Asc', [record_loaded_at]);
 
@@ -2432,7 +2656,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__phone_number_type = $(var__hook__reference__phone_number_type) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__phone_number_types]:
@@ -2451,7 +2675,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [phone_number_type__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__phone_number_types.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__phone_number_types.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2478,11 +2702,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__phone_number_types];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2497,8 +2727,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_categories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_categories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_categories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_categories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product_category = 'product_category__adventure_works|' & Text([product_category_id]);
 Set var__record_version = Window(RecNo(), [product_category_id], 'Asc', [record_loaded_at]);
 
@@ -2531,7 +2765,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_category = $(var__hook__product_category) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_categories]:
@@ -2551,7 +2785,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_category__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_categories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_categories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2579,11 +2813,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_categories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2598,8 +2838,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_cost_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_cost_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_cost_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_cost_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__epoch__start_date = 'epoch__date|' & Text([start_date]);
 Set var__hook__product_cost_history = $(var__hook__product) & '~' & $(var__hook__epoch__start_date);
@@ -2634,7 +2878,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_cost_history = $(var__hook__product_cost_history) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_cost_histories]:
@@ -2657,7 +2901,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_cost_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_cost_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_cost_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2688,11 +2932,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_cost_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2709,8 +2959,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_descriptions.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_descriptions.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_descriptions.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_descriptions.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__product_description = 'reference__product_description__adventure_works|' & Text([product_description_id]);
 Set var__record_version = Window(RecNo(), [product_description_id], 'Asc', [record_loaded_at]);
 
@@ -2743,7 +2997,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__product_description = $(var__hook__reference__product_description) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_descriptions]:
@@ -2763,7 +3017,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_description__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_descriptions.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_descriptions.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2791,11 +3045,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_descriptions];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2810,8 +3070,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_inventories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_inventories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_inventories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_inventories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__location = 'reference__location__adventure_works|' & Text([location_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__reference__product_location = $(var__hook__reference__location) & '~' & $(var__hook__product);
@@ -2846,7 +3110,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__product_location = $(var__hook__reference__product_location) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_inventories]:
@@ -2871,7 +3135,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_inventory__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_inventories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_inventories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -2904,11 +3168,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_inventories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -2925,8 +3195,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_list_price_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_list_price_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_list_price_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_list_price_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__epoch__start_date = 'epoch__date|' & Text([start_date]);
 Set var__hook__product_list_price_history = $(var__hook__product) & '~' & $(var__hook__epoch__start_date);
@@ -2961,7 +3235,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_list_price_history = $(var__hook__product_list_price_history) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_list_price_histories]:
@@ -2984,7 +3258,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_list_price_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_list_price_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_list_price_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3015,11 +3289,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_list_price_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3036,8 +3316,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_model_illustrations.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_model_illustrations.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_model_illustrations.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_model_illustrations.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__illustration = 'reference__illustration__adventure_works|' & Text([illustration_id]);
 Set var__hook__reference__product_model = 'reference__product_model__adventure_works|' & Text([product_model_id]);
 Set var__hook__product_model_illustration = $(var__hook__reference__product_model) & '~' & $(var__hook__reference__illustration);
@@ -3072,7 +3356,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_model_illustration = $(var__hook__product_model_illustration) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_model_illustrations]:
@@ -3093,7 +3377,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_model_illustration__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_model_illustrations.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_model_illustrations.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3122,11 +3406,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_model_illustrations];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3143,8 +3433,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_models.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_models.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_models.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_models.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__product_model = 'reference__product_model__adventure_works|' & Text([product_model_id]);
 Set var__record_version = Window(RecNo(), [product_model_id], 'Asc', [record_loaded_at]);
 
@@ -3177,7 +3471,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__product_model = $(var__hook__reference__product_model) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_models]:
@@ -3199,7 +3493,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_model__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_models.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_models.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3229,11 +3523,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_models];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3248,8 +3548,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_photos.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_photos.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_photos.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_photos.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__product_photo = 'reference__product_photo__adventure_works|' & Text([product_photo_id]);
 Set var__record_version = Window(RecNo(), [product_photo_id], 'Asc', [record_loaded_at]);
 
@@ -3282,7 +3586,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__product_photo = $(var__hook__reference__product_photo) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_photos]:
@@ -3304,7 +3608,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_photo__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_photos.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_photos.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3334,11 +3638,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_photos];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3353,8 +3663,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_reviews.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_reviews.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_reviews.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_reviews.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product_review = 'product__adventure_works|' & Text([product_review_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__record_version = Window(RecNo(), [product_review_id], 'Asc', [record_loaded_at]);
@@ -3388,7 +3702,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_review = $(var__hook__product_review) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_reviews]:
@@ -3413,7 +3727,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_review__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_reviews.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_reviews.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3446,11 +3760,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_reviews];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3466,8 +3786,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_subcategories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_subcategories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_subcategories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_subcategories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product_subcategory = 'product_subcategory__adventure_works|' & Text([product_subcategory_id]);
 Set var__hook__product_category = 'product_category__adventure_works|' & Text([product_category_id]);
 Set var__record_version = Window(RecNo(), [product_subcategory_id], 'Asc', [record_loaded_at]);
@@ -3501,7 +3825,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_subcategory = $(var__hook__product_subcategory) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_subcategories]:
@@ -3523,7 +3847,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_subcategory__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_subcategories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_subcategories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3553,11 +3877,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_subcategories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3573,8 +3903,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_vendors.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__product_vendors.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_vendors.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__product_vendors.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__vendor = 'vendor__adventure_works|' & Text([business_entity_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__reference__unit_measure = 'reference__unit_measure__adventure_works|' & Text([unit_measure_code]);
@@ -3610,7 +3944,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product_vendor = $(var__hook__product_vendor) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__product_vendors]:
@@ -3640,7 +3974,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product_vendor__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__product_vendors.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__product_vendors.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3678,11 +4012,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__product_vendors];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3700,8 +4040,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__products.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__products.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__products.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__products.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__product_subcategory = 'product_subcategory__adventure_works|' & Text([product_subcategory_id]);
 Set var__hook__reference__product_model = 'reference__product_model__adventure_works|' & Text([product_model_id]);
@@ -3736,7 +4080,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__product = $(var__hook__product) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__products]:
@@ -3778,7 +4122,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [product__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__products.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__products.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3828,11 +4172,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__products];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3849,8 +4199,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__purchase_order_details.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__purchase_order_details.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_details.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__purchase_order_details.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order_line__purchase = 'order_line__purchase__adventure_works|' & Text([purchase_order_detail_id]);
 Set var__hook__order__purchase = 'order__purchase__adventure_works|' & Text([purchase_order_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
@@ -3885,7 +4239,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__order_line__purchase = $(var__hook__order_line__purchase) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__purchase_order_details]:
@@ -3914,7 +4268,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [purchase_order_detail__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__purchase_order_details.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_details.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -3951,11 +4305,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__purchase_order_details];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -3972,8 +4332,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__purchase_order_headers.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__purchase_order_headers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order__purchase = 'order__purchase__adventure_works|' & Text([purchase_order_id]);
 Set var__hook__person__employee = 'person__employee__adventure_works|' & Text([employee_id]);
 Set var__hook__vendor = 'vendor__adventure_works|' & Text([vendor_id]);
@@ -4009,7 +4373,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__order__purchase = $(var__hook__order__purchase) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__purchase_order_headers]:
@@ -4041,7 +4405,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [purchase_order_header__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__purchase_order_headers.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4081,11 +4445,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__purchase_order_headers];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4103,8 +4473,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_order_details.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_order_details.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_order_details.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_order_details.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order_line__sales = 'order_line__sales__adventure_works|' & Text([sales_order_detail_id]);
 Set var__hook__order__sales = 'order__sales__adventure_works|' & Text([sales_order_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
@@ -4140,7 +4514,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__order_line__sales = $(var__hook__order_line__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_order_details]:
@@ -4170,7 +4544,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_order_detail__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_order_details.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_order_details.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4208,11 +4582,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_order_details];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4230,8 +4610,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_order_headers.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_order_headers.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_order_headers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_order_headers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order__sales = 'order__sales__adventure_works|' & Text([sales_order_id]);
 Set var__hook__customer = 'customer__adventure_works|' & Text([customer_id]);
 Set var__hook__person__sales = 'person__sales__adventure_works|' & Text([sales_person_id]);
@@ -4272,7 +4656,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__order__sales = $(var__hook__order__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_order_headers]:
@@ -4321,7 +4705,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_order_header__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_order_headers.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_order_headers.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4378,11 +4762,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_order_headers];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4405,8 +4795,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_person_quota_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_person_quota_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_person_quota_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_person_quota_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__sales = 'person__sales__adventure_works|' & Text([business_entity_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
 
@@ -4439,7 +4833,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__sales = $(var__hook__person__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_person_quota_histories]:
@@ -4460,7 +4854,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_person_quota_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_person_quota_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_person_quota_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4489,11 +4883,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_person_quota_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4508,8 +4908,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_persons.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_persons.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_persons.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_persons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__sales = 'person__sales__adventure_works|' & Text([business_entity_id]);
 Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
@@ -4543,7 +4947,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__sales = $(var__hook__person__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_persons]:
@@ -4569,7 +4973,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_person__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_persons.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_persons.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4603,11 +5007,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_persons];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4623,8 +5033,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_reasons.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_reasons.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_reasons.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_reasons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__sales_reason = 'reference__sales_reason__adventure_works|' & Text([sales_reason_id]);
 Set var__record_version = Window(RecNo(), [sales_reason_id], 'Asc', [record_loaded_at]);
 
@@ -4657,7 +5071,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__sales_reason = $(var__hook__reference__sales_reason) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_reasons]:
@@ -4677,7 +5091,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_reason__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_reasons.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_reasons.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4705,11 +5119,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_reasons];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4724,8 +5144,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_tax_rates.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_tax_rates.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__sales_tax_rate = 'reference__sales_tax_rate__adventure_works|' & Text([sales_tax_rate_id]);
 Set var__hook__reference__state_province = 'reference__state_province__adventure_works|' & Text([state_province_id]);
 Set var__record_version = Window(RecNo(), [sales_tax_rate_id], 'Asc', [record_loaded_at]);
@@ -4759,7 +5183,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__sales_tax_rate = $(var__hook__reference__sales_tax_rate) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_tax_rates]:
@@ -4783,7 +5207,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_tax_rate__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_tax_rates.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4815,11 +5239,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_tax_rates];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4835,8 +5265,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_territories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_territories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_territories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
 Set var__hook__reference__country_region = 'reference__country_region__adventure_works|' & Text([country_region_code]);
 Set var__record_version = Window(RecNo(), [territory_id], 'Asc', [record_loaded_at]);
@@ -4870,7 +5304,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__territory__sales = $(var__hook__territory__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_territories]:
@@ -4897,7 +5331,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_territory__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_territories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -4932,11 +5366,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_territories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -4952,8 +5392,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_territory_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__sales_territory_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territory_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_territory_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__person__sales = 'person__sales__adventure_works|' & Text([business_entity_id]);
 Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
@@ -4987,7 +5431,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__person__sales = $(var__hook__person__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__sales_territory_histories]:
@@ -5010,7 +5454,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [sales_territory_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__sales_territory_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territory_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5041,11 +5485,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__sales_territory_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5061,8 +5511,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__scrap_reasons.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__scrap_reasons.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__scrap_reasons.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__scrap_reasons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__scrap_reason = 'reference__scrap_reason__adventure_works|' & Text([scrap_reason_id]);
 Set var__record_version = Window(RecNo(), [scrap_reason_id], 'Asc', [record_loaded_at]);
 
@@ -5095,7 +5549,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__scrap_reason = $(var__hook__reference__scrap_reason) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__scrap_reasons]:
@@ -5114,7 +5568,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [scrap_reason__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__scrap_reasons.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__scrap_reasons.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5141,11 +5595,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__scrap_reasons];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5160,8 +5620,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__shifts.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__shifts.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__shifts.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__shifts.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__shift = 'reference__shift__adventure_works|' & Text([shift_id]);
 Set var__record_version = Window(RecNo(), [shift_id], 'Asc', [record_loaded_at]);
 
@@ -5194,7 +5658,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__shift = $(var__hook__reference__shift) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__shifts]:
@@ -5215,7 +5679,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [shift__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__shifts.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__shifts.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5244,11 +5708,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__shifts];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5263,8 +5733,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__ship_methods.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__ship_methods.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__ship_methods.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__ship_methods.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__ship_method = 'ship_method__adventure_works|' & Text([ship_method_id]);
 Set var__record_version = Window(RecNo(), [ship_method_id], 'Asc', [record_loaded_at]);
 
@@ -5297,7 +5771,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__ship_method = $(var__hook__ship_method) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__ship_methods]:
@@ -5319,7 +5793,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [ship_method__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__ship_methods.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__ship_methods.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5349,11 +5823,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__ship_methods];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5368,8 +5848,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__shopping_cart_items.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__shopping_cart_items.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__shopping_cart_items.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__shopping_cart_items.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__shopping_cart_item = 'reference__adventure_works|' & Text([shopping_cart_item_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__record_version = Window(RecNo(), [shopping_cart_item_id], 'Asc', [record_loaded_at]);
@@ -5403,7 +5887,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__shopping_cart_item = $(var__hook__shopping_cart_item) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__shopping_cart_items]:
@@ -5426,7 +5910,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [shopping_cart_item__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__shopping_cart_items.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__shopping_cart_items.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5457,11 +5941,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__shopping_cart_items];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5477,8 +5967,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__special_offers.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__special_offers.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__special_offers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__special_offers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__special_offer = 'reference__special_offer__adventure_works|' & Text([special_offer_id]);
 Set var__record_version = Window(RecNo(), [special_offer_id], 'Asc', [record_loaded_at]);
 
@@ -5511,7 +6005,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__special_offer = $(var__hook__reference__special_offer) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__special_offers]:
@@ -5538,7 +6032,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [special_offer__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__special_offers.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__special_offers.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5573,11 +6067,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__special_offers];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5592,8 +6092,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__state_provinces.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__state_provinces.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__state_provinces.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__state_provinces.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__state_province = 'reference__state_province__adventure_works|' & Text([state_province_id]);
 Set var__hook__reference__country_region = 'reference__country_region__adventure_works|' & Text([country_region_code]);
 Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
@@ -5628,7 +6132,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__state_province = $(var__hook__reference__state_province) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__state_provinces]:
@@ -5654,7 +6158,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [state_province__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__state_provinces.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__state_provinces.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5688,11 +6192,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__state_provinces];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5709,8 +6219,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__stores.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__stores.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__stores.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__stores.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__store = 'store__adventure_works|' & Text([business_entity_id]);
 Set var__hook__person__sales = 'person__sales__adventure_works|' & Text([sales_person_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
@@ -5744,7 +6258,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__store = $(var__hook__store) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__stores]:
@@ -5767,7 +6281,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [store__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__stores.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__stores.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5798,11 +6312,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__stores];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5818,8 +6338,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__transaction_histories.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__transaction_histories.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__transaction_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__transaction_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__transaction_history = 'product__adventure_works|' & Text([transaction_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__order__reference = 'order__adventure_works|' & Text([reference_order_id]);
@@ -5854,7 +6378,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__transaction_history = $(var__hook__transaction_history) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__transaction_histories]:
@@ -5881,7 +6405,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [transaction_history__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__transaction_histories.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__transaction_histories.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -5916,11 +6440,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__transaction_histories];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -5937,8 +6467,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__transaction_history_archives.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__transaction_history_archives.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__transaction_history_archives.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__transaction_history_archives.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__transaction_history_archive = 'product__adventure_works|' & Text([transaction_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__order__reference = 'order__adventure_works|' & Text([reference_order_id]);
@@ -5973,7 +6507,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__transaction_history_archive = $(var__hook__transaction_history_archive) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__transaction_history_archives]:
@@ -6000,7 +6534,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [transaction_history_archive__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__transaction_history_archives.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__transaction_history_archives.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -6035,11 +6569,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__transaction_history_archives];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -6056,8 +6596,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__unit_measures.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__unit_measures.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__unit_measures.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__unit_measures.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__reference__unit_measure = 'reference__unit_measure__adventure_works|' & Text([unit_measure_code]);
 Set var__record_version = Window(RecNo(), [unit_measure_code], 'Asc', [record_loaded_at]);
 
@@ -6090,7 +6634,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__reference__unit_measure = $(var__hook__reference__unit_measure) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__unit_measures]:
@@ -6109,7 +6653,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [unit_measure__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__unit_measures.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__unit_measures.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -6136,11 +6680,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__unit_measures];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -6155,8 +6705,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__vendors.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__vendors.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__vendors.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__vendors.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__vendor = 'vendor__adventure_works|' & Text([business_entity_id]);
 Set var__record_version = Window(RecNo(), [business_entity_id], 'Asc', [record_loaded_at]);
 
@@ -6189,7 +6743,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__vendor = $(var__hook__vendor) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__vendors]:
@@ -6213,7 +6767,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [vendor__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__vendors.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__vendors.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -6245,11 +6799,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__vendors];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -6264,8 +6824,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__work_order_routings.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__work_order_routings.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__work_order_routings.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__work_order_routings.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order_line__work = 'order_line__work__adventure_works|' & Text([operation_sequence]);
 Set var__hook__order__work = 'order__work__adventure_works|' & Text([work_order_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
@@ -6302,7 +6866,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__work_order_routing = $(var__hook__work_order_routing) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__work_order_routings]:
@@ -6334,7 +6898,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [work_order_routing__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__work_order_routings.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__work_order_routings.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -6374,11 +6938,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__work_order_routings];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();
@@ -6397,8 +6967,12 @@ Trace
 ---------------------------------------------------------------
 ;
 Trace Setting variables...;
-Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__work_orders.qvd]);
-Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/frame__adventure_works__work_orders.qvd]);
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__work_orders.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__work_orders.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
 Set var__hook__order__work = 'order__work__adventure_works|' & Text([work_order_id]);
 Set var__hook__product = 'product__adventure_works|' & Text([product_id]);
 Set var__hook__reference__scrap_reason = 'reference__scrap_reason__adventure_works|' & Text([scrap_reason_id]);
@@ -6433,7 +7007,7 @@ Set var__record_updated_at = If(
 
 Set var__pit_hook__order__work = $(var__hook__order__work) & '~epoch__valid_from|' & Text($(var__valid_from));
 
-If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then 
+If $(val__source_is_newer) = 1 Then 
 
     Trace Source is newer, loading & transforming data...;
     [frame__adventure_works__work_orders]:
@@ -6461,7 +7035,7 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
         Num($(var__is_current_record)) As [work_order__is_current_record]
 
     From
-        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/raw__adventure_works__work_orders.qvd] (qvd)
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__work_orders.qvd] (qvd)
     ;
 
     Trace Commenting table...;
@@ -6497,11 +7071,17 @@ If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(v
     Drop Table [frame__adventure_works__work_orders];
 
 Else
-    Trace Source QVD has not been updated since last load, skipping...;
+    Trace Source is older than target, skipping...;
 
 End If
 
 Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
 Let var__record_version = Null();
 Let var__valid_from = Null();
 Let var__valid_to = Null();

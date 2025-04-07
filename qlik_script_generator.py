@@ -62,47 +62,56 @@ def generate_das_qvs(
             
             # Variables setup
             table_lines.append("Trace Setting variables...;")
-            table_lines.append(f"Let val__qvd_target = '$(val__qvd_path__das)/{table_name}.qvd';")
-            table_lines.append("Let val__target_qvd_exists = Not IsNull(QvdCreateTime('$(val__qvd_target)'));")
+            table_lines.append(f"Let val__source_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.{table_name}.parquet';")
+            table_lines.append(f"Let val__target_path = '$(val__qvd_path__das)/{table_name}.qvd';")
+            table_lines.append("Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            table_lines.append("Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            table_lines.append("Let val__target_exists = If(Len('$(val__target_create_time)') > 0, 1, 0);")
+            table_lines.append("Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);")
             table_lines.append("Let val__incremental_value = '1970-01-01';")
             table_lines.append("")
             
+            # Check if source is newer than target
+            table_lines.append("If $(val__source_is_newer) = 1 Then")
+            table_lines.append("    Trace Source is newer, loading & transforming data...;")
+            table_lines.append("")
+
             # Hash table definition
-            table_lines.append("Trace Define hash table...;")
-            table_lines.append("[processed_record_hashes]:")
-            table_lines.append("Load")
-            table_lines.append("    Null() As [old_record_hash]")
-            table_lines.append("AutoGenerate 0")
-            table_lines.append(";")
+            table_lines.append("    Trace Define hash table...;")
+            table_lines.append("    [processed_record_hashes]:")
+            table_lines.append("    Load")
+            table_lines.append("        Null() As [old_record_hash]")
+            table_lines.append("    AutoGenerate 0")
+            table_lines.append("    ;")
             table_lines.append("")
             
             # Check if target exists
-            table_lines.append("Trace Checking if target QVD exists...;")
-            table_lines.append("If $(val__target_qvd_exists) Then")
-            table_lines.append("    Trace Target found, loading hashes and max incremental value...;")
+            table_lines.append("    Trace Checking if target QVD exists...;")
+            table_lines.append("    If $(val__target_exists) = 1 Then")
+            table_lines.append("        Trace Target found, loading hashes and max incremental value...;")
             table_lines.append("")
-            table_lines.append("    Concatenate([processed_record_hashes])")
-            table_lines.append("    Load")
-            table_lines.append("        [record_hash] As [old_record_hash]")
+            table_lines.append("        Concatenate([processed_record_hashes])")
+            table_lines.append("        Load")
+            table_lines.append("            [record_hash] As [old_record_hash]")
             table_lines.append("")
-            table_lines.append("    From")
-            table_lines.append("        [$(val__qvd_target)] (qvd)")
-            table_lines.append("    ;")
+            table_lines.append("        From")
+            table_lines.append(f"            [$(val__target_path)] (qvd)")
+            table_lines.append("        ;")
             table_lines.append("")
-            table_lines.append("    [max_incremental_value]:")
-            table_lines.append("    Load")
-            table_lines.append("        Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]")
-            table_lines.append("    From")
-            table_lines.append("        [$(val__qvd_target)] (qvd)")
-            table_lines.append("    ;")
+            table_lines.append("        [max_incremental_value]:")
+            table_lines.append("        Load")
+            table_lines.append("            Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]")
+            table_lines.append("        From")
+            table_lines.append(f"            [$(val__target_path)] (qvd)")
+            table_lines.append("        ;")
             table_lines.append("")
-            table_lines.append("    Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');")
-            table_lines.append("    Drop Table [max_incremental_value];")
+            table_lines.append("        Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');")
+            table_lines.append("        Drop Table [max_incremental_value];")
             table_lines.append("")
-            table_lines.append("Else")
-            table_lines.append("    Trace Target not found, starting full load...;")
+            table_lines.append("    Else")
+            table_lines.append("        Trace Target not found, starting full load...;")
             table_lines.append("")
-            table_lines.append("End If")
+            table_lines.append("    End If")
             table_lines.append("")
             
             # Generate hash fields based on columns
@@ -146,110 +155,113 @@ def generate_das_qvs(
                 for i, (column_name, column_info) in enumerate(sorted_columns):
                     # Add comma at the end of each line except the last one for hash fields
                     if i < len(sorted_columns) - 1:
-                        hash_fields.append(f"    [{column_name}],")
+                        hash_fields.append(f"        [{column_name}],")
                     else:
-                        hash_fields.append(f"    [{column_name}]")
+                        hash_fields.append(f"        [{column_name}]")
                     
                     # Same for field loading lines
-                    if i < len(sorted_columns) - 1:
-                        field_load_lines.append(f"    Text([{column_name}]) As [{column_name}],")
-                    else:
-                        field_load_lines.append(f"    Text([{column_name}]) As [{column_name}]")
+                    field_load_lines.append(f"        Text([{column_name}]) As [{column_name}],")
                     
                     if 'description' in column_info:
                         # Escape single quotes in descriptions by replacing them with Chr(39)
                         desc = column_info['description']
                         desc = desc.replace("'", "$(=Chr39())")
-                        field_comments.append(f"Comment Field [{column_name}] With '{desc}';")
+                        field_comments.append(f"    Comment Field [{column_name}] With '{desc}';")
             
             # Load new data with hash calculation
-            table_lines.append("Trace Loading new data with incremental value $(val__incremental_value)...;")
+            table_lines.append("    Trace Loading new data with incremental value $(val__incremental_value)...;")
             
             # Hash calculation
-            table_lines.append("Set var__record_hash = Hash256(")
+            table_lines.append("    Set var__record_hash = Hash256(")
             table_lines.extend(hash_fields)
-            table_lines.append(")")
-            table_lines.append(";")
-            table_lines.append("")
-            
-            # Table loading
-            table_lines.append(f"[{table_name}]:")
-            table_lines.append("Load")
-            table_lines.append("    *,")
-            table_lines.append("    $(var__record_hash) As [record_hash],")
-            table_lines.append("    Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]")
-            table_lines.append("")
-            table_lines.append("Where")
-            table_lines.append("    Not Exists ([old_record_hash], $(var__record_hash))")
-            table_lines.append(";")
+            table_lines.append("    )")
+            table_lines.append("    ;")
             table_lines.append("")
             
             # Field loading
-            table_lines.append("Load")
+            table_lines.append(f"    [{table_name}]:")
+            table_lines.append("    Load")
             table_lines.extend(field_load_lines)
+            table_lines.append("        $(var__record_hash) As [record_hash],")
+            table_lines.append("        Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]")
             table_lines.append("")
-            table_lines.append("From")
-            table_lines.append(f"    [lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.{table_name}.parquet] (parquet)")
+            table_lines.append("    From")
+            table_lines.append(f"        [$(val__source_path)] (parquet)")
             table_lines.append("")
-            table_lines.append("Where")
-            table_lines.append("    Date([modified_date], 'YYYY-MM-DD') >= Date#('$(val__incremental_value)', 'YYYY-MM-DD')")
-            table_lines.append(";")
+            table_lines.append("    Where")
+            table_lines.append("        1 = 1")
+            table_lines.append("        And Date([modified_date], 'YYYY-MM-DD') >= Date#('$(val__incremental_value)', 'YYYY-MM-DD')")
+            table_lines.append("        And Not Exists ([old_record_hash], $(var__record_hash))")
+            table_lines.append("    ;")
             table_lines.append("")
             
             # Cleanup and counting
-            table_lines.append("Trace Dropping hash table...;")
-            table_lines.append("Drop Table [processed_record_hashes];")
+            table_lines.append("    Trace Dropping hash table...;")
+            table_lines.append("    Drop Table [processed_record_hashes];")
             table_lines.append("")
-            table_lines.append("Trace Counting new records...;")
-            table_lines.append(f"Set val__no_of_new_records = Alt(NoOfRows('{table_name}'), 0);")
+            table_lines.append("    Trace Counting new records...;")
+            table_lines.append(f"    Set val__no_of_new_records = Alt(NoOfRows('{table_name}'), 0);")
             table_lines.append("")
-            table_lines.append("Trace Checking if there are new records...;")
-            table_lines.append("If $(val__no_of_new_records) > 0 Then")
+            table_lines.append("    Trace Checking if there are new records...;")
+            table_lines.append("    If $(val__no_of_new_records) > 0 Then")
             table_lines.append("")
-            table_lines.append("    Trace Checking if target QVD exists...;")
-            table_lines.append("    If $(val__target_qvd_exists) Then")
-            table_lines.append("        Trace Appending previously ingested data...;")
+            table_lines.append("        Trace Checking if target QVD exists...;")
+            table_lines.append("        If $(val__target_exists) = 1 Then")
+            table_lines.append("            Trace Appending previously ingested data...;")
             table_lines.append("")
-            table_lines.append(f"        Concatenate([{table_name}])")
-            table_lines.append("        Load * From [$(val__qvd_target)] (qvd) Where Not Exists ([record_hash]);")
+            table_lines.append(f"            Concatenate([{table_name}])")
+            table_lines.append("            Load * From [$(val__target_path)] (qvd) Where Not Exists ([record_hash]);")
             table_lines.append("")
-            table_lines.append("    Else")
-            table_lines.append("        Trace Target not found, skipping append...;")
+            table_lines.append("        Else")
+            table_lines.append("            Trace Target not found, skipping append...;")
             table_lines.append("")
-            table_lines.append("    End If")
+            table_lines.append("        End If")
             table_lines.append("")
             
             # Comments
             if 'description' in table_info:
-                table_lines.append("    Trace Commenting table...;")
+                table_lines.append("        Trace Commenting table...;")
                 table_desc = table_info['description']
                 table_desc = table_desc.replace("'", "$(=Chr39())")
-                table_lines.append(f"    Comment Table [{table_name}] With '{table_desc}';")
+                table_lines.append(f"        Comment Table [{table_name}] With '{table_desc}';")
                 table_lines.append("")
             
+            table_lines.append("        Trace Commenting fields...;")
             if field_comments:
-                table_lines.append("    Trace Commenting fields...;")
-
                 for comment in field_comments:
                     table_lines.append(f"    {comment}")
                 
-                table_lines.append("")
+            table_lines.append(f"        Comment Field [record_hash] With 'Hash of the record, used for deduplication.';")
+            table_lines.append(f"        Comment Field [record_loaded_at] With 'Timestamp when the record was loaded.';")
+            table_lines.append("")
+
             
             # Storing and cleanup
-            table_lines.append("    Trace Storing data...;")
-            table_lines.append(f"    Store [{table_name}] Into [$(val__qvd_path__das)/{table_name}.qvd] (qvd);")
+            table_lines.append("        Trace Storing data...;")
+            table_lines.append(f"        Store [{table_name}] Into [$(val__qvd_path__das)/{table_name}.qvd] (qvd);")
+            table_lines.append("")
+            table_lines.append("    Else")
+            table_lines.append("        Trace No new records loaded...;")
+            table_lines.append("")
+            table_lines.append("    End If")
+            table_lines.append("")
+            table_lines.append("    Trace Dropping table...;")
+            table_lines.append(f"    Drop Table [{table_name}];")
             table_lines.append("")
             table_lines.append("Else")
-            table_lines.append("    Trace No new records loaded...;")
+            table_lines.append("    Trace Source is older than target, skipping...;")
             table_lines.append("")
             table_lines.append("End If")
             table_lines.append("")
-            table_lines.append("Trace Dropping table...;")
-            table_lines.append(f"Drop Table [{table_name}];")
-            table_lines.append("")
+
+            # Resetting variables
             table_lines.append("Trace Resetting variables...;")
-            table_lines.append("Let val__qvd_target = Null();")
-            table_lines.append("Let val__target_qvd_exists = Null();")
+            table_lines.append("Let val__source_path = Null();")
+            table_lines.append("Let val__target_path = Null();")
+            table_lines.append("Let var__source_create_time = Null();")
+            table_lines.append("Let var__target_create_time = Null();")
+            table_lines.append("Let val__target_exists = Null();")
+            table_lines.append("Let val__source_is_newer = Null();")
             table_lines.append("Let val__incremental_value = Null();")
             table_lines.append("Let var__record_hash = Null();")
             table_lines.append("Let val__no_of_new_records = Null();")
@@ -344,8 +356,12 @@ def generate_dab_qvs(
             frame_lines.append("Trace Setting variables...;")
             
             # Add variables for source and target QVD creation times
-            frame_lines.append(f"Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/{source_table}.qvd]);")
-            frame_lines.append(f"Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/{frame_name}.qvd]);")
+            frame_lines.append(f"Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/{source_table}.qvd';")
+            frame_lines.append(f"Let val__target_path = '$(val__qvd_path__dab)/{frame_name}.qvd';")
+            frame_lines.append("Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            frame_lines.append("Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            frame_lines.append("Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);")
+            frame_lines.append("")
 
             # Process hooks to generate hook variables first
             primary_hook = None
@@ -474,7 +490,7 @@ def generate_dab_qvs(
             frame_lines.append("")
             
             # Add condition to check if source QVD is newer than target QVD
-            frame_lines.append("If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then ")
+            frame_lines.append("If $(val__source_is_newer) = 1 Then ")
             frame_lines.append("")
             frame_lines.append("    Trace Source is newer, loading & transforming data...;")
             frame_lines.append(f"    [{frame_name}]:")
@@ -548,7 +564,7 @@ def generate_dab_qvs(
             frame_lines.extend(load_fields)
             frame_lines.append("")
             frame_lines.append("    From")
-            frame_lines.append(f"        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/{source_table}.qvd] (qvd)")
+            frame_lines.append(f"        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/{source_table}.qvd] (qvd)")
             frame_lines.append("    ;")
             frame_lines.append("")
             
@@ -626,13 +642,19 @@ def generate_dab_qvs(
             frame_lines.append(f"    Drop Table [{frame_name}];")
             frame_lines.append("")
             frame_lines.append("Else")
-            frame_lines.append("    Trace Source QVD has not been updated since last load, skipping...;")
+            frame_lines.append("    Trace Source is older than target, skipping...;")
             frame_lines.append("")
             frame_lines.append("End If")
             frame_lines.append("")
             
             # Reset variables
             frame_lines.append("Trace Resetting variables...;")
+            frame_lines.append("Let val__source_path = Null();")
+            frame_lines.append("Let val__target_path = Null();")
+            frame_lines.append("Let val__source_create_time = Null();")
+            frame_lines.append("Let val__target_create_time = Null();")
+            frame_lines.append("Let val__source_is_newer = Null();")
+            frame_lines.append("")
             frame_lines.append("Let var__record_version = Null();")
             frame_lines.append("Let var__valid_from = Null();")
             frame_lines.append("Let var__valid_to = Null();")
