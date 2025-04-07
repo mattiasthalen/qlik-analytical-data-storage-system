@@ -356,8 +356,12 @@ def generate_dab_qvs(
             frame_lines.append("Trace Setting variables...;")
             
             # Add variables for source and target QVD creation times
-            frame_lines.append(f"Set var__source_qvd_create_time = QvdCreateTime([lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/{source_table}.qvd]);")
-            frame_lines.append(f"Set var__target_qvd_create_time = QvdCreateTime([$(val__qvd_path__dab)/{frame_name}.qvd]);")
+            frame_lines.append(f"Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/{source_table}.qvd';")
+            frame_lines.append(f"Let val__target_path = '$(val__qvd_path__dab)/{frame_name}.qvd';")
+            frame_lines.append("Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            frame_lines.append("Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');")
+            frame_lines.append("Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);")
+            frame_lines.append("")
 
             # Process hooks to generate hook variables first
             primary_hook = None
@@ -486,7 +490,7 @@ def generate_dab_qvs(
             frame_lines.append("")
             
             # Add condition to check if source QVD is newer than target QVD
-            frame_lines.append("If $(var__source_qvd_create_time) > $(var__target_qvd_create_time) Or IsNull($(var__target_qvd_create_time)) Then ")
+            frame_lines.append("If $(val__source_is_newer) = 1 Then ")
             frame_lines.append("")
             frame_lines.append("    Trace Source is newer, loading & transforming data...;")
             frame_lines.append(f"    [{frame_name}]:")
@@ -560,7 +564,7 @@ def generate_dab_qvs(
             frame_lines.extend(load_fields)
             frame_lines.append("")
             frame_lines.append("    From")
-            frame_lines.append(f"        [lib://DataFiles/Analytical Data Storage System/QVD/main/data_according_to_system/{source_table}.qvd] (qvd)")
+            frame_lines.append(f"        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/{source_table}.qvd] (qvd)")
             frame_lines.append("    ;")
             frame_lines.append("")
             
@@ -638,13 +642,19 @@ def generate_dab_qvs(
             frame_lines.append(f"    Drop Table [{frame_name}];")
             frame_lines.append("")
             frame_lines.append("Else")
-            frame_lines.append("    Trace Source QVD has not been updated since last load, skipping...;")
+            frame_lines.append("    Trace Source is older than target, skipping...;")
             frame_lines.append("")
             frame_lines.append("End If")
             frame_lines.append("")
             
             # Reset variables
             frame_lines.append("Trace Resetting variables...;")
+            frame_lines.append("Let val__source_path = Null();")
+            frame_lines.append("Let val__target_path = Null();")
+            frame_lines.append("Let val__source_create_time = Null();")
+            frame_lines.append("Let val__target_create_time = Null();")
+            frame_lines.append("Let val__source_is_newer = Null();")
+            frame_lines.append("")
             frame_lines.append("Let var__record_version = Null();")
             frame_lines.append("Let var__valid_from = Null();")
             frame_lines.append("Let var__valid_to = Null();")
