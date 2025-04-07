@@ -1,0 +1,132 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__bill_of_materials
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__bill_of_materials.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__bill_of_materials.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__bill_of_materials = 'product__adventure_works|' & Text([bill_of_materials_id]);
+Set var__hook__product__assembly = 'product__adventure_works|' & Text([product_assembly_id]);
+Set var__hook__product__component = 'product__adventure_works|' & Text([component_id]);
+Set var__hook__reference__unit_measure = 'reference__unit_measure__adventure_works|' & Text([unit_measure_code]);
+Set var__record_version = Window(RecNo(), [bill_of_materials_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [bill_of_materials_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__bill_of_materials = $(var__hook__bill_of_materials) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__bill_of_materials]:
+    Load
+        Text($(var__pit_hook__bill_of_materials)) As [_pit_hook__bill_of_materials],
+        Text($(var__hook__bill_of_materials)) As [_hook__bill_of_materials],
+        Text($(var__hook__product__assembly)) As [_hook__product__assembly],
+        Text($(var__hook__product__component)) As [_hook__product__component],
+        Text($(var__hook__reference__unit_measure)) As [_hook__reference__unit_measure],
+        Num#([bill_of_materials_id]) As [bill_of_material__bill_of_materials_id],
+        Num#([product_assembly_id]) As [bill_of_material__product_assembly_id],
+        Num#([component_id]) As [bill_of_material__component_id],
+        Date(Num#([start_date]), 'YYYY-MM-DD') As [bill_of_material__start_date],
+        Text([unit_measure_code]) As [bill_of_material__unit_measure_code],
+        Num#([bomlevel]) As [bill_of_material__bomlevel],
+        Num#([per_assembly_qty]) As [bill_of_material__per_assembly_qty],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [bill_of_material__modified_date],
+        Date(Num#([end_date]), 'YYYY-MM-DD') As [bill_of_material__end_date],
+        Text([record_hash]) As [bill_of_material__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [bill_of_material__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [bill_of_material__record_updated_at],
+        Num($(var__record_version)) As [bill_of_material__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [bill_of_material__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [bill_of_material__record_valid_to],
+        Num($(var__is_current_record)) As [bill_of_material__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__bill_of_materials.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__bill_of_materials] With 'Items required to make bicycles and bicycle subassemblies. It identifies the hierarchical relationship between a parent product and its components.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__bill_of_materials] With 'Point in time version of _hook__bill_of_materials.';
+    Comment Field [_hook__bill_of_materials] With 'Hook for bill_of_materials_id using keyset: product__adventure_works.';
+    Comment Field [_hook__product__assembly] With 'Hook for product_assembly_id using keyset: product__adventure_works.';
+    Comment Field [_hook__product__component] With 'Hook for component_id using keyset: product__adventure_works.';
+    Comment Field [_hook__reference__unit_measure] With 'Hook for unit_measure_code using keyset: reference__unit_measure__adventure_works.';
+    Comment Field [bill_of_material__bill_of_materials_id] With 'Primary key for BillOfMaterials records.';
+    Comment Field [bill_of_material__product_assembly_id] With 'Parent product identification number. Foreign key to Product.ProductID.';
+    Comment Field [bill_of_material__component_id] With 'Component identification number. Foreign key to Product.ProductID.';
+    Comment Field [bill_of_material__start_date] With 'Date the component started being used in the assembly item.';
+    Comment Field [bill_of_material__unit_measure_code] With 'Standard code identifying the unit of measure for the quantity.';
+    Comment Field [bill_of_material__bomlevel] With 'Indicates the depth the component is from its parent (AssemblyID).';
+    Comment Field [bill_of_material__per_assembly_qty] With 'Quantity of the component needed to create the assembly.';
+    Comment Field [bill_of_material__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [bill_of_material__end_date] With 'Date the component stopped being used in the assembly item.';
+    Comment Field [bill_of_material__record_hash] With 'Hash of the record.';
+    Comment Field [bill_of_material__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [bill_of_material__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [bill_of_material__record_version] With 'Version of the record.';
+    Comment Field [bill_of_material__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [bill_of_material__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [bill_of_material__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__bill_of_materials] Into [$(val__qvd_path__dab)/frame__adventure_works__bill_of_materials.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__bill_of_materials];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__bill_of_materials = Null();
+Let var__hook__product__assembly = Null();
+Let var__hook__product__component = Null();
+Let var__hook__reference__unit_measure = Null();
+Let var__pit_hook__bill_of_materials = Null();

@@ -1,0 +1,126 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__sales_territories
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territories.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_territories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__territory__sales = 'territory__sales__adventure_works|' & Text([territory_id]);
+Set var__hook__reference__country_region = 'reference__country_region__adventure_works|' & Text([country_region_code]);
+Set var__record_version = Window(RecNo(), [territory_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [territory_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__territory__sales = $(var__hook__territory__sales) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__sales_territories]:
+    Load
+        Text($(var__pit_hook__territory__sales)) As [_pit_hook__territory__sales],
+        Text($(var__hook__territory__sales)) As [_hook__territory__sales],
+        Text($(var__hook__reference__country_region)) As [_hook__reference__country_region],
+        Num#([territory_id]) As [sales_territory__territory_id],
+        Text([name]) As [sales_territory__name],
+        Text([country_region_code]) As [sales_territory__country_region_code],
+        Text([group]) As [sales_territory__group],
+        Num#([sales_ytd]) As [sales_territory__sales_ytd],
+        Num#([sales_last_year]) As [sales_territory__sales_last_year],
+        Num#([cost_ytd]) As [sales_territory__cost_ytd],
+        Num#([cost_last_year]) As [sales_territory__cost_last_year],
+        Text([rowguid]) As [sales_territory__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [sales_territory__modified_date],
+        Text([record_hash]) As [sales_territory__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [sales_territory__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_territory__record_updated_at],
+        Num($(var__record_version)) As [sales_territory__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_territory__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [sales_territory__record_valid_to],
+        Num($(var__is_current_record)) As [sales_territory__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__sales_territories.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__sales_territories] With 'Sales territory lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__territory__sales] With 'Point in time version of _hook__territory__sales.';
+    Comment Field [_hook__territory__sales] With 'Hook for territory_id using keyset: territory__sales__adventure_works.';
+    Comment Field [_hook__reference__country_region] With 'Hook for country_region_code using keyset: reference__country_region__adventure_works.';
+    Comment Field [sales_territory__territory_id] With 'Primary key for SalesTerritory records.';
+    Comment Field [sales_territory__name] With 'Sales territory description.';
+    Comment Field [sales_territory__country_region_code] With 'ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.';
+    Comment Field [sales_territory__group] With 'Geographic area to which the sales territory belongs.';
+    Comment Field [sales_territory__sales_ytd] With 'Sales in the territory year to date.';
+    Comment Field [sales_territory__sales_last_year] With 'Sales in the territory the previous year.';
+    Comment Field [sales_territory__cost_ytd] With 'Business costs in the territory year to date.';
+    Comment Field [sales_territory__cost_last_year] With 'Business costs in the territory the previous year.';
+    Comment Field [sales_territory__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [sales_territory__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [sales_territory__record_hash] With 'Hash of the record.';
+    Comment Field [sales_territory__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [sales_territory__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [sales_territory__record_version] With 'Version of the record.';
+    Comment Field [sales_territory__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [sales_territory__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [sales_territory__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__sales_territories] Into [$(val__qvd_path__dab)/frame__adventure_works__sales_territories.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__sales_territories];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__territory__sales = Null();
+Let var__hook__reference__country_region = Null();
+Let var__pit_hook__territory__sales = Null();

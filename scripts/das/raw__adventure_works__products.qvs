@@ -1,0 +1,196 @@
+Trace
+---------------------------------------------------------------
+    Extracting raw__adventure_works__products
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/data/das.raw__adventure_works__products.parquet';
+Let val__target_path = '$(val__qvd_path__das)/raw__adventure_works__products.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_exists = If(Len('$(val__target_create_time)') > 0, 1, 0);
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+Let val__incremental_value = '1970-01-01';
+
+If $(val__source_is_newer) = 1 Then
+    Trace Source is newer, loading & transforming data...;
+
+    Trace Define hash table...;
+    [processed_record_hashes]:
+    Load
+        Null() As [old_record_hash]
+    AutoGenerate 0
+    ;
+
+    Trace Checking if target QVD exists...;
+    If $(val__target_exists) = 1 Then
+        Trace Target found, loading hashes and max incremental value...;
+
+        Concatenate([processed_record_hashes])
+        Load
+            [record_hash] As [old_record_hash]
+
+        From
+            [$(val__target_path)] (qvd)
+        ;
+
+        [max_incremental_value]:
+        Load
+            Date(Max(Num#([modified_date])), 'YYYY-MM-DD') As [max_incremental_value]
+        From
+            [$(val__target_path)] (qvd)
+        ;
+
+        Let val__incremental_value = Coalesce(Peek('max_incremental_value', -1, 'max_incremental_value'), '$(val__incremental_value)');
+        Drop Table [max_incremental_value];
+
+    Else
+        Trace Target not found, starting full load...;
+
+    End If
+
+    Trace Loading new data with incremental value $(val__incremental_value)...;
+    Set var__record_hash = Hash256(
+        [product_id],
+        [product_model_id],
+        [product_subcategory_id],
+        [class],
+        [color],
+        [days_to_manufacture],
+        [finished_goods_flag],
+        [list_price],
+        [make_flag],
+        [name],
+        [product_line],
+        [product_number],
+        [reorder_point],
+        [safety_stock_level],
+        [sell_end_date],
+        [sell_start_date],
+        [size],
+        [size_unit_measure_code],
+        [standard_cost],
+        [style],
+        [weight],
+        [weight_unit_measure_code],
+        [modified_date],
+        [rowguid]
+    )
+    ;
+
+    [raw__adventure_works__products]:
+    Load
+        Text([product_id]) As [product_id],
+        Text([product_model_id]) As [product_model_id],
+        Text([product_subcategory_id]) As [product_subcategory_id],
+        Text([class]) As [class],
+        Text([color]) As [color],
+        Text([days_to_manufacture]) As [days_to_manufacture],
+        Text([finished_goods_flag]) As [finished_goods_flag],
+        Text([list_price]) As [list_price],
+        Text([make_flag]) As [make_flag],
+        Text([name]) As [name],
+        Text([product_line]) As [product_line],
+        Text([product_number]) As [product_number],
+        Text([reorder_point]) As [reorder_point],
+        Text([safety_stock_level]) As [safety_stock_level],
+        Text([sell_end_date]) As [sell_end_date],
+        Text([sell_start_date]) As [sell_start_date],
+        Text([size]) As [size],
+        Text([size_unit_measure_code]) As [size_unit_measure_code],
+        Text([standard_cost]) As [standard_cost],
+        Text([style]) As [style],
+        Text([weight]) As [weight],
+        Text([weight_unit_measure_code]) As [weight_unit_measure_code],
+        Text([modified_date]) As [modified_date],
+        Text([rowguid]) As [rowguid],
+        $(var__record_hash) As [record_hash],
+        Timestamp#('$(val__utc)', 'YYYY-MM-DD hh:mm:ss.fff') As [record_loaded_at]
+
+    From
+        [$(val__source_path)] (parquet)
+
+    Where
+        1 = 1
+        And Date([modified_date], 'YYYY-MM-DD') >= Date#('$(val__incremental_value)', 'YYYY-MM-DD')
+        And Not Exists ([old_record_hash], $(var__record_hash))
+    ;
+
+    Trace Dropping hash table...;
+    Drop Table [processed_record_hashes];
+
+    Trace Counting new records...;
+    Set val__no_of_new_records = Alt(NoOfRows('raw__adventure_works__products'), 0);
+
+    Trace Checking if there are new records...;
+    If $(val__no_of_new_records) > 0 Then
+
+        Trace Checking if target QVD exists...;
+        If $(val__target_exists) = 1 Then
+            Trace Appending previously ingested data...;
+
+            Concatenate([raw__adventure_works__products])
+            Load * From [$(val__target_path)] (qvd) Where Not Exists ([record_hash]);
+
+        Else
+            Trace Target not found, skipping append...;
+
+        End If
+
+        Trace Commenting table...;
+        Comment Table [raw__adventure_works__products] With 'Products sold or used in the manufacturing of sold products.';
+
+        Trace Commenting fields...;
+        Comment Field [product_id] With 'Primary key for Product records.';
+        Comment Field [product_model_id] With 'Product is a member of this product model. Foreign key to ProductModel.ProductModelID.';
+        Comment Field [product_subcategory_id] With 'Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID.';
+        Comment Field [class] With 'H = High, M = Medium, L = Low.';
+        Comment Field [color] With 'Product color.';
+        Comment Field [days_to_manufacture] With 'Number of days required to manufacture the product.';
+        Comment Field [finished_goods_flag] With '0 = Product is not a salable item. 1 = Product is salable.';
+        Comment Field [list_price] With 'Selling price.';
+        Comment Field [make_flag] With '0 = Product is purchased, 1 = Product is manufactured in-house.';
+        Comment Field [name] With 'Name of the product.';
+        Comment Field [product_line] With 'R = Road, M = Mountain, T = Touring, S = Standard.';
+        Comment Field [product_number] With 'Unique product identification number.';
+        Comment Field [reorder_point] With 'Inventory level that triggers a purchase order or work order.';
+        Comment Field [safety_stock_level] With 'Minimum inventory quantity.';
+        Comment Field [sell_end_date] With 'Date the product was no longer available for sale.';
+        Comment Field [sell_start_date] With 'Date the product was available for sale.';
+        Comment Field [size] With 'Product size.';
+        Comment Field [size_unit_measure_code] With 'Unit of measure for Size column.';
+        Comment Field [standard_cost] With 'Standard cost of the product.';
+        Comment Field [style] With 'W = Womens, M = Mens, U = Universal.';
+        Comment Field [weight] With 'Product weight.';
+        Comment Field [weight_unit_measure_code] With 'Unit of measure for Weight column.';
+        Comment Field [modified_date] With 'Date and time the record was last updated.';
+        Comment Field [rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+        Comment Field [record_hash] With 'Hash of the record, used for deduplication.';
+        Comment Field [record_loaded_at] With 'Timestamp when the record was loaded.';
+
+        Trace Storing data...;
+        Store [raw__adventure_works__products] Into [$(val__qvd_path__das)/raw__adventure_works__products.qvd] (qvd);
+
+    Else
+        Trace No new records loaded...;
+
+    End If
+
+    Trace Dropping table...;
+    Drop Table [raw__adventure_works__products];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let var__source_create_time = Null();
+Let var__target_create_time = Null();
+Let val__target_exists = Null();
+Let val__source_is_newer = Null();
+Let val__incremental_value = Null();
+Let var__record_hash = Null();
+Let val__no_of_new_records = Null();

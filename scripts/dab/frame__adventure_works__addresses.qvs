@@ -1,0 +1,122 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__addresses
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__addresses.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__addresses.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__address = 'address__adventure_works|' & Text([address_id]);
+Set var__hook__reference__state_province = 'reference__state_province__adventure_works|' & Text([state_province_id]);
+Set var__record_version = Window(RecNo(), [address_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [address_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__address = $(var__hook__address) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__addresses]:
+    Load
+        Text($(var__pit_hook__address)) As [_pit_hook__address],
+        Text($(var__hook__address)) As [_hook__address],
+        Text($(var__hook__reference__state_province)) As [_hook__reference__state_province],
+        Num#([address_id]) As [address__address_id],
+        Text([address_line1]) As [address__address_line1],
+        Text([city]) As [address__city],
+        Num#([state_province_id]) As [address__state_province_id],
+        Text([postal_code]) As [address__postal_code],
+        Text([rowguid]) As [address__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [address__modified_date],
+        Text([address_line2]) As [address__address_line2],
+        Text([record_hash]) As [address__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [address__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [address__record_updated_at],
+        Num($(var__record_version)) As [address__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [address__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [address__record_valid_to],
+        Num($(var__is_current_record)) As [address__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__addresses.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__addresses] With 'Street address information for customers, employees, and vendors.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__address] With 'Point in time version of _hook__address.';
+    Comment Field [_hook__address] With 'Hook for address_id using keyset: address__adventure_works.';
+    Comment Field [_hook__reference__state_province] With 'Hook for state_province_id using keyset: reference__state_province__adventure_works.';
+    Comment Field [address__address_id] With 'Primary key for Address records.';
+    Comment Field [address__address_line1] With 'First street address line.';
+    Comment Field [address__city] With 'Name of the city.';
+    Comment Field [address__state_province_id] With 'Unique identification number for the state or province. Foreign key to StateProvince table.';
+    Comment Field [address__postal_code] With 'Postal code for the street address.';
+    Comment Field [address__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [address__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [address__address_line2] With 'Second street address line.';
+    Comment Field [address__record_hash] With 'Hash of the record.';
+    Comment Field [address__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [address__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [address__record_version] With 'Version of the record.';
+    Comment Field [address__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [address__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [address__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__addresses] Into [$(val__qvd_path__dab)/frame__adventure_works__addresses.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__addresses];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__address = Null();
+Let var__hook__reference__state_province = Null();
+Let var__pit_hook__address = Null();

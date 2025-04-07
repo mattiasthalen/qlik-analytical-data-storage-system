@@ -1,0 +1,124 @@
+Trace
+---------------------------------------------------------------
+    Defining frame__adventure_works__special_offers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__special_offers.qvd';
+Let val__target_path = '$(val__qvd_path__dab)/frame__adventure_works__special_offers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Set var__hook__reference__special_offer = 'reference__special_offer__adventure_works|' & Text([special_offer_id]);
+Set var__record_version = Window(RecNo(), [special_offer_id], 'Asc', [record_loaded_at]);
+
+Set var__valid_from = If(
+        $(var__record_version) = 1,
+        Timestamp#('1970-01-01 00:00:00.000', 'YYYY-MM-DD hh:mm:ss.fff'),
+        [record_loaded_at]
+    )
+;
+
+Set var__valid_to = Coalesce(
+        Window([record_loaded_at], [special_offer_id], 'Asc', [record_loaded_at], 1, 1, 1),
+        Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff')
+    )
+;
+
+Set var__is_current_record = If(
+        $(var__valid_to) = Timestamp#('9999-12-31 23:59:59.999', 'YYYY-MM-DD hh:mm:ss.fff'),
+        1,
+        0
+    )
+;
+
+Set var__record_updated_at = If(
+        $(var__is_current_record),
+        [record_loaded_at],
+        $(var__valid_to)
+    )
+;
+
+Set var__pit_hook__reference__special_offer = $(var__hook__reference__special_offer) & '~epoch__valid_from|' & Text($(var__valid_from));
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [frame__adventure_works__special_offers]:
+    Load
+        Text($(var__pit_hook__reference__special_offer)) As [_pit_hook__reference__special_offer],
+        Text($(var__hook__reference__special_offer)) As [_hook__reference__special_offer],
+        Num#([special_offer_id]) As [special_offer__special_offer_id],
+        Text([description]) As [special_offer__description],
+        Num#([discount_percentage]) As [special_offer__discount_percentage],
+        Text([type]) As [special_offer__type],
+        Text([category]) As [special_offer__category],
+        Date(Num#([start_date]), 'YYYY-MM-DD') As [special_offer__start_date],
+        Date(Num#([end_date]), 'YYYY-MM-DD') As [special_offer__end_date],
+        Num#([minimum_quantity]) As [special_offer__minimum_quantity],
+        Text([rowguid]) As [special_offer__rowguid],
+        Date(Num#([modified_date]), 'YYYY-MM-DD') As [special_offer__modified_date],
+        Num#([maximum_quantity]) As [special_offer__maximum_quantity],
+        Text([record_hash]) As [special_offer__record_hash],
+        Timestamp([record_loaded_at], 'YYYY-MM-DD hh:mm:ss.fff') As [special_offer__record_loaded_at],
+        Timestamp($(var__record_updated_at), 'YYYY-MM-DD hh:mm:ss.fff') As [special_offer__record_updated_at],
+        Num($(var__record_version)) As [special_offer__record_version],
+        Timestamp($(var__valid_from), 'YYYY-MM-DD hh:mm:ss.fff') As [special_offer__record_valid_from],
+        Timestamp($(var__valid_to), 'YYYY-MM-DD hh:mm:ss.fff') As [special_offer__record_valid_to],
+        Num($(var__is_current_record)) As [special_offer__is_current_record]
+
+    From
+        [lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system/raw__adventure_works__special_offers.qvd] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [frame__adventure_works__special_offers] With 'Sale discounts lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__special_offer] With 'Point in time version of _hook__reference__special_offer.';
+    Comment Field [_hook__reference__special_offer] With 'Hook for special_offer_id using keyset: reference__special_offer__adventure_works.';
+    Comment Field [special_offer__special_offer_id] With 'Primary key for SpecialOffer records.';
+    Comment Field [special_offer__description] With 'Discount description.';
+    Comment Field [special_offer__discount_percentage] With 'Discount percentage.';
+    Comment Field [special_offer__type] With 'Discount type category.';
+    Comment Field [special_offer__category] With 'Group the discount applies to such as Reseller or Customer.';
+    Comment Field [special_offer__start_date] With 'Discount start date.';
+    Comment Field [special_offer__end_date] With 'Discount end date.';
+    Comment Field [special_offer__minimum_quantity] With 'Minimum discount percent allowed.';
+    Comment Field [special_offer__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [special_offer__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [special_offer__maximum_quantity] With 'Maximum discount percent allowed.';
+    Comment Field [special_offer__record_hash] With 'Hash of the record.';
+    Comment Field [special_offer__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [special_offer__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [special_offer__record_version] With 'Version of the record.';
+    Comment Field [special_offer__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [special_offer__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [special_offer__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [frame__adventure_works__special_offers] Into [$(val__qvd_path__dab)/frame__adventure_works__special_offers.qvd] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [frame__adventure_works__special_offers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+
+Let var__record_version = Null();
+Let var__valid_from = Null();
+Let var__valid_to = Null();
+Let var__is_current_record = Null();
+Let var__record_updated_at = Null();
+Let var__hook__reference__special_offer = Null();
+Let var__pit_hook__reference__special_offer = Null();
