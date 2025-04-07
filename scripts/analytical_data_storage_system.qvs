@@ -1,16 +1,16 @@
 TRACE
-=================================================================
-    GIT Branch: $(val__git_branch)
-=================================================================
+===============================================================
+    Environment: $(val__environment)
+===============================================================
 ;
 
 Let val__utc = Timestamp(UTC(), 'YYYY-MM-DD hh:mm:ss.ffffff');
 
-Let val__qvd_path__das = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__git_branch)/data_according_to_system';
-Let val__qvd_path__dab = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__git_branch)/data_according_to_business';
-Let val__qvd_path__dar = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__git_branch)/data_according_to_requirements';
+Let val__qvd_path__das = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_system';
+Let val__qvd_path__dab = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_business';
+Let val__qvd_path__dar = 'lib://DataFiles/Analytical Data Storage System/QVD/$(val__environment)/data_according_to_requirements';
 
-Let val__base_script_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/git_branches/$(val__git_branch)/scripts';
+Let val__base_script_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analytical Data Storage System/environments/$(val__environment)/scripts';
 
 $(Must_Include=$(val__base_script_path)/data_according_to_system.qvs);
 $(Must_Include=$(val__base_script_path)/data_according_to_business.qvs);
