@@ -1,0 +1,70 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__job_candidates
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__job_candidates.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__job_candidates.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__job_candidates]:
+    Load
+        [_pit_hook__job_candidate],
+        [job_candidate__job_candidate_id],
+        [job_candidate__resume],
+        [job_candidate__modified_date],
+        [job_candidate__business_entity_id],
+        [job_candidate__record_hash],
+        [job_candidate__record_loaded_at],
+        [job_candidate__record_updated_at],
+        [job_candidate__record_version],
+        [job_candidate__record_valid_from],
+        [job_candidate__record_valid_to],
+        [job_candidate__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__job_candidates] With 'Résumés submitted to Human Resources by job applicants.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__job_candidate] With 'Point in time hook for job_candidate_id using keyset: person__adventure_works.';
+    Comment Field [job_candidate__job_candidate_id] With 'Primary key for JobCandidate records.';
+    Comment Field [job_candidate__resume] With 'Résumé in XML format.';
+    Comment Field [job_candidate__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [job_candidate__business_entity_id] With 'Employee identification number if applicant was hired. Foreign key to Employee.BusinessEntityID.';
+    Comment Field [job_candidate__record_hash] With 'Hash of the record.';
+    Comment Field [job_candidate__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [job_candidate__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [job_candidate__record_version] With 'Version of the record.';
+    Comment Field [job_candidate__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [job_candidate__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [job_candidate__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__job_candidates] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__job_candidates];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

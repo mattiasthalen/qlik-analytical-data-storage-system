@@ -1,0 +1,84 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__product_vendors
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__product_vendors.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__product_vendors.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__product_vendors]:
+    Load
+        [_pit_hook__product_vendor],
+        [product_vendor__product_id],
+        [product_vendor__business_entity_id],
+        [product_vendor__average_lead_time],
+        [product_vendor__standard_price],
+        [product_vendor__last_receipt_cost],
+        [product_vendor__last_receipt_date],
+        [product_vendor__min_order_qty],
+        [product_vendor__max_order_qty],
+        [product_vendor__unit_measure_code],
+        [product_vendor__modified_date],
+        [product_vendor__on_order_qty],
+        [product_vendor__record_hash],
+        [product_vendor__record_loaded_at],
+        [product_vendor__record_updated_at],
+        [product_vendor__record_version],
+        [product_vendor__record_valid_from],
+        [product_vendor__record_valid_to],
+        [product_vendor__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__product_vendors] With 'Cross-reference table mapping vendors with the products they supply.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__product_vendor] With 'Point in time version of _hook__product_vendor.';
+    Comment Field [product_vendor__product_id] With 'Primary key. Foreign key to Product.ProductID.';
+    Comment Field [product_vendor__business_entity_id] With 'Primary key. Foreign key to Vendor.BusinessEntityID.';
+    Comment Field [product_vendor__average_lead_time] With 'The average span of time (in days) between placing an order with the vendor and receiving the purchased product.';
+    Comment Field [product_vendor__standard_price] With 'The vendor$(=Chr39())s usual selling price.';
+    Comment Field [product_vendor__last_receipt_cost] With 'The selling price when last purchased.';
+    Comment Field [product_vendor__last_receipt_date] With 'Date the product was last received by the vendor.';
+    Comment Field [product_vendor__min_order_qty] With 'The minimum quantity that should be ordered.';
+    Comment Field [product_vendor__max_order_qty] With 'The maximum quantity that should be ordered.';
+    Comment Field [product_vendor__unit_measure_code] With 'The product$(=Chr39())s unit of measure.';
+    Comment Field [product_vendor__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [product_vendor__on_order_qty] With 'The quantity currently on order.';
+    Comment Field [product_vendor__record_hash] With 'Hash of the record.';
+    Comment Field [product_vendor__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [product_vendor__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [product_vendor__record_version] With 'Version of the record.';
+    Comment Field [product_vendor__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [product_vendor__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [product_vendor__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__product_vendors] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__product_vendors];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

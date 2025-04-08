@@ -1,0 +1,88 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__persons
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__persons.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__persons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__persons]:
+    Load
+        [_pit_hook__person__individual],
+        [person__business_entity_id],
+        [person__person_type],
+        [person__name_style],
+        [person__first_name],
+        [person__middle_name],
+        [person__last_name],
+        [person__email_promotion],
+        [person__demographics],
+        [person__rowguid],
+        [person__modified_date],
+        [person__title],
+        [person__suffix],
+        [person__additional_contact_info],
+        [person__record_hash],
+        [person__record_loaded_at],
+        [person__record_updated_at],
+        [person__record_version],
+        [person__record_valid_from],
+        [person__record_valid_to],
+        [person__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__persons] With 'Human beings involved with AdventureWorks: employees, customer contacts, and vendor contacts.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__person__individual] With 'Point in time hook for business_entity_id using keyset: person__individual__adventure_works.';
+    Comment Field [person__business_entity_id] With 'Primary key for Person records.';
+    Comment Field [person__person_type] With 'Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact.';
+    Comment Field [person__name_style] With '0 = The data in FirstName and LastName are stored in western style (first name, last name) order. 1 = Eastern style (last name, first name) order.';
+    Comment Field [person__first_name] With 'First name of the person.';
+    Comment Field [person__middle_name] With 'Middle name or middle initial of the person.';
+    Comment Field [person__last_name] With 'Last name of the person.';
+    Comment Field [person__email_promotion] With '0 = Contact does not wish to receive e-mail promotions, 1 = Contact does wish to receive e-mail promotions from AdventureWorks, 2 = Contact does wish to receive e-mail promotions from AdventureWorks and selected partners.';
+    Comment Field [person__demographics] With 'Personal information such as hobbies, and income collected from online shoppers. Used for sales analysis.';
+    Comment Field [person__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [person__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [person__title] With 'A courtesy title. For example, Mr. or Ms.';
+    Comment Field [person__suffix] With 'Surname suffix. For example, Sr. or Jr.';
+    Comment Field [person__additional_contact_info] With 'Additional contact information about the person stored in xml format.';
+    Comment Field [person__record_hash] With 'Hash of the record.';
+    Comment Field [person__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [person__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [person__record_version] With 'Version of the record.';
+    Comment Field [person__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [person__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [person__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__persons] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__persons];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

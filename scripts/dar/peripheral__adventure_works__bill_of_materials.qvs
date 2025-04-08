@@ -1,0 +1,80 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__bill_of_materials
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__bill_of_materials.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__bill_of_materials.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__bill_of_materials]:
+    Load
+        [_pit_hook__bill_of_materials],
+        [bill_of_material__bill_of_materials_id],
+        [bill_of_material__product_assembly_id],
+        [bill_of_material__component_id],
+        [bill_of_material__start_date],
+        [bill_of_material__unit_measure_code],
+        [bill_of_material__bomlevel],
+        [bill_of_material__per_assembly_qty],
+        [bill_of_material__modified_date],
+        [bill_of_material__end_date],
+        [bill_of_material__record_hash],
+        [bill_of_material__record_loaded_at],
+        [bill_of_material__record_updated_at],
+        [bill_of_material__record_version],
+        [bill_of_material__record_valid_from],
+        [bill_of_material__record_valid_to],
+        [bill_of_material__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__bill_of_materials] With 'Items required to make bicycles and bicycle subassemblies. It identifies the hierarchical relationship between a parent product and its components.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__bill_of_materials] With 'Point in time hook for bill_of_materials_id using keyset: product__adventure_works.';
+    Comment Field [bill_of_material__bill_of_materials_id] With 'Primary key for BillOfMaterials records.';
+    Comment Field [bill_of_material__product_assembly_id] With 'Parent product identification number. Foreign key to Product.ProductID.';
+    Comment Field [bill_of_material__component_id] With 'Component identification number. Foreign key to Product.ProductID.';
+    Comment Field [bill_of_material__start_date] With 'Date the component started being used in the assembly item.';
+    Comment Field [bill_of_material__unit_measure_code] With 'Standard code identifying the unit of measure for the quantity.';
+    Comment Field [bill_of_material__bomlevel] With 'Indicates the depth the component is from its parent (AssemblyID).';
+    Comment Field [bill_of_material__per_assembly_qty] With 'Quantity of the component needed to create the assembly.';
+    Comment Field [bill_of_material__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [bill_of_material__end_date] With 'Date the component stopped being used in the assembly item.';
+    Comment Field [bill_of_material__record_hash] With 'Hash of the record.';
+    Comment Field [bill_of_material__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [bill_of_material__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [bill_of_material__record_version] With 'Version of the record.';
+    Comment Field [bill_of_material__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [bill_of_material__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [bill_of_material__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__bill_of_materials] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__bill_of_materials];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

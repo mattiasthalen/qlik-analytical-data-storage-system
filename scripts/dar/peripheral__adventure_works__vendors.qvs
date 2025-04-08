@@ -1,0 +1,78 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__vendors
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__vendors.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__vendors.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__vendors]:
+    Load
+        [_pit_hook__vendor],
+        [vendor__business_entity_id],
+        [vendor__account_number],
+        [vendor__name],
+        [vendor__credit_rating],
+        [vendor__preferred_vendor_status],
+        [vendor__active_flag],
+        [vendor__modified_date],
+        [vendor__purchasing_web_service_url],
+        [vendor__record_hash],
+        [vendor__record_loaded_at],
+        [vendor__record_updated_at],
+        [vendor__record_version],
+        [vendor__record_valid_from],
+        [vendor__record_valid_to],
+        [vendor__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__vendors] With 'Companies from whom Adventure Works Cycles purchases parts or other goods.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__vendor] With 'Point in time hook for business_entity_id using keyset: vendor__adventure_works.';
+    Comment Field [vendor__business_entity_id] With 'Primary key for Vendor records. Foreign key to BusinessEntity.BusinessEntityID.';
+    Comment Field [vendor__account_number] With 'Vendor account (identification) number.';
+    Comment Field [vendor__name] With 'Company name.';
+    Comment Field [vendor__credit_rating] With '1 = Superior, 2 = Excellent, 3 = Above average, 4 = Average, 5 = Below average.';
+    Comment Field [vendor__preferred_vendor_status] With '0 = Do not use if another vendor is available. 1 = Preferred over other vendors supplying the same product.';
+    Comment Field [vendor__active_flag] With '0 = Vendor no longer used. 1 = Vendor is actively used.';
+    Comment Field [vendor__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [vendor__purchasing_web_service_url] With 'Vendor URL.';
+    Comment Field [vendor__record_hash] With 'Hash of the record.';
+    Comment Field [vendor__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [vendor__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [vendor__record_version] With 'Version of the record.';
+    Comment Field [vendor__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [vendor__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [vendor__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__vendors] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__vendors];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

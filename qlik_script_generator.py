@@ -1,5 +1,6 @@
 import yaml
 import os
+import re
 from pathlib import Path
 from typing import Dict, List, Any
 
@@ -279,8 +280,6 @@ def generate_das_qvs(
             # Write the individual file
             with open(table_file_path, 'w') as f:
                 f.write('\n'.join(table_lines))
-            
-            print(f"Generated individual DAS QVS file for {table_name} at: {table_file_path}")
             
             # Add include statement to main output
             output.append(f"$(Must_Include=$(val__base_script_path)/das/{table_name}.qvs);")
@@ -707,8 +706,6 @@ def generate_dab_qvs(
             with open(frame_file_path, 'w') as f:
                 f.write('\n'.join(frame_lines))
             
-            print(f"Generated individual DAB QVS file for {frame_name} at: {frame_file_path}")
-            
             # Add include statement to main output
             output.append(f"$(Must_Include=$(val__base_script_path)/dab/{frame_name}.qvs);")
     
@@ -717,6 +714,212 @@ def generate_dab_qvs(
         f.write('\n'.join(output))
     
     print(f"Generated main DAB QVS file at: {output_path}")
+
+def generate_peripheral_qvs(
+    dab_files: list,
+    dar_dir: Path
+) -> list:
+    """
+    Generates Qlik Sense QVS scripts for the peripheral layer.
+    
+    This function takes DAB script files and generates peripheral scripts for each frame.
+    Each peripheral script contains the PIT hook field and relevant column-prefixed fields.
+    
+    Args:
+        script_path: Path to the scripts directory
+        dab_files: List of Path objects pointing to DAB script files
+        dar_dir: Path to the directory where peripheral scripts will be stored
+        
+    Returns:
+        List of include statements for all generated peripheral scripts
+    """
+    import re
+    
+    # Begin constructing the output - list of include statements
+    output = []
+    
+    # Process each DAB frame file
+    for dab_file in sorted(dab_files):
+        # Get frame name from the file name
+        frame_name = dab_file.stem  # This gives 'frame__adventure_works__address_types'
+        
+        # Create peripheral name by replacing 'frame' with 'peripheral'
+        peripheral_name = frame_name.replace('frame', 'peripheral')
+        
+        # Full paths for the output file
+        peripheral_file = dar_dir / f"{peripheral_name}.qvs"
+        
+        # Read the content of the DAB file
+        with open(dab_file, 'r', encoding='utf-8') as f:
+            dab_content = f.read()
+        
+        # Extract table name and description
+        table_name = frame_name.replace('frame', 'peripheral')
+        table_description = None
+        field_comments = {}
+        
+        # Look for table comment
+        table_comment_match = re.search(r'Comment Table \[frame__.*?\] With \'(.*?)\';', dab_content)
+        if table_comment_match:
+            table_description = table_comment_match.group(1)
+        
+        # Look for field comments
+        field_comment_matches = re.finditer(r'Comment Field \[(.*?)\] With \'(.*?)\';', dab_content)
+        for match in field_comment_matches:
+            field_name = match.group(1)
+            field_comment = match.group(2)
+            field_comments[field_name] = field_comment
+        
+        # Extract all fields from the LOAD statement
+        load_fields = []
+        load_match = re.search(r'Load\s+(.*?)\s+From', dab_content, re.DOTALL)
+        if load_match:
+            load_block = load_match.group(1)
+            field_lines = [line.strip() for line in load_block.split('\n') if line.strip() and not line.strip().startswith('//')]  
+            for line in field_lines:
+                if ' As [' in line:
+                    field_name = line.split(' As [')[1].split(']')[0]
+                    if not field_name.startswith('_hook__'):  # Exclude hook fields that aren't PIT hooks
+                        load_fields.append(field_name)
+        
+        # Create the peripheral QVS content
+        peripheral_content = f"""Trace
+---------------------------------------------------------------
+    Defining {peripheral_name}
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/{frame_name}.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/{peripheral_name}.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [{peripheral_name}]:
+    Load
+"""
+        
+        # Add fields to load
+        for i, field in enumerate(load_fields):
+            peripheral_content += f"        [{field}]"
+            if i < len(load_fields) - 1:
+                peripheral_content += ",\n"
+            else:
+                peripheral_content += "\n\n"
+        
+        # Complete the script
+        peripheral_content += f"""    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;\n"""
+        
+        # Add table comment if available
+        if table_description:
+            peripheral_content += f"    Comment Table [{peripheral_name}] With '{table_description}';\n\n"
+        
+        # Add field comments
+        if field_comments:
+            peripheral_content += "    Trace Commenting fields...;\n"
+            for field in load_fields:
+                if field in field_comments:
+                    comment = field_comments[field]
+                    
+                    # Update the comment for the PIT hook field
+                    if field.startswith('_pit_hook__'):
+                        # Find the corresponding hook field and its comment
+                        hook_field = field.replace('_pit_hook__', '_hook__')
+                        if hook_field in field_comments:
+                            hook_comment = field_comments[hook_field]
+                            # Replace 'Hook for' with 'Point in time hook for'
+                            if hook_comment.startswith('Hook for'):
+                                comment = 'Point in time h' + hook_comment[1:]
+                    
+                    peripheral_content += f"    Comment Field [{field}] With '{comment}';\n"
+        
+        # Finish the script
+        peripheral_content += f"""
+    Trace Storing data...;
+    Store [{peripheral_name}] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [{peripheral_name}];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
+"""
+        
+        # Write the peripheral QVS file
+        with open(peripheral_file, 'w', encoding='utf-8') as f:
+            f.write(peripheral_content)
+        
+        # Add include statement to main output
+        output.append(f"$(Must_Include=$(val__base_script_path)/dar/{peripheral_name}.qvs);")
+    
+    # Return the list of include statements
+    return output
+
+def generate_dar_qvs(
+    script_path: Path
+) -> None:
+    """Generate Data According to Requirements (DAR) scripts.
+    
+    This function:
+    1. Sets up paths for DAR and DAB directories
+    2. Finds all DAB scripts
+    3. Calls generate_peripheral_qvs to create individual peripheral QVS files
+    4. Creates a main DAR script file that includes all peripheral scripts
+    
+    Args:
+        script_path: Path to the scripts directory
+    """
+    # Paths
+    output_path = script_path / "data_according_to_requirements.qvs"
+    dar_dir = script_path / "dar"
+    dab_dir = script_path / "dab"
+    
+    # Create dar directory if it doesn't exist
+    os.makedirs(dar_dir, exist_ok=True)
+    
+    # Find all DAB scripts
+    dab_files = list(dab_dir.glob('frame__*.qvs'))
+    
+    # Create the main output with header
+    output = []
+    
+    # Add header trace
+    output.append("Trace")
+    output.append("===============================================================")
+    output.append("    DATA ACCORDING TO REQUIREMENTS")
+    output.append("    Script generated by Qlik Script Generator")
+    output.append("===============================================================")
+    output.append(";")
+    
+    # Call generate_peripheral_qvs to create individual peripheral QVS files
+    peripheral_includes = generate_peripheral_qvs(dab_files=dab_files, dar_dir=dar_dir)
+    
+    # Add all peripheral includes to the main output
+    output.extend(peripheral_includes)
+    
+    # Write the main output file
+    with open(output_path, 'w') as f:
+        f.write('\n'.join(output))
+    
+    print(f"Generated main DAR QVS file at: {output_path}")
 
 if __name__ == "__main__":
     BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -730,10 +933,15 @@ if __name__ == "__main__":
         script_path=script_path,
         schema_path=schema_path
     )
-    
+
     # Generate Data According to Business (DAB) scripts
     generate_dab_qvs(
         script_path=script_path,
         schema_path=schema_path,
         hooks_path=hooks_path
+    )
+    
+    # Generate Data According to Requirements (DAR) scripts
+    generate_dar_qvs(
+        script_path=script_path
     )

@@ -1,0 +1,110 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__products
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__products.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__products.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__products]:
+    Load
+        [_pit_hook__product],
+        [product__product_id],
+        [product__name],
+        [product__product_number],
+        [product__make_flag],
+        [product__finished_goods_flag],
+        [product__safety_stock_level],
+        [product__reorder_point],
+        [product__standard_cost],
+        [product__list_price],
+        [product__days_to_manufacture],
+        [product__sell_start_date],
+        [product__rowguid],
+        [product__modified_date],
+        [product__color],
+        [product__class],
+        [product__weight_unit_measure_code],
+        [product__weight],
+        [product__size],
+        [product__size_unit_measure_code],
+        [product__product_line],
+        [product__style],
+        [product__product_subcategory_id],
+        [product__product_model_id],
+        [product__sell_end_date],
+        [product__record_hash],
+        [product__record_loaded_at],
+        [product__record_updated_at],
+        [product__record_version],
+        [product__record_valid_from],
+        [product__record_valid_to],
+        [product__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__products] With 'Products sold or used in the manufacturing of sold products.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__product] With 'Point in time hook for product_id using keyset: product__adventure_works.';
+    Comment Field [product__product_id] With 'Primary key for Product records.';
+    Comment Field [product__name] With 'Name of the product.';
+    Comment Field [product__product_number] With 'Unique product identification number.';
+    Comment Field [product__make_flag] With '0 = Product is purchased, 1 = Product is manufactured in-house.';
+    Comment Field [product__finished_goods_flag] With '0 = Product is not a salable item. 1 = Product is salable.';
+    Comment Field [product__safety_stock_level] With 'Minimum inventory quantity.';
+    Comment Field [product__reorder_point] With 'Inventory level that triggers a purchase order or work order.';
+    Comment Field [product__standard_cost] With 'Standard cost of the product.';
+    Comment Field [product__list_price] With 'Selling price.';
+    Comment Field [product__days_to_manufacture] With 'Number of days required to manufacture the product.';
+    Comment Field [product__sell_start_date] With 'Date the product was available for sale.';
+    Comment Field [product__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [product__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [product__color] With 'Product color.';
+    Comment Field [product__class] With 'H = High, M = Medium, L = Low.';
+    Comment Field [product__weight_unit_measure_code] With 'Unit of measure for Weight column.';
+    Comment Field [product__weight] With 'Product weight.';
+    Comment Field [product__size] With 'Product size.';
+    Comment Field [product__size_unit_measure_code] With 'Unit of measure for Size column.';
+    Comment Field [product__product_line] With 'R = Road, M = Mountain, T = Touring, S = Standard.';
+    Comment Field [product__style] With 'W = Womens, M = Mens, U = Universal.';
+    Comment Field [product__product_subcategory_id] With 'Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID.';
+    Comment Field [product__product_model_id] With 'Product is a member of this product model. Foreign key to ProductModel.ProductModelID.';
+    Comment Field [product__sell_end_date] With 'Date the product was no longer available for sale.';
+    Comment Field [product__record_hash] With 'Hash of the record.';
+    Comment Field [product__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [product__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [product__record_version] With 'Version of the record.';
+    Comment Field [product__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [product__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [product__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__products] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__products];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

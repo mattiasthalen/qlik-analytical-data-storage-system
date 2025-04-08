@@ -1,0 +1,68 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__phone_number_types
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__phone_number_types.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__phone_number_types.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__phone_number_types]:
+    Load
+        [_pit_hook__reference__phone_number_type],
+        [phone_number_type__phone_number_type_id],
+        [phone_number_type__name],
+        [phone_number_type__modified_date],
+        [phone_number_type__record_hash],
+        [phone_number_type__record_loaded_at],
+        [phone_number_type__record_updated_at],
+        [phone_number_type__record_version],
+        [phone_number_type__record_valid_from],
+        [phone_number_type__record_valid_to],
+        [phone_number_type__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__phone_number_types] With 'Type of phone number of a person.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__phone_number_type] With 'Point in time hook for phone_number_type_id using keyset: reference__phone_number_type__adventure_works.';
+    Comment Field [phone_number_type__phone_number_type_id] With 'Primary key for telephone number type records.';
+    Comment Field [phone_number_type__name] With 'Name of the telephone number type.';
+    Comment Field [phone_number_type__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [phone_number_type__record_hash] With 'Hash of the record.';
+    Comment Field [phone_number_type__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [phone_number_type__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [phone_number_type__record_version] With 'Version of the record.';
+    Comment Field [phone_number_type__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [phone_number_type__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [phone_number_type__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__phone_number_types] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__phone_number_types];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

@@ -1,0 +1,74 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__stores
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__stores.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__stores.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__stores]:
+    Load
+        [_pit_hook__store],
+        [store__business_entity_id],
+        [store__name],
+        [store__sales_person_id],
+        [store__demographics],
+        [store__rowguid],
+        [store__modified_date],
+        [store__record_hash],
+        [store__record_loaded_at],
+        [store__record_updated_at],
+        [store__record_version],
+        [store__record_valid_from],
+        [store__record_valid_to],
+        [store__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__stores] With 'Customers (resellers) of Adventure Works products.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__store] With 'Point in time hook for business_entity_id using keyset: store__adventure_works.';
+    Comment Field [store__business_entity_id] With 'Primary key. Foreign key to Customer.BusinessEntityID.';
+    Comment Field [store__name] With 'Name of the store.';
+    Comment Field [store__sales_person_id] With 'ID of the sales person assigned to the customer. Foreign key to SalesPerson.BusinessEntityID.';
+    Comment Field [store__demographics] With 'Demographic information about the store such as the number of employees, annual sales and store type.';
+    Comment Field [store__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [store__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [store__record_hash] With 'Hash of the record.';
+    Comment Field [store__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [store__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [store__record_version] With 'Version of the record.';
+    Comment Field [store__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [store__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [store__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__stores] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__stores];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

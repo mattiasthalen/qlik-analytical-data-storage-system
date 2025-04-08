@@ -1,0 +1,112 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__sales_order_headers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__sales_order_headers.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__sales_order_headers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__sales_order_headers]:
+    Load
+        [_pit_hook__order__sales],
+        [sales_order_header__sales_order_id],
+        [sales_order_header__revision_number],
+        [sales_order_header__order_date],
+        [sales_order_header__due_date],
+        [sales_order_header__ship_date],
+        [sales_order_header__status],
+        [sales_order_header__online_order_flag],
+        [sales_order_header__sales_order_number],
+        [sales_order_header__purchase_order_number],
+        [sales_order_header__account_number],
+        [sales_order_header__customer_id],
+        [sales_order_header__sales_person_id],
+        [sales_order_header__territory_id],
+        [sales_order_header__bill_to_address_id],
+        [sales_order_header__ship_to_address_id],
+        [sales_order_header__ship_method_id],
+        [sales_order_header__credit_card_id],
+        [sales_order_header__credit_card_approval_code],
+        [sales_order_header__sub_total],
+        [sales_order_header__tax_amt],
+        [sales_order_header__freight],
+        [sales_order_header__total_due],
+        [sales_order_header__rowguid],
+        [sales_order_header__modified_date],
+        [sales_order_header__currency_rate_id],
+        [sales_order_header__record_hash],
+        [sales_order_header__record_loaded_at],
+        [sales_order_header__record_updated_at],
+        [sales_order_header__record_version],
+        [sales_order_header__record_valid_from],
+        [sales_order_header__record_valid_to],
+        [sales_order_header__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__sales_order_headers] With 'General sales order information.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__order__sales] With 'Point in time hook for sales_order_id using keyset: order__sales__adventure_works.';
+    Comment Field [sales_order_header__sales_order_id] With 'Primary key.';
+    Comment Field [sales_order_header__revision_number] With 'Incremental number to track changes to the sales order over time.';
+    Comment Field [sales_order_header__order_date] With 'Dates the sales order was created.';
+    Comment Field [sales_order_header__due_date] With 'Date the order is due to the customer.';
+    Comment Field [sales_order_header__ship_date] With 'Date the order was shipped to the customer.';
+    Comment Field [sales_order_header__status] With 'Order current status. 1 = In process; 2 = Approved; 3 = Backordered; 4 = Rejected; 5 = Shipped; 6 = Cancelled.';
+    Comment Field [sales_order_header__online_order_flag] With '0 = Order placed by sales person. 1 = Order placed online by customer.';
+    Comment Field [sales_order_header__sales_order_number] With 'Unique sales order identification number.';
+    Comment Field [sales_order_header__purchase_order_number] With 'Customer purchase order number reference.';
+    Comment Field [sales_order_header__account_number] With 'Financial accounting number reference.';
+    Comment Field [sales_order_header__customer_id] With 'Customer identification number. Foreign key to Customer.BusinessEntityID.';
+    Comment Field [sales_order_header__sales_person_id] With 'Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.';
+    Comment Field [sales_order_header__territory_id] With 'Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.';
+    Comment Field [sales_order_header__bill_to_address_id] With 'Customer billing address. Foreign key to Address.AddressID.';
+    Comment Field [sales_order_header__ship_to_address_id] With 'Customer shipping address. Foreign key to Address.AddressID.';
+    Comment Field [sales_order_header__ship_method_id] With 'Shipping method. Foreign key to ShipMethod.ShipMethodID.';
+    Comment Field [sales_order_header__credit_card_id] With 'Credit card identification number. Foreign key to CreditCard.CreditCardID.';
+    Comment Field [sales_order_header__credit_card_approval_code] With 'Approval code provided by the credit card company.';
+    Comment Field [sales_order_header__sub_total] With 'Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal) for the appropriate SalesOrderID.';
+    Comment Field [sales_order_header__tax_amt] With 'Tax amount.';
+    Comment Field [sales_order_header__freight] With 'Shipping cost.';
+    Comment Field [sales_order_header__total_due] With 'Total due from customer. Computed as Subtotal + TaxAmt + Freight.';
+    Comment Field [sales_order_header__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [sales_order_header__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [sales_order_header__currency_rate_id] With 'Currency exchange rate used. Foreign key to CurrencyRate.CurrencyRateID.';
+    Comment Field [sales_order_header__record_hash] With 'Hash of the record.';
+    Comment Field [sales_order_header__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [sales_order_header__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [sales_order_header__record_version] With 'Version of the record.';
+    Comment Field [sales_order_header__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [sales_order_header__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [sales_order_header__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__sales_order_headers] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__sales_order_headers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

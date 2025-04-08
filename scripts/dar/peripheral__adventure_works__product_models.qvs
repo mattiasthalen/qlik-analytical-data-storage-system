@@ -1,0 +1,74 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__product_models
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__product_models.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__product_models.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__product_models]:
+    Load
+        [_pit_hook__reference__product_model],
+        [product_model__product_model_id],
+        [product_model__name],
+        [product_model__rowguid],
+        [product_model__modified_date],
+        [product_model__catalog_description],
+        [product_model__instructions],
+        [product_model__record_hash],
+        [product_model__record_loaded_at],
+        [product_model__record_updated_at],
+        [product_model__record_version],
+        [product_model__record_valid_from],
+        [product_model__record_valid_to],
+        [product_model__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__product_models] With 'Product model classification.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__product_model] With 'Point in time hook for product_model_id using keyset: reference__product_model__adventure_works.';
+    Comment Field [product_model__product_model_id] With 'Primary key for ProductModel records.';
+    Comment Field [product_model__name] With 'Product model description.';
+    Comment Field [product_model__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [product_model__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [product_model__catalog_description] With 'Detailed product catalog information in xml format.';
+    Comment Field [product_model__instructions] With 'Manufacturing instructions in xml format.';
+    Comment Field [product_model__record_hash] With 'Hash of the record.';
+    Comment Field [product_model__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [product_model__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [product_model__record_version] With 'Version of the record.';
+    Comment Field [product_model__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [product_model__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [product_model__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__product_models] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__product_models];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

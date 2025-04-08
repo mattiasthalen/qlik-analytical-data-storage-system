@@ -1,0 +1,78 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__state_provinces
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__state_provinces.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__state_provinces.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__state_provinces]:
+    Load
+        [_pit_hook__reference__state_province],
+        [state_province__state_province_id],
+        [state_province__state_province_code],
+        [state_province__country_region_code],
+        [state_province__is_only_state_province_flag],
+        [state_province__name],
+        [state_province__territory_id],
+        [state_province__rowguid],
+        [state_province__modified_date],
+        [state_province__record_hash],
+        [state_province__record_loaded_at],
+        [state_province__record_updated_at],
+        [state_province__record_version],
+        [state_province__record_valid_from],
+        [state_province__record_valid_to],
+        [state_province__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__state_provinces] With 'State and province lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__state_province] With 'Point in time hook for state_province_id using keyset: reference__state_province__adventure_works.';
+    Comment Field [state_province__state_province_id] With 'Primary key for StateProvince records.';
+    Comment Field [state_province__state_province_code] With 'ISO standard state or province code.';
+    Comment Field [state_province__country_region_code] With 'ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.';
+    Comment Field [state_province__is_only_state_province_flag] With '0 = StateProvinceCode exists. 1 = StateProvinceCode unavailable, using CountryRegionCode.';
+    Comment Field [state_province__name] With 'State or province description.';
+    Comment Field [state_province__territory_id] With 'ID of the territory in which the state or province is located. Foreign key to SalesTerritory.SalesTerritoryID.';
+    Comment Field [state_province__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [state_province__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [state_province__record_hash] With 'Hash of the record.';
+    Comment Field [state_province__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [state_province__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [state_province__record_version] With 'Version of the record.';
+    Comment Field [state_province__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [state_province__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [state_province__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__state_provinces] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__state_provinces];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

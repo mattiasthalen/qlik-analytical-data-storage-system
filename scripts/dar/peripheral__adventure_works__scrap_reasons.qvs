@@ -1,0 +1,68 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__scrap_reasons
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__scrap_reasons.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__scrap_reasons.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__scrap_reasons]:
+    Load
+        [_pit_hook__reference__scrap_reason],
+        [scrap_reason__scrap_reason_id],
+        [scrap_reason__name],
+        [scrap_reason__modified_date],
+        [scrap_reason__record_hash],
+        [scrap_reason__record_loaded_at],
+        [scrap_reason__record_updated_at],
+        [scrap_reason__record_version],
+        [scrap_reason__record_valid_from],
+        [scrap_reason__record_valid_to],
+        [scrap_reason__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__scrap_reasons] With 'Manufacturing failure reasons lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__scrap_reason] With 'Point in time hook for scrap_reason_id using keyset: reference__scrap_reason__adventure_works.';
+    Comment Field [scrap_reason__scrap_reason_id] With 'Primary key for ScrapReason records.';
+    Comment Field [scrap_reason__name] With 'Failure description.';
+    Comment Field [scrap_reason__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [scrap_reason__record_hash] With 'Hash of the record.';
+    Comment Field [scrap_reason__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [scrap_reason__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [scrap_reason__record_version] With 'Version of the record.';
+    Comment Field [scrap_reason__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [scrap_reason__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [scrap_reason__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__scrap_reasons] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__scrap_reasons];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

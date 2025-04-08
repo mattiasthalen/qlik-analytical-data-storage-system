@@ -1,0 +1,76 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__customers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__customers.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__customers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__customers]:
+    Load
+        [_pit_hook__customer],
+        [customer__customer_id],
+        [customer__store_id],
+        [customer__territory_id],
+        [customer__account_number],
+        [customer__rowguid],
+        [customer__modified_date],
+        [customer__person_id],
+        [customer__record_hash],
+        [customer__record_loaded_at],
+        [customer__record_updated_at],
+        [customer__record_version],
+        [customer__record_valid_from],
+        [customer__record_valid_to],
+        [customer__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__customers] With 'Current customer information. Also see the Person and Store tables.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__customer] With 'Point in time hook for customer_id using keyset: customer__adventure_works.';
+    Comment Field [customer__customer_id] With 'Primary key.';
+    Comment Field [customer__store_id] With 'Foreign key to Store.BusinessEntityID.';
+    Comment Field [customer__territory_id] With 'ID of the territory in which the customer is located. Foreign key to SalesTerritory.SalesTerritoryID.';
+    Comment Field [customer__account_number] With 'Unique number identifying the customer assigned by the accounting system.';
+    Comment Field [customer__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [customer__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [customer__person_id] With 'Foreign key to Person.BusinessEntityID.';
+    Comment Field [customer__record_hash] With 'Hash of the record.';
+    Comment Field [customer__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [customer__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [customer__record_version] With 'Version of the record.';
+    Comment Field [customer__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [customer__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [customer__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__customers] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__customers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

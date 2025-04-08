@@ -1,0 +1,72 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__business_entity_contacts
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__business_entity_contacts.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__business_entity_contacts.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__business_entity_contacts]:
+    Load
+        [_pit_hook__business_entity],
+        [business_entity_contact__business_entity_id],
+        [business_entity_contact__person_id],
+        [business_entity_contact__contact_type_id],
+        [business_entity_contact__rowguid],
+        [business_entity_contact__modified_date],
+        [business_entity_contact__record_hash],
+        [business_entity_contact__record_loaded_at],
+        [business_entity_contact__record_updated_at],
+        [business_entity_contact__record_version],
+        [business_entity_contact__record_valid_from],
+        [business_entity_contact__record_valid_to],
+        [business_entity_contact__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__business_entity_contacts] With 'Cross-reference table mapping stores, vendors, and employees to people.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__business_entity] With 'Point in time hook for business_entity_id using keyset: business_entity__adventure_works.';
+    Comment Field [business_entity_contact__business_entity_id] With 'Primary key. Foreign key to BusinessEntity.BusinessEntityID.';
+    Comment Field [business_entity_contact__person_id] With 'Primary key. Foreign key to Person.BusinessEntityID.';
+    Comment Field [business_entity_contact__contact_type_id] With 'Primary key. Foreign key to ContactType.ContactTypeID.';
+    Comment Field [business_entity_contact__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [business_entity_contact__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [business_entity_contact__record_hash] With 'Hash of the record.';
+    Comment Field [business_entity_contact__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [business_entity_contact__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [business_entity_contact__record_version] With 'Version of the record.';
+    Comment Field [business_entity_contact__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [business_entity_contact__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [business_entity_contact__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__business_entity_contacts] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__business_entity_contacts];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

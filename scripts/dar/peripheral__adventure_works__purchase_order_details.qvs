@@ -1,0 +1,84 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__purchase_order_details
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__purchase_order_details.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__purchase_order_details.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__purchase_order_details]:
+    Load
+        [_pit_hook__order_line__purchase],
+        [purchase_order_detail__purchase_order_id],
+        [purchase_order_detail__purchase_order_detail_id],
+        [purchase_order_detail__due_date],
+        [purchase_order_detail__order_qty],
+        [purchase_order_detail__product_id],
+        [purchase_order_detail__unit_price],
+        [purchase_order_detail__line_total],
+        [purchase_order_detail__received_qty],
+        [purchase_order_detail__rejected_qty],
+        [purchase_order_detail__stocked_qty],
+        [purchase_order_detail__modified_date],
+        [purchase_order_detail__record_hash],
+        [purchase_order_detail__record_loaded_at],
+        [purchase_order_detail__record_updated_at],
+        [purchase_order_detail__record_version],
+        [purchase_order_detail__record_valid_from],
+        [purchase_order_detail__record_valid_to],
+        [purchase_order_detail__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__purchase_order_details] With 'Individual products associated with a specific purchase order. See PurchaseOrderHeader.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__order_line__purchase] With 'Point in time hook for purchase_order_detail_id using keyset: order_line__purchase__adventure_works.';
+    Comment Field [purchase_order_detail__purchase_order_id] With 'Primary key. Foreign key to PurchaseOrderHeader.PurchaseOrderID.';
+    Comment Field [purchase_order_detail__purchase_order_detail_id] With 'Primary key. One line number per purchased product.';
+    Comment Field [purchase_order_detail__due_date] With 'Date the product is expected to be received.';
+    Comment Field [purchase_order_detail__order_qty] With 'Quantity ordered.';
+    Comment Field [purchase_order_detail__product_id] With 'Product identification number. Foreign key to Product.ProductID.';
+    Comment Field [purchase_order_detail__unit_price] With 'Vendor$(=Chr39())s selling price of a single product.';
+    Comment Field [purchase_order_detail__line_total] With 'Per product subtotal. Computed as OrderQty * UnitPrice.';
+    Comment Field [purchase_order_detail__received_qty] With 'Quantity actually received from the vendor.';
+    Comment Field [purchase_order_detail__rejected_qty] With 'Quantity rejected during inspection.';
+    Comment Field [purchase_order_detail__stocked_qty] With 'Quantity accepted into inventory. Computed as ReceivedQty - RejectedQty.';
+    Comment Field [purchase_order_detail__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_detail__record_hash] With 'Hash of the record.';
+    Comment Field [purchase_order_detail__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [purchase_order_detail__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_detail__record_version] With 'Version of the record.';
+    Comment Field [purchase_order_detail__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [purchase_order_detail__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [purchase_order_detail__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__purchase_order_details] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__purchase_order_details];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

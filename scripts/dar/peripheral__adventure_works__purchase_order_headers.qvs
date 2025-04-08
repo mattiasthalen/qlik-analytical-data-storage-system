@@ -1,0 +1,88 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__purchase_order_headers
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__purchase_order_headers.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__purchase_order_headers.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__purchase_order_headers]:
+    Load
+        [_pit_hook__order__purchase],
+        [purchase_order_header__purchase_order_id],
+        [purchase_order_header__revision_number],
+        [purchase_order_header__status],
+        [purchase_order_header__employee_id],
+        [purchase_order_header__vendor_id],
+        [purchase_order_header__ship_method_id],
+        [purchase_order_header__order_date],
+        [purchase_order_header__ship_date],
+        [purchase_order_header__sub_total],
+        [purchase_order_header__tax_amt],
+        [purchase_order_header__freight],
+        [purchase_order_header__total_due],
+        [purchase_order_header__modified_date],
+        [purchase_order_header__record_hash],
+        [purchase_order_header__record_loaded_at],
+        [purchase_order_header__record_updated_at],
+        [purchase_order_header__record_version],
+        [purchase_order_header__record_valid_from],
+        [purchase_order_header__record_valid_to],
+        [purchase_order_header__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__purchase_order_headers] With 'General purchase order information. See PurchaseOrderDetail.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__order__purchase] With 'Point in time hook for purchase_order_id using keyset: order__purchase__adventure_works.';
+    Comment Field [purchase_order_header__purchase_order_id] With 'Primary key.';
+    Comment Field [purchase_order_header__revision_number] With 'Incremental number to track changes to the purchase order over time.';
+    Comment Field [purchase_order_header__status] With 'Order current status. 1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete.';
+    Comment Field [purchase_order_header__employee_id] With 'Employee who created the purchase order. Foreign key to Employee.BusinessEntityID.';
+    Comment Field [purchase_order_header__vendor_id] With 'Vendor with whom the purchase order is placed. Foreign key to Vendor.BusinessEntityID.';
+    Comment Field [purchase_order_header__ship_method_id] With 'Shipping method. Foreign key to ShipMethod.ShipMethodID.';
+    Comment Field [purchase_order_header__order_date] With 'Purchase order creation date.';
+    Comment Field [purchase_order_header__ship_date] With 'Estimated shipment date from the vendor.';
+    Comment Field [purchase_order_header__sub_total] With 'Purchase order subtotal. Computed as SUM(PurchaseOrderDetail.LineTotal) for the appropriate PurchaseOrderID.';
+    Comment Field [purchase_order_header__tax_amt] With 'Tax amount.';
+    Comment Field [purchase_order_header__freight] With 'Shipping cost.';
+    Comment Field [purchase_order_header__total_due] With 'Total due to vendor. Computed as Subtotal + TaxAmt + Freight.';
+    Comment Field [purchase_order_header__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_header__record_hash] With 'Hash of the record.';
+    Comment Field [purchase_order_header__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [purchase_order_header__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [purchase_order_header__record_version] With 'Version of the record.';
+    Comment Field [purchase_order_header__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [purchase_order_header__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [purchase_order_header__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__purchase_order_headers] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__purchase_order_headers];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

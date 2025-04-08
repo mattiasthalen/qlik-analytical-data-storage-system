@@ -1,0 +1,72 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__shifts
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__shifts.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__shifts.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__shifts]:
+    Load
+        [_pit_hook__reference__shift],
+        [shift__shift_id],
+        [shift__name],
+        [shift__start_time],
+        [shift__end_time],
+        [shift__modified_date],
+        [shift__record_hash],
+        [shift__record_loaded_at],
+        [shift__record_updated_at],
+        [shift__record_version],
+        [shift__record_valid_from],
+        [shift__record_valid_to],
+        [shift__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__shifts] With 'Work shift lookup table.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__reference__shift] With 'Point in time hook for shift_id using keyset: reference__shift__adventure_works.';
+    Comment Field [shift__shift_id] With 'Primary key for Shift records.';
+    Comment Field [shift__name] With 'Shift description.';
+    Comment Field [shift__start_time] With 'Shift start time. ISO duration.';
+    Comment Field [shift__end_time] With 'Shift end time. ISO duration.';
+    Comment Field [shift__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [shift__record_hash] With 'Hash of the record.';
+    Comment Field [shift__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [shift__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [shift__record_version] With 'Version of the record.';
+    Comment Field [shift__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [shift__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [shift__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__shifts] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__shifts];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

@@ -1,0 +1,78 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__product_reviews
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__product_reviews.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__product_reviews.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__product_reviews]:
+    Load
+        [_pit_hook__product_review],
+        [product_review__product_review_id],
+        [product_review__product_id],
+        [product_review__reviewer_name],
+        [product_review__review_date],
+        [product_review__email_address],
+        [product_review__rating],
+        [product_review__comments],
+        [product_review__modified_date],
+        [product_review__record_hash],
+        [product_review__record_loaded_at],
+        [product_review__record_updated_at],
+        [product_review__record_version],
+        [product_review__record_valid_from],
+        [product_review__record_valid_to],
+        [product_review__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__product_reviews] With 'Customer reviews of products they have purchased.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__product_review] With 'Point in time hook for product_review_id using keyset: product__adventure_works.';
+    Comment Field [product_review__product_review_id] With 'Primary key for ProductReview records.';
+    Comment Field [product_review__product_id] With 'Product identification number. Foreign key to Product.ProductID.';
+    Comment Field [product_review__reviewer_name] With 'Name of the reviewer.';
+    Comment Field [product_review__review_date] With 'Date review was submitted.';
+    Comment Field [product_review__email_address] With 'Reviewer$(=Chr39())s e-mail address.';
+    Comment Field [product_review__rating] With 'Product rating given by the reviewer. Scale is 1 to 5 with 5 as the highest rating.';
+    Comment Field [product_review__comments] With 'Reviewer$(=Chr39())s comments.';
+    Comment Field [product_review__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [product_review__record_hash] With 'Hash of the record.';
+    Comment Field [product_review__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [product_review__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [product_review__record_version] With 'Version of the record.';
+    Comment Field [product_review__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [product_review__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [product_review__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__product_reviews] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__product_reviews];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

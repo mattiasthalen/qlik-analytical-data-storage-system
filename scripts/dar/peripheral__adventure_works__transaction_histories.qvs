@@ -1,0 +1,80 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__transaction_histories
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__transaction_histories.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__transaction_histories.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__transaction_histories]:
+    Load
+        [_pit_hook__transaction_history],
+        [transaction_history__transaction_id],
+        [transaction_history__product_id],
+        [transaction_history__reference_order_id],
+        [transaction_history__reference_order_line_id],
+        [transaction_history__transaction_date],
+        [transaction_history__transaction_type],
+        [transaction_history__quantity],
+        [transaction_history__actual_cost],
+        [transaction_history__modified_date],
+        [transaction_history__record_hash],
+        [transaction_history__record_loaded_at],
+        [transaction_history__record_updated_at],
+        [transaction_history__record_version],
+        [transaction_history__record_valid_from],
+        [transaction_history__record_valid_to],
+        [transaction_history__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__transaction_histories] With 'Record of each purchase order, sales order, or work order transaction year to date.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__transaction_history] With 'Point in time hook for transaction_id using keyset: product__adventure_works.';
+    Comment Field [transaction_history__transaction_id] With 'Primary key for TransactionHistory records.';
+    Comment Field [transaction_history__product_id] With 'Product identification number. Foreign key to Product.ProductID.';
+    Comment Field [transaction_history__reference_order_id] With 'Purchase order, sales order, or work order identification number.';
+    Comment Field [transaction_history__reference_order_line_id] With 'Line number associated with the purchase order, sales order, or work order.';
+    Comment Field [transaction_history__transaction_date] With 'Date and time of the transaction.';
+    Comment Field [transaction_history__transaction_type] With 'W = WorkOrder, S = SalesOrder, P = PurchaseOrder.';
+    Comment Field [transaction_history__quantity] With 'Product quantity.';
+    Comment Field [transaction_history__actual_cost] With 'Product cost.';
+    Comment Field [transaction_history__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [transaction_history__record_hash] With 'Hash of the record.';
+    Comment Field [transaction_history__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [transaction_history__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [transaction_history__record_version] With 'Version of the record.';
+    Comment Field [transaction_history__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [transaction_history__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [transaction_history__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__transaction_histories] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__transaction_histories];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

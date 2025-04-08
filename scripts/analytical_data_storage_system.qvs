@@ -14,4 +14,4 @@ Let val__base_script_path = 'lib://OneDrive - mattias.thalen@two.se/Qlik/Analyti
 
 $(Must_Include=$(val__base_script_path)/data_according_to_system.qvs);
 $(Must_Include=$(val__base_script_path)/data_according_to_business.qvs);
-//$(Must_Include=$(val__base_script_path)/data_according_to_requirements.qvs);
+$(Must_Include=$(val__base_script_path)/data_according_to_requirements.qvs);

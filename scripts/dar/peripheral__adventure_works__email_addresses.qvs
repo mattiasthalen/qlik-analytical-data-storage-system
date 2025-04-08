@@ -1,0 +1,72 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__email_addresses
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__email_addresses.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__email_addresses.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__email_addresses]:
+    Load
+        [_pit_hook__person__individual],
+        [email_address__business_entity_id],
+        [email_address__email_address_id],
+        [email_address__email],
+        [email_address__rowguid],
+        [email_address__modified_date],
+        [email_address__record_hash],
+        [email_address__record_loaded_at],
+        [email_address__record_updated_at],
+        [email_address__record_version],
+        [email_address__record_valid_from],
+        [email_address__record_valid_to],
+        [email_address__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__email_addresses] With 'Where to send a person email.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__person__individual] With 'Point in time hook for business_entity_id using keyset: person__individual__adventure_works.';
+    Comment Field [email_address__business_entity_id] With 'Primary key. Person associated with this email address. Foreign key to Person.BusinessEntityID.';
+    Comment Field [email_address__email_address_id] With 'Primary key. ID of this email address.';
+    Comment Field [email_address__email] With 'E-mail address for the person.';
+    Comment Field [email_address__rowguid] With 'ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.';
+    Comment Field [email_address__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [email_address__record_hash] With 'Hash of the record.';
+    Comment Field [email_address__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [email_address__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [email_address__record_version] With 'Version of the record.';
+    Comment Field [email_address__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [email_address__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [email_address__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__email_addresses] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__email_addresses];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();

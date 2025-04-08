@@ -1,0 +1,74 @@
+Trace
+---------------------------------------------------------------
+    Defining peripheral__adventure_works__credit_cards
+---------------------------------------------------------------
+;
+Trace Setting variables...;
+Let val__source_path = '$(val__qvd_path__dab)/frame__adventure_works__credit_cards.qvd';
+Let val__target_path = '$(val__qvd_path__dar)/peripheral__adventure_works__credit_cards.qvd';
+Let val__source_create_time = Timestamp(FileTime('$(val__source_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__target_create_time = Timestamp(FileTime('$(val__target_path)'), 'YYYY-MM-DD hh:mm:ss.fff');
+Let val__source_is_newer = If('$(val__source_create_time)' > '$(val__target_create_time)', 1, 0);
+
+Trace Checking if source is newer...;
+
+If $(val__source_is_newer) = 1 Then 
+
+    Trace Source is newer, loading & transforming data...;
+    [peripheral__adventure_works__credit_cards]:
+    Load
+        [_pit_hook__credit_card],
+        [credit_card__credit_card_id],
+        [credit_card__card_type],
+        [credit_card__card_number],
+        [credit_card__exp_month],
+        [credit_card__exp_year],
+        [credit_card__modified_date],
+        [credit_card__record_hash],
+        [credit_card__record_loaded_at],
+        [credit_card__record_updated_at],
+        [credit_card__record_version],
+        [credit_card__record_valid_from],
+        [credit_card__record_valid_to],
+        [credit_card__is_current_record]
+
+    From
+        [$(val__source_path)] (qvd)
+    ;
+
+    Trace Commenting table...;
+    Comment Table [peripheral__adventure_works__credit_cards] With 'Customer credit card information.';
+
+    Trace Commenting fields...;
+    Comment Field [_pit_hook__credit_card] With 'Point in time hook for credit_card_id using keyset: credit_card__adventure_works.';
+    Comment Field [credit_card__credit_card_id] With 'Primary key for CreditCard records.';
+    Comment Field [credit_card__card_type] With 'Credit card name.';
+    Comment Field [credit_card__card_number] With 'Credit card number.';
+    Comment Field [credit_card__exp_month] With 'Credit card expiration month.';
+    Comment Field [credit_card__exp_year] With 'Credit card expiration year.';
+    Comment Field [credit_card__modified_date] With 'Date and time the record was last updated.';
+    Comment Field [credit_card__record_hash] With 'Hash of the record.';
+    Comment Field [credit_card__record_loaded_at] With 'Date and time the record was loaded.';
+    Comment Field [credit_card__record_updated_at] With 'Date and time the record was last updated.';
+    Comment Field [credit_card__record_version] With 'Version of the record.';
+    Comment Field [credit_card__record_valid_from] With 'Date and time the record was valid from.';
+    Comment Field [credit_card__record_valid_to] With 'Date and time the record was valid to.';
+    Comment Field [credit_card__is_current_record] With '1 if the record is current, 0 otherwise.';
+
+    Trace Storing data...;
+    Store [peripheral__adventure_works__credit_cards] Into [$(val__target_path)] (qvd);
+
+    Trace Dropping table...;
+    Drop Table [peripheral__adventure_works__credit_cards];
+
+Else
+    Trace Source is older than target, skipping...;
+
+End If
+
+Trace Resetting variables...;
+Let val__source_path = Null();
+Let val__target_path = Null();
+Let val__source_create_time = Null();
+Let val__target_create_time = Null();
+Let val__source_is_newer = Null();
